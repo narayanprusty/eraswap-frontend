@@ -15,7 +15,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import normalizeCss from 'normalize.css';
 import s from './Layout.css';
 import Header from '../Header';
-import Feedback from '../Feedback';
+// import Feedback from '../Feedback';
 import Footer from '../Footer';
 
 class Layout extends React.Component {
@@ -25,14 +25,15 @@ class Layout extends React.Component {
 
   componentDidMount() {
     const canUseDOM = !!(
-      (typeof window !== 'undefined' &&
-      window.document && window.document.createElement)
+      typeof window !== 'undefined' &&
+      window.document &&
+      window.document.createElement
     );
 
     // Don't load these styles server-side
-    if(canUseDOM && __DEV__) {
+    if (canUseDOM && __DEV__) {
       // Import the antThemeLoader.less file for hot reloading theme changes
-      require('components/antThemeLoader.less')
+      require('components/antThemeLoader.less');
     }
   }
 
@@ -41,7 +42,7 @@ class Layout extends React.Component {
       <div>
         <Header />
         {this.props.children}
-        <Feedback />
+        {/* <Feedback /> */}
         <Footer />
       </div>
     );

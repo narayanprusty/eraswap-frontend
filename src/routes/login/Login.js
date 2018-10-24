@@ -11,10 +11,72 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Login.css';
+import axios from 'axios';
+import { Redirect } from 'react-router';
+import queryString from 'stringquery';
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: '',
+      password: '',
+    };
+  }
   static propTypes = {
     title: PropTypes.string.isRequired,
+  };
+
+  componentDidMount = () => {
+    const queries = queryString(location.search);
+    if (queries.how != 'force') {
+      axios
+        .get('/apis/ping', {
+          headers: {
+            authorization: JSON.parse(localStorage.getItem('token')),
+          },
+        })
+        .then(data => {
+          if (data.data) {
+            location.href = '/home';
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      console.log('just skipping');
+    }
+  };
+
+  handleChanges = e => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  login = e => {
+    e.preventDefault();
+    const data = {
+      username: this.state.username,
+      password: this.state.password,
+    };
+    axios
+      .post('/auth/login', data)
+      .then(response => {
+        if (response.data) {
+          console.log(response.data);
+
+          for (const i in response.data) {
+            localStorage.setItem(i, JSON.stringify(response.data[i]));
+          }
+          window.location.href = '/home';
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   render() {
@@ -89,7 +151,7 @@ class Login extends React.Component {
             </a>
           </div>
           <strong className={s.lineThrough}>OR</strong>
-          <form method="post">
+          <form onSubmit={this.login}>
             <div className={s.formGroup}>
               <label className={s.label} htmlFor="usernameOrEmail">
                 Username or email address:
@@ -97,7 +159,8 @@ class Login extends React.Component {
                   className={s.input}
                   id="usernameOrEmail"
                   type="text"
-                  name="usernameOrEmail"
+                  name="username"
+                  onChange={this.handleChanges}
                   autoFocus // eslint-disable-line jsx-a11y/no-autofocus
                 />
               </label>
@@ -110,6 +173,7 @@ class Login extends React.Component {
                   id="password"
                   type="password"
                   name="password"
+                  onChange={this.handleChanges}
                 />
               </label>
             </div>

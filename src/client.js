@@ -20,6 +20,7 @@ import { updateMeta } from './DOMUtils';
 import history from './history';
 import createApolloClient from './core/createApolloClient';
 import router from './router';
+import axios from 'axios';
 
 // Universal HTTP client
 const fetch = createFetch(window.fetch, {
@@ -157,6 +158,19 @@ async function onLocationChange(location, action) {
     }
   }
 }
+
+axios.defaults.baseURL = 'http://localhost:5000';
+
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response.status === 401) {
+      window.location.href = '/login?how=force';
+      console.log('>>>>>>>');
+    }
+    return error;
+  },
+);
 
 // Handle client-side navigation by using HTML5 History API
 // For more information visit https://github.com/mjackson/history#readme

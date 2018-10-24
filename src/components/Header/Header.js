@@ -27,14 +27,14 @@ class Header extends React.Component {
               srcSet={`${logoUrl2x} 2x`}
               width="38"
               height="38"
-              alt="React"
+              alt="Eraswap"
             />
             <span className={s.brandTxt}>Your Company</span>
           </Link>
-          <div className={s.banner}>
-            <h1 className={s.bannerTitle}>React</h1>
-            <p className={s.bannerDesc}>Complex web apps made easy</p>
-          </div>
+          {/* <div className={s.banner}>
+            <h1 className={s.bannerTitle}>Eraswap</h1>
+            <p className={s.bannerDesc}>Eraswap Dashboard</p>
+          </div> */}
         </div>
       </div>
     );

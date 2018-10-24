@@ -14,6 +14,34 @@ import s from './Navigation.css';
 import Link from '../Link';
 
 class Navigation extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loggedIn: false,
+    };
+  }
+  componentDidMount() {
+    if (
+      localStorage.getItem('token') &&
+      localStorage.getItem('token').length > 0
+    ) {
+      this.setState({
+        loggedIn: true,
+      });
+    } else {
+      this.setState({
+        loggedIn: false,
+      });
+    }
+  }
+  logout = () => {
+    localStorage.clear();
+    this.setState({
+      loggedIn: false,
+    });
+    location.href = '/login';
+  };
   render() {
     return (
       <div className={s.root} role="navigation">
@@ -23,14 +51,21 @@ class Navigation extends React.Component {
         <Link className={s.link} to="/contact">
           Contact
         </Link>
-        <span className={s.spacer}> | </span>
-        <Link className={s.link} to="/login">
-          Log in
-        </Link>
-        <span className={s.spacer}>or</span>
-        <Link className={cx(s.link, s.highlight)} to="/register">
-          Sign up
-        </Link>
+        {!this.state.loggedIn && <span className={s.spacer}> | </span> && (
+            <Link className={s.link} to="/login">
+              Log in
+            </Link>
+          )}
+        {!this.state.loggedIn && <span className={s.spacer}>or</span> && (
+            <Link className={cx(s.link, s.highlight)} to="/register">
+              Sign up
+            </Link>
+          )}
+        {this.state.loggedIn && <span className={s.spacer}> | </span> && (
+            <button className={cx(s.link, s.highlight)} onClick={this.logout}>
+              Logout
+            </button>
+          )}
       </div>
     );
   }
