@@ -14,8 +14,31 @@ import Link from '../Link';
 import Navigation from '../Navigation';
 import logoUrl from './logo-small.png';
 import logoUrl2x from './logo-small@2x.png';
-
+import {Menu} from 'antd';
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loggedIn: false,
+    };
+  }
+  
+  componentDidMount() {
+    if (
+      localStorage.getItem('token') &&
+      localStorage.getItem('token').length > 0
+    ) {
+      this.setState({
+        loggedIn: true,
+      });
+    } else {
+      this.setState({
+        loggedIn: false,
+      });
+    }
+  }
+
   render() {
     return (
       <div className={s.root}>
@@ -29,8 +52,20 @@ class Header extends React.Component {
               height="38"
               alt="Eraswap"
             />
-            <span className={s.brandTxt}>Your Company</span>
+            <span className={s.brandTxt}>ErasWap</span>
           </Link>
+          {this.state.loggedIn &&(<Menu
+        mode="horizontal"
+        defaultSelectedKeys={['2']}
+        style={{ 
+          lineHeight: '64px',
+          backgroundColor:'transparent'
+         }}
+      >
+        <Menu.Item key="1">nav 1</Menu.Item>
+        <Menu.Item key="2">nav 2</Menu.Item>
+        <Menu.Item key="3">nav 3</Menu.Item>
+        </Menu>)}
           {/* <div className={s.banner}>
             <h1 className={s.bannerTitle}>Eraswap</h1>
             <p className={s.bannerDesc}>Eraswap Dashboard</p>

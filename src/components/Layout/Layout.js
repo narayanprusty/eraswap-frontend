@@ -17,8 +17,9 @@ import s from './Layout.css';
 import Header from '../Header';
 // import Feedback from '../Feedback';
 import Footer from '../Footer';
+import { Layout } from 'antd';
 
-class Layout extends React.Component {
+class LayoutThing extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
   };
@@ -39,14 +40,14 @@ class Layout extends React.Component {
 
   render() {
     return (
-      <div>
+      <Layout className="layout">
         <Header />
         {this.props.children}
-        {/* <Feedback /> */}
+
         <Footer />
-      </div>
+      </Layout>
     );
   }
 }
 
-export default withStyles(normalizeCss, s)(Layout);
+export default withStyles(normalizeCss, s)(LayoutThing);
