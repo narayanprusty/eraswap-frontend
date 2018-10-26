@@ -160,6 +160,7 @@ async function onLocationChange(location, action) {
 }
 
 axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.headers.common["authorization"]= localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : '-';
 
 axios.interceptors.response.use(
   response => response,

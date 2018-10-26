@@ -32,11 +32,7 @@ class Login extends React.Component {
     const queries = queryString(location.search);
     if (queries.how != 'force') {
       axios
-        .get('/apis/ping', {
-          headers: {
-            authorization: JSON.parse(localStorage.getItem('token')),
-          },
-        })
+        .get('/apis/ping')
         .then(data => {
           if (data.data) {
             location.href = '/home';
