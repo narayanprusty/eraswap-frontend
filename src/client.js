@@ -169,7 +169,7 @@ axios.interceptors.response.use(
       window.location.href = '/login?how=force';
       console.log('>>>>>>>');
     }
-    return error;
+    // return error;
   },
 );
 
