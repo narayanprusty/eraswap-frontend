@@ -6,6 +6,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
+import debounce from 'lodash.debounce';
 import {
   Card,
   Form,
@@ -14,7 +15,7 @@ import {
   Button,
   Collapse,
   Radio,
-  Icon,Steps
+  Icon,Steps,Spin
 } from 'antd';
 import s from './Computex.css';
 import QrCode from 'qrcode.react';
@@ -30,6 +31,8 @@ class Computex extends React.Component {
   constructor(props) {
     super(props);
     const value = props.value || {};
+    this.lastFetchId = 0;
+    // this.fetchCurrency = debounce(this.fetchCurrency, 800);
     this.state = {
       exchanges: [],
       maxExchange: '',
@@ -40,6 +43,7 @@ class Computex extends React.Component {
       toCurrency: value.toCurrency || 'BTC',
       ourWallet: '3c17fab5142284eba3fd070f7ddb53c5de68bcaf10eb1f8a799d83b3589bac87',
       txnId:'',
+      cur:[],
       stepsO:{
         firstStep:{
           status:'process',
@@ -219,11 +223,16 @@ class Computex extends React.Component {
       }
     });
   };
-  fetchCurrency = () => {
-    axios.get('/apis/cur/get_all_supported_currency').then(data => {
+  fetchCurrency = (keys) => {
+    // this.lastFetchId += 1;
+    // const fetchId = this.lastFetchId;
+    this.setState({ fetching: true })
+    debugger;
+    axios.get('/apis/cur/get_all_supported_currency?keyWord='+keys).then(data => {
       if (data.data) {
         this.setState({
           ['cur']: data.data,
+          fetching:false,
         });
         console.log(this.state);
       }
@@ -295,7 +304,7 @@ class Computex extends React.Component {
   handletoCurrencyChange = toCurrency => {
     console.log(toCurrency);
     if (!('value' in this.props)) {
-      this.setState({ toCurrency });
+      this.setState({ fetching:false,...toCurrency });
     }
     this.triggerChange({ toCurrency });
   };
@@ -308,6 +317,7 @@ class Computex extends React.Component {
     }
   };
   callback = key => {
+    debugger;
     console.log(key);
     if (key && key.length) {
       this.setState({
@@ -323,13 +333,7 @@ class Computex extends React.Component {
       return dataObj.value + ' ' + this.state.toCurrency;
     }
   };
-  checkPrice = (rule, value, callback) => {
-    if (value.number > 0) {
-      callback();
-      return;
-    }
-    callback('Price must greater than zero!');
-  }
+  
   childrenCurrList = () => {
     let children = [];
 
@@ -379,7 +383,7 @@ class Computex extends React.Component {
               style={customPanelStyle}
               disabled={false}
             >
-              <Form layout="inline" onSubmit={this.handleSubmit}>
+              <Form onSubmit={this.handleSubmit}>
                 
                 <FormItem label="Convert">
                   <Input
@@ -388,30 +392,61 @@ class Computex extends React.Component {
                     size={size}
                     value={state.amount}
                     onChange={this.handleChanges.bind(this)}
-                    style={{ width: '65%', marginRight: '3%' }}
+                    style={{ width: '25%', marginRight: '3%' }}
                   />
-                  <Select
+                  {/* <Select
+                    labelInValue
+                    mode="combobox"
+                    value={state.currency}
                     name="currency"
+                    placeholder="Select Currency"
+                    notFoundContent={state.fetching ? <Spin size="small" /> : null}
+                    filterOption={false}
+                    onSearch={this.fetchCurrency}
+                    onChange={this.handletoCurrencyChange}
+                    style={{ width: '32%' }}
+                  >
+                    {state.cur.map(d => <Option key={d.value}>{d.name}</Option>)}
+                  </Select> */}
+                   <Select
+                    mode="combobox"
+                    name="currency"
+                    placeholder="Select Currency"
                     value={state.currency}
                     size={size}
-                    style={{ width: '32%' }}
+                    style={{ width: '30%' }}
                     onChange={this.handleCurrencyChange}
                   >
                     {this.state.cur && this.childrenCurrList()}
-                  </Select>
+                  </Select> 
                   
                 </FormItem>
                
                 <FormItem label="To">
+                   {/* <Select
+                    labelInValue
+                    mode="combobox"
+                    value={state.currency}
+                    placeholder="Select Currency"
+                    notFoundContent={state.fetching ? <Spin size="small" /> : null}
+                    filterOption={false}
+                    onSearch={this.fetchCurrency}
+                    onChange={this.handletoCurrencyChange}
+                    style={{ width: '60%' }}
+                  >
+                    {state.cur.map(d => <Option key={d.value}>{d.name}</Option>)}
+                  </Select> */}
                   <Select
+                    mode="combobox"
                     name="toCurrency"
+                    placeholder="Select Currency"
                     value={state.toCurrency}
                     size={size}
-                    style={{ width: '100%' }}
+                    style={{ width: '30%'}}
                     onChange={this.handletoCurrencyChange}
                   >
                     {this.state.cur && this.childrenCurrList()}
-                  </Select>
+                  </Select> 
                 </FormItem>
                 <FormItem>
                     {this.state.amount>0 &&(
