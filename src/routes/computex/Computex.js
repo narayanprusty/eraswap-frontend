@@ -14,7 +14,7 @@ import {
   Button,
   Collapse,
   Radio,
-  Icon
+  Icon,Steps
 } from 'antd';
 import s from './Computex.css';
 import QrCode from 'qrcode.react';
@@ -25,20 +25,43 @@ const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const ButtonGroup =Button.Group;
+const Step = Steps.Step;
 class Computex extends React.Component {
   constructor(props) {
     super(props);
     const value = props.value || {};
     this.state = {
       exchanges: [],
-      maxExchanges: '',
+      maxExchange: '',
       key: '1',
       amount: value.amount || 0,
       exchangeAmount:0,
       currency: value.currency || 'ETH',
       toCurrency: value.toCurrency || 'BTC',
       ourWallet: '3c17fab5142284eba3fd070f7ddb53c5de68bcaf10eb1f8a799d83b3589bac87',
-      txnId:''
+      txnId:'',
+      stepsO:{
+        firstStep:{
+          status:'process',
+          icon:"loading"
+        },
+        secoendStep:{
+          status:'wait',
+          icon:'check'
+        },
+        thirdStep:{
+          status:'wait',
+          icon:'pay-circle'
+        },
+        fourthStep:{
+          status:'wait',
+          icon:'solution'
+        },
+        fifthStep:{
+          status:'wait',
+          icon:'smile-o'
+        }
+      }
     };
   }
   findMinMax = arr => {
@@ -67,8 +90,30 @@ class Computex extends React.Component {
                 this.state.currency
               } To ${this.state.toCurrency} estimated: `,
               exchanges: data.data,
-              maxExchanges: getMinMax.name,
-              exchangeAmount:getMinMax.value
+              maxExchange: getMinMax.name,
+              exchangeAmount:getMinMax.value,
+              stepsO: {
+                firstStep:{
+                status:'finish',
+                icon:"edit"
+              },
+              secoendStep:{
+                status:'process',
+                icon:'loading'
+              },
+              thirdStep:{
+                status:'wait',
+                icon:'pay-circle'
+              },
+              fourthStep:{
+                status:'wait',
+                icon:'solution'
+              },
+              fifthStep:{
+                status:'wait',
+                icon:'smile-o'
+              }
+            }
             });
           }
         });
@@ -76,15 +121,23 @@ class Computex extends React.Component {
     });
   };
   checkExchangeSelect = exch => {
-    if (this.state.maxExchanges === exch) {
+    if (this.state.maxExchange === exch) {
       return false;
     }
     return true;
   };
   handleChanges = e => {
+    if(e.target.name === 'amount'){
+      if(e.target.value >0){
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+      }
+    }else{
     this.setState({
       [e.target.name]: e.target.value,
     });
+  }
     console.log(this.state);
   };
 
@@ -115,13 +168,55 @@ class Computex extends React.Component {
   nextStep3 = () => {
     this.setState({
       key: '3',
-      panel2Text: `Best Value is From ${this.state.maxExchanges} : ${this.state.exchangeAmount +' '+this.state.toCurrency}`,
+      panel2Text: `Best Value is From ${this.state.maxExchange} : ${this.state.exchangeAmount +' '+this.state.toCurrency}`,
+      stepsO:{ firstStep:{
+        status:'finish',
+        icon:"edit"
+      },
+        secoendStep:{
+          status:'finish',
+          icon:'check'
+        },
+        thirdStep:{
+          status:'process',
+          icon:'loading'
+        },
+        fourthStep:{
+          status:'wait',
+          icon:'solution'
+        },
+        fifthStep:{
+          status:'wait',
+          icon:'smile-o'
+        }
+      }
     });
   };
   nextStep4 = () => {
     this.setState({
       key: '4',
-      panel3Text:`After Verification of your Txn ${this.state.exchangeAmount +' '+this.state.toCurrency} will be sent to : ${this.state.clientWallet}`
+      panel3Text:`After Verification of your Txn ${this.state.exchangeAmount +' '+this.state.toCurrency} will be sent to : ${this.state.clientWallet}`,
+      stepsO:{
+        firstStep:{
+          status:'finish',
+          icon:"edit"
+        },
+        secoendStep:{
+          status:'finish',
+          icon:'check'
+        },
+        thirdStep:{
+          status:'finish',
+          icon:'pay-circle'
+        },
+        fourthStep:{
+          status:'process',
+          icon:'loading'
+        },fifthStep:{
+          status:'wait',
+          icon:'smile-o'
+        }
+      }
     });
   };
   fetchCurrency = () => {
@@ -134,6 +229,54 @@ class Computex extends React.Component {
       }
     });
   };
+  verifyMain = (value)=>{
+    const dataPushable={
+        txnId:value,
+        exchFromCurrency:this.state.currency,
+        exchFromCurrencyAmt:this.state.amount,
+        exchToCurrency:this.state.toCurrency,
+        exchToCurrencyAmt:this.state.exchangeAmount,
+        allExchResult:this.state.cur,
+        toAddress:this.state.clientWallet,
+        fromAddress:this.state.ourWallet,
+        eraswapAcceptAddress:this.state.ourWallet,
+        eraswapSendAddress:this.state.clientWallet,
+        exchangePlatform:this.state.maxExchange
+    };
+    axios.post('/apis/txn/verifyAndSave',dataPushable).then(data=>{
+      if(data.data){
+        this.setState({
+          txnId:value,
+          stepsO:{
+            firstStep:{
+              status:'finish',
+              icon:"edit"
+            },
+            secoendStep:{
+              status:'finish',
+              icon:'check'
+            },
+            thirdStep:{
+              status:'finish',
+              icon:'pay-circle'
+            },
+            fourthStep:{
+              status:'finish',
+              icon:'check'
+            },fifthStep:{
+              status:'wait',
+              icon:'smile-o'
+            }
+          }
+          });
+          location.href='/txnhistory'
+      }else{
+        console.log(data);
+        window.alert("some error occured")
+      }
+    });
+    
+}
   copyToClipboard = text => {
     var dummy = document.createElement('input');
     document.body.appendChild(dummy);
@@ -180,7 +323,13 @@ class Computex extends React.Component {
       return dataObj.value + ' ' + this.state.toCurrency;
     }
   };
-
+  checkPrice = (rule, value, callback) => {
+    if (value.number > 0) {
+      callback();
+      return;
+    }
+    callback('Price must greater than zero!');
+  }
   childrenCurrList = () => {
     let children = [];
 
@@ -194,7 +343,7 @@ class Computex extends React.Component {
     }
     return children;
   };
-
+  
   render() {
     const customPanelStyle = {
       background: '#f7f7f7',
@@ -203,13 +352,20 @@ class Computex extends React.Component {
       border: 0,
       overflow: 'hidden',
     };
-    const { getFieldDecorator } = this.props.form;
     const { size } = this.props;
     const state = this.state;
 
     return (
       <div className={s.root}>
-        <Card title="Computex">
+      
+        <Card title={this.props.title}>
+        <Steps>
+    <Step status={this.state.stepsO.firstStep.status} title="Conversion details" icon={<Icon type={this.state.stepsO.firstStep.icon} />} />
+    <Step status={this.state.stepsO.secoendStep.status} title="Select Best" icon={<Icon type={this.state.stepsO.secoendStep.icon} />} />
+    <Step status={this.state.stepsO.thirdStep.status} title="Pay" icon={<Icon type={this.state.stepsO.thirdStep.icon} />} />
+    <Step status={this.state.stepsO.fourthStep.status} title="Verification" icon={<Icon type={this.state.stepsO.fourthStep.icon} />} />
+    {/* <Step status="wait" title="Done" icon={<Icon type="smile-o" />} /> */}
+  </Steps><br />
           <Collapse
             bordered={false}
             defaultActiveKey={['1']}
@@ -224,8 +380,8 @@ class Computex extends React.Component {
               disabled={false}
             >
               <Form layout="inline" onSubmit={this.handleSubmit}>
-                <FormItem label="Convert" />
-                <FormItem>
+                
+                <FormItem label="Convert">
                   <Input
                     type="number"
                     name="amount"
@@ -243,14 +399,10 @@ class Computex extends React.Component {
                   >
                     {this.state.cur && this.childrenCurrList()}
                   </Select>
+                  
                 </FormItem>
+               
                 <FormItem label="To">
-                  {getFieldDecorator('TO', {
-                    initialValue: { toCurrency: 'BTC' },
-                    // rules: [{ validator: this.checkPrice }],
-                  })}
-                </FormItem>
-                <FormItem>
                   <Select
                     name="toCurrency"
                     value={state.toCurrency}
@@ -286,7 +438,7 @@ class Computex extends React.Component {
               {this.state.exchanges && (
                 <RadioGroup
                   name="exchanges"
-                  value={this.state.maxExchanges}
+                  value={this.state.maxExchange}
                   size="large"
                   onClick={this.handleChanges}
                 >
@@ -335,7 +487,7 @@ class Computex extends React.Component {
               disabled={false}
               accordion={true}
             >
-              We will be Exchange Through {this.state.maxExchanges}. please
+              We will be Exchange Through {this.state.maxExchange}. please
               transfer {this.state.amount + ' ' + this.state.currency} to this
               below address:<br />
               <div className={s.container}>
@@ -395,12 +547,10 @@ class Computex extends React.Component {
                   enterButton="Verify"
                   size="large"
                   onSearch={value => {
-                    this.setState({
-                        txnId:value
-                    });
+                    this.verifyMain(value);
                   }}
                   allowClear
-                //   disabled={this.state.clientWallet || false}
+                  disabled={this.state.txnId ? true : false}
                 />
             </Panel>
           </Collapse>
