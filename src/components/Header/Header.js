@@ -8,6 +8,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Header.css';
 import Link from '../Link';
@@ -18,23 +19,22 @@ import {Menu} from 'antd';
 class Header extends React.Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       loggedIn: false,
     };
   }
-  
+
   componentDidMount() {
     if (
       localStorage.getItem('token') &&
       localStorage.getItem('token').length > 0
     ) {
       this.setState({
-        loggedIn: true,
+        loggedIn: true
       });
     } else {
       this.setState({
-
         loggedIn: false,
       });
     }
@@ -65,7 +65,7 @@ class Header extends React.Component {
           <Menu
         onClick={this.handleClick}
         mode="horizontal"
-        defaultSelectedKeys={['2']}
+        defaultSelectedKeys={this.props.menukey ? [this.props.menukey]:['1']}
         style={{ 
           lineHeight: '64px',
           backgroundColor:'transparent'
@@ -74,7 +74,9 @@ class Header extends React.Component {
         <Menu.Item key="1">
         <Link to='/computex'>ComputeX</Link>
         </Menu.Item>
-        <Menu.Item key="2">nav 2</Menu.Item>
+        <Menu.Item key="2">
+        <Link to='/txnhistory'>Txn History</Link>
+        </Menu.Item>
         <Menu.Item key="3">nav 3</Menu.Item>
         </Menu>)}
           {/* <div className={s.banner}>

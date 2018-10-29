@@ -21,7 +21,7 @@ import { Layout } from 'antd';
 
 class LayoutThing extends React.Component {
   static propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired
   };
 
   componentDidMount() {
@@ -41,7 +41,7 @@ class LayoutThing extends React.Component {
   render() {
     return (
       <Layout className="layout">
-        <Header />
+        <Header menukey={this.props.menukey} />
         {this.props.children}
 
         <Footer />

@@ -4,12 +4,13 @@ import Layout from '../../components/Layout';
 import Computex from './Computex';
 
 const title ='ComputeX'
+const menukey ='1'
 
 function action() {
     return {
       title,
       component: (
-        <Layout>
+        <Layout menukey={menukey}>
           <Computex title={title} />
         </Layout>
       ),
