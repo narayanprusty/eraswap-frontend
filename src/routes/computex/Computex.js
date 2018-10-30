@@ -286,7 +286,7 @@ class Computex extends React.Component {
       exchFromCurrency: this.state.currency,
       exchFromCurrencyAmt: this.state.amount,
       exchToCurrency: this.state.toCurrency,
-      exchToCurrencyAmt: this.state.exchangeRate,
+      exchToCurrencyRate: this.state.exchangeRate,
       allExchResult: this.state.cur,
       toAddress: this.state.clientWallet,
       fromAddress: this.state.ourWallet,
