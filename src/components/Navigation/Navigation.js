@@ -22,6 +22,9 @@ class Navigation extends React.Component {
     };
   }
   componentDidMount() {
+   this.loginStateSet(); 
+  }
+  loginStateSet = ()=>{
     if (
       localStorage.getItem('token') &&
       localStorage.getItem('token').length > 0
@@ -35,6 +38,7 @@ class Navigation extends React.Component {
       });
     }
   }
+
   logout = () => {
     localStorage.clear();
     this.setState({

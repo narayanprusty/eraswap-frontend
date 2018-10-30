@@ -110,6 +110,7 @@ class Computex extends React.Component {
                 exchanges: data.data,
                 maxExchange: getMinMax.ask !== 0 ? getMinMax.name : '',
                 exchangeRate: getMinMax.ask !== 0 ? getMinMax.ask : 0,
+                ['totalExchangeAmout']:getMinMax.ask * this.state.amount,
                 stepsO: {
                   firstStep: {
                     status: 'finish',
@@ -371,9 +372,6 @@ class Computex extends React.Component {
       return element.name.toLowerCase() === exchName;
     });
     if (dataObj && dataObj.ask) {
-      this.setState({
-        ['totalExchangeAmout']:dataObj.ask * this.state.amount
-      });
       return (
         <span>
           {dataObj.ask * this.state.amount + ' ' + this.state.toCurrency}

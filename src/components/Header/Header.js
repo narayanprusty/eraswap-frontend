@@ -26,6 +26,9 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
+   this.loginState();
+  }
+  loginState =()=>{
     if (
       localStorage.getItem('token') &&
       localStorage.getItem('token').length > 0

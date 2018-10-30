@@ -41,6 +41,7 @@ const staticAssetName = isDebug
 // CSS Nano options http://cssnano.co/
 const minimizeCssOptions = {
   discardComments: { removeAll: true },
+  svgo: false,
 };
 
 //
