@@ -21,7 +21,7 @@ import history from './history';
 import createApolloClient from './core/createApolloClient';
 import router from './router';
 import axios from 'axios';
-
+import { notification ,Icon} from "antd";
 // Universal HTTP client
 const fetch = createFetch(window.fetch, {
   baseUrl: window.App.apiUrl,
@@ -168,6 +168,13 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       window.location.href = '/login?how=force';
       console.log('>>>>>>>');
+    }else{
+      
+      notification.open({
+        message: error.response.data.message,
+        // description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+        icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+      });
     }
     // return error;
   },

@@ -65,7 +65,7 @@ class Header extends React.Component {
           <Menu
         onClick={this.handleClick}
         mode="horizontal"
-        defaultSelectedKeys={this.props.menukey ? [this.props.menukey]:['1']}
+        defaultSelectedKeys={this.props.menukey ? [this.props.menukey]:[]}
         style={{ 
           lineHeight: '64px',
           backgroundColor:'transparent'
