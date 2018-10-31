@@ -42,8 +42,8 @@ changePage =(a)=>{
         { title: 'Conversion Currency', dataIndex: 'exchFromCurrency', key: 'exchFromCurrency' ,align:'center'},
         { title: 'Conversion Amount', dataIndex: 'exchFromCurrencyAmt', key: 'exchFromCurrencyAmt' ,align:'center'},
         { title: 'Converted Currency', dataIndex: 'exchToCurrency', key: 'exchToCurrency' ,align:'center'},
-        { title: 'Converted Amount', dataIndex: 'exchToCurrencyAmt', key: 'exchToCurrencyAmt' ,align:'center'},
-        { title: 'Deposit Address', dataIndex: 'toAddress', key: 'toAddress',align:'left' },
+        { title: 'Converted Amount', dataIndex: 'totalExchangeAmout', key: 'totalExchangeAmout' ,align:'center'},
+        { title: 'Eraswap Deposit Address', dataIndex: 'eraswapAcceptAddress', key: 'eraswapAcceptAddress',align:'left' },
         { title:"Created At", dataIndex:"createdAt", key:"createdAt" ,align:'right',render:(date)=>{
             return new Date(date.toString()).toLocaleDateString() + ' '+ new Date(date.toString()).toLocaleTimeString()
         }}

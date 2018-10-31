@@ -158,13 +158,14 @@ async function onLocationChange(location, action) {
     }
   }
 }
-
-axios.defaults.baseURL = 'https://eraswapfront.herokuapp.com'; //for local 'http://localhost:5000';
+axios.defaults.baseURL = 'http://localhost:5000'; 
+// axios.defaults.baseURL = 'https://eraswapfront.herokuapp.com'; //for local 'http://localhost:5000';
 axios.defaults.headers.common["authorization"]= localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : '-';
 
 axios.interceptors.response.use(
   response => response,
   error => {
+    if(error && error.response){
     if (error.response.status === 401) {
       window.location.href = '/login?how=force';
       console.log('>>>>>>>');
@@ -176,6 +177,8 @@ axios.interceptors.response.use(
         icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
       });
     }
+  }
+  console.log(error)
     // return error;
   },
 );

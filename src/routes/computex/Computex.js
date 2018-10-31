@@ -22,6 +22,8 @@ import {
 } from 'antd';
 import s from './Computex.css';
 import QrCode from 'qrcode.react';
+import moment from 'moment';
+
 
 const Option = Select.Option;
 const Panel = Collapse.Panel;
@@ -45,8 +47,8 @@ class Computex extends React.Component {
       currency: value.currency,
       toCurrency: value.toCurrency,
       ourWallet: '',
-      txnId: '',
       cur: [],
+      tiMeFrom:0,
       stepsO: {
         firstStep: {
           status: 'process',
@@ -197,10 +199,31 @@ class Computex extends React.Component {
       )
       .then(data => {
         if (data && data.data) {
+          if(!this.state.lctxid){
+            const postDta={
+              tiMeFrom:this.state.tiMeFrom,
+              exchFromCurrency: this.state.currency,
+              exchFromCurrencyAmt: this.state.amount,
+              exchToCurrency: this.state.toCurrency,
+              exchToCurrencyRate: this.state.exchangeRate,
+              allExchResult: this.state.cur,
+              eraswapAcceptAddress: data.data.address,
+              exchangePlatform: this.state.maxExchange,
+              totalExchangeAmout:this.state.totalExchangeAmout
+            };
+          axios.post('/apis/txn/record_txn',postDta).then(data=>{
+            if(data && data.data){
+              this.setState({
+                ['lctxid']:data.data._id
+              });
+            }
+          });
+      }
           this.setState({
             loader:false,
             ourWallet: data.data.address,
             key: '3',
+            tiMeFrom: moment.utc().valueOf(),
             panel2Text: `Best Value is From ${this.state.maxExchange} : ${this
               .state.exchangeRate +
               ' ' +
@@ -233,13 +256,11 @@ class Computex extends React.Component {
           console.log(data);
         }
       });
-  };
+      
+    
+};
   nextStep4 = () => {
     this.setState({
-      key: '4',
-      panel3Text: `After Verification of your Txn ${this.state.exchangeRate +
-        ' ' +
-        this.state.toCurrency} will be sent to : ${this.state.clientWallet}`,
       stepsO: {
         firstStep: {
           status: 'finish',
@@ -263,6 +284,7 @@ class Computex extends React.Component {
         },
       },
     });
+    this.verifyMain();
   };
   fetchCurrency = keys => {
     // this.lastFetchId += 1;
@@ -281,25 +303,24 @@ class Computex extends React.Component {
         }
       });
   };
-  verifyMain = value => {
+  verifyMain = () => {
+    debugger;
     const dataPushable = {
-      txnId: value,
+      tiMeFrom:this.state.tiMeFrom,
       exchFromCurrency: this.state.currency,
       exchFromCurrencyAmt: this.state.amount,
       exchToCurrency: this.state.toCurrency,
       exchToCurrencyRate: this.state.exchangeRate,
-      allExchResult: this.state.cur,
-      toAddress: this.state.clientWallet,
-      fromAddress: this.state.ourWallet,
+      allExchResult: this.state.exchanges,
       eraswapAcceptAddress: this.state.ourWallet,
       eraswapSendAddress: this.state.clientWallet,
       exchangePlatform: this.state.maxExchange,
-      totalExchangeAmout:this.state.totalExchangeAmout
+      totalExchangeAmout:this.state.totalExchangeAmout,
+      lctxid:this.state.lctxid
     };
     axios.post('/apis/txn/verifyAndSave', dataPushable).then(data => {
       if (data && data.data) {
         this.setState({
-          txnId: value,
           stepsO: {
             firstStep: {
               status: 'finish',
@@ -640,29 +661,9 @@ class Computex extends React.Component {
                   </Button>
                   <Button type="primary" onClick={this.nextStep4}>
                     <Icon type="right" />next
-                  </Button>
+                  </Button> *click next Only after the transaction.
                 </ButtonGroup>
               )}
-            </Panel>
-            <Panel
-              header="Step 4"
-              key="4"
-              style={customPanelStyle}
-              disabled={false}
-              accordion={true}
-            >
-              Enter Your Transaction ID:
-              <br />
-              <Input.Search
-                style={{ maxWidth: '45.2%' }}
-                placeholder="TXN ID"
-                enterButton="Verify"
-                size="large"
-                onSearch={value => {
-                  this.verifyMain(value);
-                }}
-                disabled={this.state.txnId ? true : false}
-              />
             </Panel>
           </Collapse>
         </Card>
