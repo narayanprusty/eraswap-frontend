@@ -467,6 +467,7 @@ class Computex extends React.Component {
               style={customPanelStyle}
               disabled={false}
             >
+            *Please Enter the amount excluding the txn Fee
               <Form onSubmit={this.handleSubmit}>
                 <FormItem label="Convert">
                   <Input
