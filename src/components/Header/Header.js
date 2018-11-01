@@ -9,6 +9,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Header.css';
 import Link from '../Link';
@@ -19,7 +20,7 @@ import {Menu} from 'antd';
 class Header extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       loggedIn: false,
     };
@@ -48,12 +49,13 @@ class Header extends React.Component {
       current: e.key,
     });
   }
-  
+
   render() {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <Navigation />
+
+          <Navigation itsHome={this.props.itsHome} />
           <Link className={s.brand} to="/">
             <img
               src={logoUrl}
@@ -64,12 +66,13 @@ class Header extends React.Component {
             />
             <span className={s.brandTxt}>ErasWap</span>
           </Link>
-          {this.state.loggedIn &&(
+
+          {this.state.loggedIn && !this.props.itsHome &&(
           <Menu
         onClick={this.handleClick}
         mode="horizontal"
         defaultSelectedKeys={this.props.menukey ? [this.props.menukey]:[]}
-        style={{ 
+        style={{
           lineHeight: '64px',
           backgroundColor:'transparent'
          }}

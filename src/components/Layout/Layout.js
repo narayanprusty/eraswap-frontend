@@ -41,7 +41,8 @@ class LayoutThing extends React.Component {
   render() {
     return (
       <Layout className="layout">
-        <Header menukey={this.props.menukey} />
+
+        <Header menukey={this.props.menukey} itsHome={this.props.itsHome} />
         {this.props.children}
 
         <Footer />

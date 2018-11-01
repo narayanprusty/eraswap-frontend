@@ -12,6 +12,7 @@ import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Navigation.css';
 import Link from '../Link';
+import {Icon} from "antd";
 
 class Navigation extends React.Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class Navigation extends React.Component {
     };
   }
   componentDidMount() {
-   this.loginStateSet(); 
+   this.loginStateSet();
   }
   loginStateSet = ()=>{
     if (
@@ -49,6 +50,10 @@ class Navigation extends React.Component {
   render() {
     return (
       <div className={s.root} role="navigation">
+        <Link className={s.link} to="/">
+        <Icon type="home" />
+          Home
+        </Link>
         <Link className={s.link} to="/about">
           About
         </Link>

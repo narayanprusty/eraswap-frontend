@@ -16,12 +16,13 @@ async function action({ client }) {
   const data = await client.query({
     query: newsQuery,
   });
+  const itsHome = true;
   return {
     title: 'React Starter Kit',
     chunks: ['home'],
     component: (
-      <Layout>
-        <Home news={data.reactjsGetAllNews} />
+      <Layout itsHome={itsHome} >
+        <Home />
       </Layout>
     ),
   };
