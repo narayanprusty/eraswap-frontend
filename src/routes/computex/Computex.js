@@ -256,8 +256,8 @@ class Computex extends React.Component {
           console.log(data);
         }
       });
-      
-    
+
+
 };
   nextStep4 = () => {
     this.setState({
@@ -589,10 +589,10 @@ class Computex extends React.Component {
                     Kraken <br /> {this.panel2Out('kraken')}
                   </RadioButton>
                   <RadioButton
-                    value="Bitfinex"
-                    disabled={this.checkExchangeSelect('bitfinex')}
+                    value="Coinex"
+                    disabled={this.checkExchangeSelect('coinex')}
                   >
-                    Bitfinex <br /> {this.panel2Out('bitfinex')}
+                    Coinex <br /> {this.panel2Out('coinex')}
                   </RadioButton>
                 </RadioGroup>
               )}

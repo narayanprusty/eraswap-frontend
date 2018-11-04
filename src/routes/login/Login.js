@@ -35,7 +35,7 @@ class Login extends React.Component {
         .get('/apis/ping')
         .then(data => {
           if (data.data) {
-            location.href = '/home';
+            location.href = '/';
           }
         })
         .catch(error => {
@@ -67,7 +67,7 @@ class Login extends React.Component {
           for (const i in response.data) {
             localStorage.setItem(i, JSON.stringify(response.data[i]));
           }
-          window.location.href = '/home';
+          window.location.href = '/';
         }
       })
       .catch(error => {
