@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
-import { Card, Icon ,Table} from 'antd';
+import { Card, Icon ,Table,Badge} from 'antd';
 import s from './TxnHistory.css';
 import QrCode from 'qrcode.react';
 
@@ -44,12 +44,18 @@ changePage =(a)=>{
         { title: 'Converted Currency', dataIndex: 'exchToCurrency', key: 'exchToCurrency' ,align:'center'},
         { title: 'Converted Amount', dataIndex: 'totalExchangeAmout', key: 'totalExchangeAmout' ,align:'center'},
         { title: 'Eraswap Deposit Address', dataIndex: 'eraswapAcceptAddress', key: 'eraswapAcceptAddress',align:'left' },
+        {title:'Deposit Status', dataIndex:'dipositTxnStatus',key:"dipositTxnStatus",align:'center',render:(depositStat)=>{
+          return depositStat==="ok" ? (<span><Badge status="success" />Received</span>) : (<span><Badge status="warning" />{depositStat || "Pending"}</span>)
+        }},
+        {title:'Payment Status',dataIndex:'witdrawn',key:'witdrawn',align:'center' ,  render:(keyStat)=>{
+          return keyStat ? (<span><Badge status="success" />Finished</span>) : (<span><Badge status="warning" />Waiting</span>)
+        }},
         { title:"Created At", dataIndex:"createdAt", key:"createdAt" ,align:'right',render:(date)=>{
             return new Date(date.toString()).toLocaleDateString() + ' '+ new Date(date.toString()).toLocaleTimeString()
         }}
       ];
-      
-      
+
+
       return(
         <div className={s.root}>
         <Card title={this.props.title}>
