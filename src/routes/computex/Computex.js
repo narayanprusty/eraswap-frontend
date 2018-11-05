@@ -589,10 +589,10 @@ class Computex extends React.Component {
                     Kraken <br /> {this.panel2Out('kraken')}
                   </RadioButton>
                   <RadioButton
-                    value="Coinex"
-                    disabled={this.checkExchangeSelect('coinex')}
+                    value="Yobit"
+                    disabled={this.checkExchangeSelect('yobit')}
                   >
-                    Coinex <br /> {this.panel2Out('coinex')}
+                    Yobit <br /> {this.panel2Out('yobit')}
                   </RadioButton>
                 </RadioGroup>
               )}
