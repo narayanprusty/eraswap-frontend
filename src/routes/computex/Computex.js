@@ -163,6 +163,17 @@ class Computex extends React.Component {
     console.log(this.state);
   };
 
+  handleRadioChange = e =>{
+axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='+this.state.toCurrency).then(data=>{
+  debugger;
+  console.log(data.data);
+      this.setState({
+        [e.target.name]: e.target.value,
+        exchangeRate: this.panel2Out(e.target.value,false),
+        totalExchangeAmout:this.panel2Out(e.target.value,false)*this.state.amount
+      });
+    });
+  }
   static propTypes = {
     title: PropTypes.string.isRequired,
   };
@@ -388,11 +399,11 @@ class Computex extends React.Component {
       });
     }
   };
-  panel2Out = exchName => {
+  panel2Out = (exchName,html) => {
     const dataObj = this.state.exchanges.find(element => {
-      return element.name.toLowerCase() === exchName;
+      return element.name.toLowerCase() === exchName.toLowerCase();
     });
-    if (dataObj && dataObj.ask) {
+    if (dataObj && dataObj.ask && html) {
       return (
         <span>
           {dataObj.ask * this.state.amount + ' ' + this.state.toCurrency}
@@ -400,6 +411,8 @@ class Computex extends React.Component {
           {dataObj.ask}
         </span>
       );
+    }else if (dataObj && dataObj.ask && !html) {
+      return dataObj.ask;
     }
   };
 
@@ -559,40 +572,40 @@ class Computex extends React.Component {
               &nbsp; <br />
               {this.state.exchanges && (
                 <RadioGroup
-                  name="exchanges"
+                  name="maxExchange"
                   value={this.state.maxExchange}
                   size="large"
-                  onClick={this.handleChanges}
+                  onChange={this.handleRadioChange}
                 >
                   <RadioButton
                     value="Bittrex"
-                    disabled={this.checkExchangeSelect('bittrex')}
+
                   >
-                    Bittrex <br /> {this.panel2Out('bittrex')}{' '}
+                    Bittrex <br /> {this.panel2Out('bittrex',true)}{' '}
                   </RadioButton>
                   <RadioButton
                     value="Binance"
-                    disabled={this.checkExchangeSelect('binance')}
+
                   >
-                    Binance <br /> {this.panel2Out('binance')}{' '}
+                    Binance <br /> {this.panel2Out('binance',true)}{' '}
                   </RadioButton>
                   <RadioButton
                     value="Poloniex"
-                    disabled={this.checkExchangeSelect('poloniex')}
+
                   >
-                    Poloniex <br /> {this.panel2Out('poloniex')}
+                    Poloniex <br /> {this.panel2Out('poloniex',true)}
                   </RadioButton>
                   <RadioButton
                     value="Kraken"
-                    disabled={this.checkExchangeSelect('kraken')}
+
                   >
-                    Kraken <br /> {this.panel2Out('kraken')}
+                    Kraken <br /> {this.panel2Out('kraken',true)}
                   </RadioButton>
                   <RadioButton
                     value="Yobit"
-                    disabled={this.checkExchangeSelect('yobit')}
+
                   >
-                    Yobit <br /> {this.panel2Out('yobit')}
+                    Yobit <br /> {this.panel2Out('yobit',true)}
                   </RadioButton>
                 </RadioGroup>
               )}

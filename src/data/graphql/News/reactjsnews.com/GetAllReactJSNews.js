@@ -30,9 +30,9 @@ export const queries = [
 ];
 
 // React.js News Feed (RSS)
-const url =
-  'https://api.rss2json.com/v1/api.json' +
-  '?rss_url=https%3A%2F%2Freactjsnews.com%2Ffeed.xml';
+// const url =
+//   'https://api.rss2json.com/v1/api.json' +
+//   '?rss_url=https%3A%2F%2Freactjsnews.com%2Ffeed.xml';
 
 let items = [];
 let lastFetchTask;
@@ -47,20 +47,21 @@ export const resolvers = {
 
       if (new Date() - lastFetchTime > 1000 * 60 * 10 /* 10 mins */) {
         lastFetchTime = new Date();
-        lastFetchTask = fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === 'ok') {
-              items = data.items;
-            }
+        lastFetchTask=[{}]
+        // lastFetchTask = fetch(url)
+        //   .then(response => response.json())
+        //   .then(data => {
+        //     if (data.status === 'ok') {
+        //       items = data.items;
+        //     }
 
-            lastFetchTask = null;
-            return items;
-          })
-          .catch(err => {
-            lastFetchTask = null;
-            throw err;
-          });
+        //     lastFetchTask = null;
+        //     return items;
+        //   })
+        //   .catch(err => {
+        //     lastFetchTask = null;
+        //     throw err;
+        //   });
 
         if (items.length) {
           return items;

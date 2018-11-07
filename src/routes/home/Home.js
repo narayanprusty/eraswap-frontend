@@ -42,7 +42,7 @@ class Home extends React.Component {
             <Col span={6}>
                 <Button size="large">
                 <Link to="/wallet">
-                <Icon type="wallet" theme="twoTone" twoToneColor="#eb2f96" />
+                <Icon type="wallet" theme="twoTone" />
                  &nbsp;
                   Wallet</Link>
                 </Button>
@@ -50,21 +50,21 @@ class Home extends React.Component {
               <Col span={6}>
                 <Button size="large">
                 <Link to="/computex">
-                <Icon type="database" theme="twoTone" twoToneColor="#eb2f96" />&nbsp;
+                <Icon type="database" theme="twoTone"  />&nbsp;
                 Computex</Link>
                 </Button>
               </Col>
               <Col span={6}>
                 <Button size="large">
                 <Link to="/p2p">
-                <Icon type="swap" theme="twoTone" twoToneColor="#eb2f96" />&nbsp;
+                <Icon type="swap" theme="twoTone"  />&nbsp;
                 P2P</Link>
                 </Button>
               </Col>
               <Col span={6}>
                 <Button size="large">
                 <Link to="/LandB">
-                <Icon type="usergroup-delete" theme="twoTone" twoToneColor="#52c41a" />&nbsp;
+                <Icon type="usergroup-delete" theme="twoTone"  />&nbsp;
                 lending and borrowing</Link>
                 </Button>
               </Col>

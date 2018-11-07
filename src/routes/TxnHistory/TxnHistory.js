@@ -20,7 +20,7 @@ componentDidMount =()=>{
 }
 getData =()=>{
     axios.get('/apis/txn/getTxn').then(data=>{
-        if(data.data){
+        if(data && data.data){
             debugger;
             this.setState({
                 data:data.data,
