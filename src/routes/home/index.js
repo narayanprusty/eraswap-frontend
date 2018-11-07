@@ -18,7 +18,7 @@ async function action({ client }) {
   });
   const itsHome = true;
   return {
-    title: 'React Starter Kit',
+    title: 'Eraswap | Home',
     chunks: ['home'],
     component: (
       <Layout itsHome={itsHome} >

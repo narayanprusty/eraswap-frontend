@@ -150,7 +150,6 @@ async function onLocationChange(location, action) {
     }
 
     console.error(error);
-
     // Do a full page reload if error occurs during client-side navigation
     if (!isInitialRender && currentLocation.key === location.key) {
       console.error('RSK will reload your page after error');
@@ -158,7 +157,7 @@ async function onLocationChange(location, action) {
     }
   }
 }
-axios.defaults.baseURL = 'http://localhost:5000'; 
+axios.defaults.baseURL = 'http://localhost:80';
 // axios.defaults.baseURL = 'https://eraswapfront.herokuapp.com'; //for local 'http://localhost:5000';
 axios.defaults.headers.common["authorization"]= localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : '-';
 
@@ -170,7 +169,7 @@ axios.interceptors.response.use(
       window.location.href = '/login?how=force';
       console.log('>>>>>>>');
     }else{
-      
+
       notification.open({
         message: error.response.data.message,
         // description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
@@ -178,7 +177,7 @@ axios.interceptors.response.use(
       });
     }
   }
-  console.log(error)
+  // console.log(error)
     // return error;
   },
 );
