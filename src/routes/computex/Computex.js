@@ -40,6 +40,7 @@ class Computex extends React.Component {
     // this.fetchCurrency = lodash.debounce(this.fetchCurrency, 800);
     this.state = {
       exchanges: [],
+      symbol:'',
       maxExchange: '',
       key: '1',
       amount: value.amount || 0,
@@ -102,14 +103,16 @@ class Computex extends React.Component {
           )
           .then(data => {
             if (data && data.data) {
-              const getMinMax = this.findMinMax(data.data)[1];
+              const symbol = Object.keys(data.data)[0];
+              const getMinMax = this.findMinMax(data.data[symbol])[1];
               this.setState({
+                symbol:symbol,
                 loader: false,
                 key: '2',
                 panel1Text: `Convertion from ${this.state.amount} ${
                   this.state.currency
                 } To ${this.state.toCurrency} estimated: `,
-                exchanges: data.data,
+                exchanges: data.data[symbol],
                 maxExchange: getMinMax.ask !== 0 ? getMinMax.name : '',
                 exchangeRate: getMinMax.ask !== 0 ? getMinMax.ask : 0,
                 ['totalExchangeAmout']:getMinMax.ask * this.state.amount,
@@ -164,7 +167,7 @@ class Computex extends React.Component {
   };
 
   handleRadioChange = e =>{
-axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='+this.state.toCurrency).then(data=>{
+axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='+this.state.symbol).then(data=>{
   debugger;
   console.log(data.data);
       this.setState({
@@ -317,6 +320,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
   verifyMain = () => {
     debugger;
     const dataPushable = {
+      symbol:this.state.symbol,
       tiMeFrom:this.state.tiMeFrom,
       exchFromCurrency: this.state.currency,
       exchFromCurrencyAmt: this.state.amount,
@@ -400,6 +404,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     }
   };
   panel2Out = (exchName,html) => {
+    debugger;
     const dataObj = this.state.exchanges.find(element => {
       return element.name.toLowerCase() === exchName.toLowerCase();
     });
