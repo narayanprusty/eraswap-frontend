@@ -47,6 +47,10 @@ const routes = {
       load: ()=> import('./TxnHistory'),
     },
     {
+      path:'/add_p2p_listing',
+      load: ()=> import('./add-p2p'),
+    },
+    {
       path: '/admin',
       load: () => import(/* webpackChunkName: 'admin' */ './admin'),
     },

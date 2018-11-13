@@ -83,7 +83,11 @@ class Header extends React.Component {
         <Menu.Item key="2">
         <Link to='/txnhistory'>Txn History</Link>
         </Menu.Item>
-        <Menu.Item key="3">nav 3</Menu.Item>
+        <Menu.Item key="3">
+        <Link to="/add_p2p_listing">
+        Add P2P Listing
+        </Link>
+        </Menu.Item>
         </Menu>)}
           {/* <div className={s.banner}>
             <h1 className={s.bannerTitle}>Eraswap</h1>
