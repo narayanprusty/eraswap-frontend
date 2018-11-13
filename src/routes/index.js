@@ -51,6 +51,10 @@ const routes = {
       load: ()=> import('./add-p2p'),
     },
     {
+      path:'/p2p',
+      load: ()=> import('./p2p'),
+    },
+    {
       path: '/admin',
       load: () => import(/* webpackChunkName: 'admin' */ './admin'),
     },
