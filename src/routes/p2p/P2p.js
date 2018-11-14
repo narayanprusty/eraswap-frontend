@@ -15,45 +15,61 @@ const tabListNoTitle = [
   },
 ];
 
-const getCurrentBtcValue = (CUR = 'INR') => {
-return axios
-    .get(`/apis/cur/current_BTC?currency=${CUR}`);
-};
-const columns = [{
-  title: 'Username',
-  dataIndex: 'username',
-  sorter: true,
-  // render: name => `${name.first} ${name.last}`,
-  width: '20%',
-}, {
-  title: 'payment Method',
-  dataIndex: 'paymentMethod',
-  width: '20%',
-}, {
-  title: 'Price',
-  dataIndex: 'fullPrice',
-  render:(fieldVal,record)=> `${fieldVal} ${record.currency}/BTC`
-},
-{
-  title: 'Maximum Limit',
-  dataIndex: 'maximum',
-},
-{
-  title: 'Minimum Limit',
-  dataIndex: 'minimum',
-}];
 
 class BuyListTable extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
+      BTC_VAL:{},
       data: [],
       pagination: {},
       loading: false,
     };
   }
 
+  columns = [{
+    title: 'Username',
+    dataIndex: 'username',
+    sorter: true,
+    // render: name => `${name.first} ${name.last}`,
+    width: '20%',
+  }, {
+    title: 'payment Method',
+    dataIndex: 'paymentMethod',
+    width: '20%',
+  }, {
+    title: 'Price',
+    dataIndex: 'fullPrice',
+    render:(fieldVal,record)=> `${fieldVal} ${record.currency}/BTC`
+  },
+  {
+    title: 'Maximum Limit',
+    dataIndex: 'maximum',
+  },
+  {
+    title: 'Minimum Limit',
+    dataIndex: 'minimum',
+  },{
+    title:'',
+    dataIndex: 'operation',
+    render:(fieldVal,record)=>{
+      return (<Button type="primary" onClick={this.showInterest.bind(this,record)} disabled={this.state[record._id] ? true : false}>Show Interest</Button>)
+    }
+  }];
 
+  getCurrentBtcValue = (CUR = 'INR') => {
+    return axios
+        .get(`/apis/cur/current_BTC?currency=${CUR}`);
+    };
+
+  showInterest =(record)=>{
+    this.setState({
+      [record._id]:true
+    });
+   return axios.post('/apis/p2p/showInterest',record).then(data=>{
+      return true;
+   })
+  }
   handleTableChange = (pagination, filters, sorter) => {
     const pager = { ...this.state.pagination };
     pager.current = pagination.current;
@@ -78,7 +94,6 @@ class BuyListTable extends React.Component{
       params:query
     })
       .then(countData=>{
-        debugger;
     axios({
       url: '/apis/p2p/search_listing',
       params:{
@@ -89,16 +104,32 @@ class BuyListTable extends React.Component{
       method: 'get',
       type: 'json',
     }).then(async(data) => {
-      debugger;
       const pagination = { ...this.state.pagination };
       // Read total count from server
       // pagination.total = data.totalCount;
-      pagination.total = 15 || countData.data.count;
+      debugger;
+      pagination.total = countData.data.count;
       let allData=[];
 
       for(let i of data.data){
-        const BTCVAl = await getCurrentBtcValue(i.currency)
-        i.fullPrice=BTCVAl.data.data;
+        let BTCVAl ;
+        if(this.state.BTC_VAL[i.currency]){
+          BTCVAl = this.state.BTC_VAL[i.currency];
+        }else{
+
+          let awaitData =await this.getCurrentBtcValue(i.currency);
+          BTCVAl = awaitData.data.data;
+
+          this.setState({
+            BTC_VAL:{
+              ...this.state.BTC_VAL,
+              [i.currency]:BTCVAl,
+            }
+          })
+
+        }
+        this.setState
+          i.fullPrice=BTCVAl;
           allData.push(i)
       }
       this.setState({
@@ -111,11 +142,11 @@ class BuyListTable extends React.Component{
   }
 
   componentDidMount() {
-    debugger;
+
     this.fetch({wantsToBuy:this.props.sell||false }); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
   }
   componentWillReceiveProps(nextProps){
-    debugger;
+
     this.fetch({wantsToBuy:nextProps.sell || false});
   }
 
@@ -123,7 +154,7 @@ class BuyListTable extends React.Component{
   render() {
     return (
       <Table
-        columns={columns}
+        columns={this.columns}
         rowKey={record => record._id}
         dataSource={this.state.data}
         pagination={this.state.pagination}
