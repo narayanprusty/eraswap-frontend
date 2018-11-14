@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import s from './Add-p2p.css';
-import { Card, Form, Input, Button, Select, Radio } from 'antd';
+import { Card, Form, Input, Button, Select, Radio,Table } from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -16,6 +16,10 @@ const tabListNoTitle = [
   {
     key: 'sell',
     tab: 'Add Sell Listing',
+  },
+  {
+    key: 'myList',
+    tab: 'All My Listing',
   },
 ];
 
@@ -308,6 +312,150 @@ class BuyComponent extends React.Component {
   }
 }
 
+
+class MyListComponent extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      BTC_VAL:{},
+      data: [],
+      pagination: {},
+      loading: false,
+    };
+  }
+  columns = [{
+    title: 'Username',
+    dataIndex: 'username',
+    sorter: true,
+    // render: name => `${name.first} ${name.last}`,
+    width: '20%',
+  }, {
+    title: 'payment Method',
+    dataIndex: 'paymentMethod',
+    width: '20%',
+  }, {
+    title: 'Price',
+    dataIndex: 'fullPrice',
+    render:(fieldVal,record)=> `${fieldVal} ${record.currency}/BTC`
+  },
+  {
+    title: 'Maximum Limit',
+    dataIndex: 'maximum',
+  },
+  {
+    title: 'Minimum Limit',
+    dataIndex: 'minimum',
+  },{
+    title:'',
+    dataIndex: 'show',
+    render:(fieldVal,record)=>{
+      return (<Button type="primary" onClick={this.updation.bind(this,record,fieldVal || this.state[record._id] || false)} >{fieldVal || this.state[record._id] ? "Inactive" :"Active"}</Button>)
+    }
+  }];
+
+  updation =(record,fieldValue)=>{
+    this.setState({
+      [record._id]:true
+    });
+    const data={
+      id:record.uniqueIdentifier,
+      active:fieldValue
+    }
+    return axios.post("/apis/p2p/change_status",data).then(data=>{
+      return data;
+    });
+  }
+  getCurrentBtcValue = (CUR = 'INR') => {
+    return axios
+        .get(`/apis/cur/current_BTC?currency=${CUR}`);
+    };
+    handleTableChange = (pagination, filters, sorter) => {
+      const pager = { ...this.state.pagination };
+      pager.current = pagination.current;
+      this.setState({
+        pagination: pager,
+      });
+      this.fetch({},{
+        results: pagination.pageSize,
+        page: pagination.current,
+        sortField: sorter.field,
+        sortOrder: sorter.order,
+        ...filters,
+      });
+    }
+    fetch = (query,params = {}) => {
+      console.log('params:', params);
+      this.setState({ loading: true });
+
+      axios.get('/apis/p2p/my_listings_count',{
+        params:query
+      })
+        .then(countData=>{
+      axios({
+        url: '/apis/p2p/my_listings',
+        params:{
+          results:10,
+          ...params,
+          query:query
+        },
+        method: 'get',
+        type: 'json',
+      }).then(async(data) => {
+        const pagination = { ...this.state.pagination };
+        // Read total count from server
+        // pagination.total = data.totalCount;
+        debugger;
+        pagination.total = countData.data;
+        let allData=[];
+
+        for(let i of data.data){
+          let BTCVAl ;
+          if(this.state.BTC_VAL[i.currency]){
+            BTCVAl = this.state.BTC_VAL[i.currency];
+          }else{
+
+            let awaitData =await this.getCurrentBtcValue(i.currency);
+            BTCVAl = awaitData.data.data;
+
+            this.setState({
+              BTC_VAL:{
+                ...this.state.BTC_VAL,
+                [i.currency]:BTCVAl,
+              }
+            })
+
+          }
+          this.setState
+            i.fullPrice=BTCVAl;
+            allData.push(i)
+        }
+        this.setState({
+          loading: false,
+          data: allData,
+          pagination,
+        });
+      });
+    });
+    }
+    componentDidMount() {
+
+      this.fetch(); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
+    }
+    render() {
+      return (
+        <Table
+          columns={this.columns}
+          rowKey={record => record._id}
+          dataSource={this.state.data}
+          pagination={this.state.pagination}
+          loading={this.state.loading}
+          onChange={this.handleTableChange}
+        />
+      );
+    }
+
+}
+
 /**
  *  Main Component
  */
@@ -329,6 +477,7 @@ class Addp2p extends React.Component {
   contentListNoTitle = {
     buy: <BuyComponent form={this.props.form} />,
     sell: <BuyComponent form={this.props.form} sell={true} />,
+    myList: <MyListComponent />
   };
   render() {
     return (

@@ -85,7 +85,7 @@ class Header extends React.Component {
         </Menu.Item>
         <Menu.Item key="3">
         <Link to="/add_p2p_listing">
-        Add P2P Listing
+        Manage P2P Listing
         </Link>
         </Menu.Item>
         <Menu.Item key="4">

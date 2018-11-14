@@ -3,7 +3,7 @@ import Layout from '../../components/Layout';
 // import Page from '../../components/Page';
 import P2p from './Add-p2p';
 
-const title ='P2P: Add listing'
+const title ='P2P: Manage listing'
 const menukey ='3'
 
 function action() {
