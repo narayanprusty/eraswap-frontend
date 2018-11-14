@@ -345,6 +345,11 @@ class MyListComponent extends React.Component{
   {
     title: 'Minimum Limit',
     dataIndex: 'minimum',
+  },
+  {
+    title:"Type",
+    dataIndex:"wantsToBuy",
+    render:(fieldValue)=> `${fieldValue ? 'Buy' : 'Sell'}`
   },{
     title:'',
     dataIndex: 'show',
