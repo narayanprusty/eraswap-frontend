@@ -113,7 +113,10 @@ class BuyListTable extends React.Component{
 
       for(let i of data.data){
         let BTCVAl ;
-        if(this.state.BTC_VAL[i.currency]){
+        if(i.fixedPrice){
+          BTCVAl=i.fixedPrice
+        }
+        else if(this.state.BTC_VAL[i.currency]){
           BTCVAl = this.state.BTC_VAL[i.currency];
         }else{
 
