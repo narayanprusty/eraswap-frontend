@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import s from './p2p.css';
-import { Card, Button,Table } from 'antd';
+import { Card, Button,Table,Modal,Row,Col, Input } from 'antd';
 
 const tabListNoTitle = [
   {
@@ -15,6 +15,37 @@ const tabListNoTitle = [
   },
 ];
 
+const pStyle = {
+  fontSize: 16,
+  color: 'rgba(0,0,0,0.85)',
+  lineHeight: '24px',
+  display: 'block',
+  marginBottom: 16,
+};
+
+
+const DescriptionItem = ({ title, content }) => (
+  <div
+    style={{
+      fontSize: 14,
+      lineHeight: '22px',
+      marginBottom: 7,
+      color: 'rgba(0,0,0,0.65)',
+    }}
+  >
+    <p
+      style={{
+        marginRight: 8,
+        display: 'inline-block',
+        color: 'rgba(0,0,0,0.85)',
+      }}
+    >
+      {title}:
+    </p>
+    {content}
+  </div>
+);
+
 
 class BuyListTable extends React.Component{
   constructor(props) {
@@ -24,7 +55,35 @@ class BuyListTable extends React.Component{
       data: [],
       pagination: {},
       loading: false,
+      record:{},
+      visible: false,
+      confirmLoading: false,
     };
+  }
+  handleChange = e => {
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+      };
+
+  showModal = (record) => {
+    this.setState({
+      visible: true,
+      record:record,
+    });
+  }
+
+  handleOk = () => {
+    this.setState({
+      confirmLoading: true
+    });
+    this.showInterest();
+  }
+  handleCancel = () => {
+    console.log('Clicked cancel button');
+    this.setState({
+      visible: false,
+    });
   }
 
   columns = [{
@@ -43,6 +102,10 @@ class BuyListTable extends React.Component{
     render:(fieldVal,record)=> `${fieldVal} ${record.currency}/BTC`
   },
   {
+    title: 'Location',
+    dataIndex: 'location',
+  },
+  {
     title: 'Maximum Limit',
     dataIndex: 'maximum',
   },
@@ -53,7 +116,7 @@ class BuyListTable extends React.Component{
     title:'',
     dataIndex: 'operation',
     render:(fieldVal,record)=>{
-      return (<Button type="primary" onClick={this.showInterest.bind(this,record)} disabled={this.state[record._id] ? true : false}>Show Interest</Button>)
+      return (<Button type="primary" onClick={this.showModal.bind(this,record)} disabled={this.state[record._id] ? true : false}>Show Interest</Button>)
     }
   }];
 
@@ -62,11 +125,14 @@ class BuyListTable extends React.Component{
         .get(`/apis/cur/current_BTC?currency=${CUR}`);
     };
 
-  showInterest =(record)=>{
+  showInterest =()=>{
+
+   return axios.post('/apis/p2p/showInterest',{...this.state.record,specialMessage:this.state.message}).then(data=>{
     this.setState({
-      [record._id]:true
+      [this.state.record._id]:true,
+      visible:false,
+      confirmLoading:false
     });
-   return axios.post('/apis/p2p/showInterest',record).then(data=>{
       return true;
    })
   }
@@ -156,6 +222,7 @@ class BuyListTable extends React.Component{
 
   render() {
     return (
+      <div>
       <Table
         columns={this.columns}
         rowKey={record => record._id}
@@ -164,6 +231,55 @@ class BuyListTable extends React.Component{
         loading={this.state.loading}
         onChange={this.handleTableChange}
       />
+      <Modal title={this.state.record.headLine}
+      visible={this.state.visible}
+      onOk={this.handleOk}
+      confirmLoading={this.state.confirmLoading}
+      onCancel={this.handleCancel}
+    >
+
+    {/* <p style={s.pStyle}>List Details</p> */}
+          <Row>
+            <Col span={12}>
+              <DescriptionItem title="User" content={this.state.record.username} />{' '}
+            </Col>
+            <Col span={12}>
+              <DescriptionItem title="Location" content={this.state.record.location} />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
+              <DescriptionItem title="Payment Method" content={this.state.record.paymentMethod} />{' '}
+            </Col>
+            <Col span={12}>
+              <DescriptionItem title="Price" content={this.state.record.fullPrice  +' '+ this.state.record.currency+"/BTC"} />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
+              <DescriptionItem title="Minimum Amount" content= {this.state.record.minimum} />{' '}
+            </Col>
+            <Col span={12}>
+              <DescriptionItem title="Maximum Amount" content={this.state.record.maximum} />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
+              <DescriptionItem title="Special Note" content= {this.state.record.note} />{' '}
+            </Col>
+          </Row>
+          <Row>
+            <label>Special Message to {this.state.record.username}:</label><br />
+          <Input.TextArea
+                   rows={5}
+                placeholder="Write a special Message"
+                onChange={this.handleChange}
+                name="message"
+                  />
+          </Row>
+
+    </Modal>
+   </div>
     );
   }
 }

@@ -221,6 +221,22 @@ class BuyComponent extends React.Component {
             )}
           </FormItem>
           <FormItem
+            label="Location"
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 12 }}
+          >
+            {getFieldDecorator('location', {
+              rules: [{ required: true, message: 'Please Enter your location!' }],
+            })(
+              <Input
+                rows={5}
+                placeholder="ENter Your location"
+                onChange={this.formchange}
+                name="location"
+              />,
+            )}
+          </FormItem>
+          <FormItem
             label="Maximum"
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 12 }}
@@ -337,6 +353,10 @@ class MyListComponent extends React.Component{
     title: 'Price',
     dataIndex: 'fullPrice',
     render:(fieldVal,record)=> `${fieldVal} ${record.currency}/BTC`
+  },
+  {
+    title: 'Location',
+    dataIndex: 'location',
   },
   {
     title: 'Maximum Limit',
