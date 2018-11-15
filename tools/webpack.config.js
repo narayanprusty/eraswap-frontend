@@ -170,6 +170,7 @@ const config = {
               ...(isDebug ? {
                 javascriptEnabled: true
               } : {
+                javascriptEnabled: true,
                 modifyVars: antThemeVars
               })
             }
