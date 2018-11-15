@@ -1,6 +1,6 @@
-##
-`yarn install`
-`yarn start`
+# eraswap-frontend - Install and Run
 
-template: antd
-https://ant.design/docs/react/getting-started
+1. Install Node.js and NPM
+3. git clone https://github.com/BlockClusterApp/eraswap-frontend.git
+4. cd eraswap-frontend && yarn install
+5. yarn start
