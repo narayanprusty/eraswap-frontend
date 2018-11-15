@@ -10,14 +10,21 @@
 @import '../../components/variables.css';
 
 .root {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-top: 1.3em;
+  padding-left: 3.5em;
+  padding-right: 3.5em;
+  align-self: center;
+  width:75% ;
+  max-width: var(--max-content-width);
 }
 
 .container {
   margin: 0 auto;
   padding: 0 0 40px;
+  margin-top: 2em;
+  align-self: center;
   max-width: var(--max-content-width);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .newsItem {

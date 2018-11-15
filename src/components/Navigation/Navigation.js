@@ -76,11 +76,12 @@ class Navigation extends React.Component {
   render() {
     return (
       <div className={s.root} role="navigation">
-       <Dropdown overlay={this.menu}>
-    <a className="ant-dropdown-link" href="#">
+      {this.state.loggedIn &&( <Dropdown overlay={this.menu}>
+    <a className="ant-dropdown-link" className={s.link}  href="#">
       All Apps <Icon type="down" />
     </a>
   </Dropdown>
+      )}
       {this.props.menukey == 3 &&(
         <Link className={s.link} to="/p2p">
           P2P Marketplace
@@ -104,9 +105,9 @@ class Navigation extends React.Component {
             </Link>
           )}
         {this.state.loggedIn && <span className={s.spacer}> | </span> && (
-            <button className={cx(s.link, s.highlight)} onClick={this.logout}>
-              Logout
-            </button>
+            <Link className={s.link} onClick={this.logout}>
+            &nbsp; <Icon type="logout" />&nbsp;
+            </Link>
           )}
       </div>
     );

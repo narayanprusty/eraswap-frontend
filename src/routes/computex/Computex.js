@@ -88,8 +88,8 @@ changePage =(a)=>{
 
 
       return(
-        <div className={s.root}>
-        <Card title={this.props.title}>
+        <div>
+        {/* <Card title={this.props.title}> */}
         <Table
     columns={columns}
     expandedRowRender={record => <p style={{ margin: 0 }}>{JSON.stringify(record)}</p>}
@@ -97,7 +97,7 @@ changePage =(a)=>{
     loader={this.state.loading}
     onChange={this.changePage}
   />
-        </Card>
+        {/* </Card> */}
         </div>
       )
   }
@@ -268,9 +268,6 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
           console.log('Everything is fine bro');
         }
       })
-      .catch(error => {
-        console.log(error);
-      });
   };
   unsetState = argState => {
     this.setState({
@@ -531,8 +528,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     const state = this.state;
 
     return (
-      <div className={s.root}>
-        <Card title={this.props.title}>
+      <div>
+        {/* <Card title={this.props.title}> */}
           <Steps>
             <Step
               status={this.state.stepsO.firstStep.status}
@@ -770,7 +767,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               )}
             </Panel>
           </Collapse>
-        </Card>
+        {/* </Card> */}
       </div>
     );
   }
@@ -806,7 +803,6 @@ class ManageComputex extends React.Component{
     return (
       <div className={s.root}>
         <Card
-          style={{ width: '100%' }}
           tabList={tabListNoTitle}
           activeTabKey={this.state.noTitleKey}
           onTabChange={key => {
@@ -815,7 +811,8 @@ class ManageComputex extends React.Component{
         >
           {this.contentListNoTitle[this.state.noTitleKey]}
         </Card>
-      </div>
+        </div>
+
     );
   }
 }

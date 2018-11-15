@@ -491,7 +491,6 @@ class Addp2p extends React.Component {
     return (
       <div className={s.root}>
         <Card
-          style={{ width: '100%' }}
           tabList={tabListNoTitle}
           activeTabKey={this.state.noTitleKey}
           onTabChange={key => {
