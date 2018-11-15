@@ -60,12 +60,12 @@ class Header extends React.Component {
           <Link className={s.brand} to="/">
             <img
               src={logoUrl}
-              // srcSet={`${logoUrl2x} 2x`}
-              width="45"
-              height="45"
+              srcSet={logoUrl}
+              width="110"
+              height="65"
               alt="Eraswap"
             />
-            <span className={s.brandTxt}>ErasWap</span>
+            {/* <span className={s.brandTxt}>ErasWap</span> */}
           </Link>
 
           {/* {this.state.loggedIn && !this.props.itsHome &&(
