@@ -12,8 +12,9 @@ import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Navigation.css';
 import Link from '../Link';
-import {Icon} from "antd";
+import {Icon,Dropdown,Menu} from "antd";
 
+const SubMenu = Menu.SubMenu;
 class Navigation extends React.Component {
   constructor(props) {
     super(props);
@@ -22,6 +23,31 @@ class Navigation extends React.Component {
       loggedIn: false,
     };
   }
+  menu = (
+    <Menu>
+      <Menu.Item key="1">
+        <Link to='/computex'>ComputeX</Link>
+        </Menu.Item>
+        <SubMenu title="P2P Dashboards">
+        <Menu.Item key="3">
+        <Link to="/add_p2p_listing">
+        Manage P2P Listing
+        </Link>
+        </Menu.Item>
+        <Menu.Item key="4">
+        <Link to="/p2p">
+        P2P MarketPlace
+        </Link>
+        </Menu.Item>
+        </SubMenu>
+        <Menu.Item key="5" disabled>
+        <Link to='/wallet'>Wallet</Link>
+        </Menu.Item>
+        <Menu.Item key="6" disabled>
+        <Link to='/LandB'>Lend {"&"} Borrow</Link>
+        </Menu.Item>
+    </Menu>
+  );
   componentDidMount() {
    this.loginStateSet();
   }
@@ -50,16 +76,23 @@ class Navigation extends React.Component {
   render() {
     return (
       <div className={s.root} role="navigation">
-        <Link className={s.link} to="/">
-        <Icon type="home" />
-          Home
+       <Dropdown overlay={this.menu}>
+    <a className="ant-dropdown-link" href="#">
+      All Apps <Icon type="down" />
+    </a>
+  </Dropdown>
+      {this.props.menukey == 3 &&(
+        <Link className={s.link} to="/p2p">
+          P2P Marketplace
         </Link>
-        <Link className={s.link} to="/about">
-          About
+      )}
+      {this.props.menukey == 4 &&(
+        <Link className={s.link} to="/add_p2p_listing">
+          Manage Your Listings
         </Link>
-        <Link className={s.link} to="/contact">
-          Contact
-        </Link>
+      )}
+
+
         {!this.state.loggedIn && <span className={s.spacer}> | </span> && (
             <Link className={s.link} to="/login">
               Log in

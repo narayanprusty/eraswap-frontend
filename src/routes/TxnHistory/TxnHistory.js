@@ -27,7 +27,9 @@ getData =()=>{
                 loading:false
             })
         }
-    })
+    }).catch(error=>{
+      console.log(error);
+    });
 };
 changePage =(a)=>{
     //{current:currentpageNumber,pageSize:pageLimit}

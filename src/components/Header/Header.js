@@ -15,6 +15,7 @@ import Navigation from '../Navigation';
 import logoUrl from './era-logo.png';
 // import logoUrl2x from './logo-small@2x.png';
 import {Menu} from 'antd';
+
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -48,24 +49,26 @@ class Header extends React.Component {
     });
   }
 
+
   render() {
     return (
       <div className={s.root}>
         <div className={s.container}>
 
-          <Navigation itsHome={this.props.itsHome} />
+
+          <Navigation menukey={this.props.menukey} />
           <Link className={s.brand} to="/">
             <img
               src={logoUrl}
               // srcSet={`${logoUrl2x} 2x`}
-              width="38"
-              height="38"
+              width="45"
+              height="45"
               alt="Eraswap"
             />
             <span className={s.brandTxt}>ErasWap</span>
           </Link>
 
-          {this.state.loggedIn && !this.props.itsHome &&(
+          {/* {this.state.loggedIn && !this.props.itsHome &&(
           <Menu
         onClick={this.handleClick}
         mode="horizontal"
@@ -91,11 +94,27 @@ class Header extends React.Component {
         P2P MarketPlace
         </Link>
         </Menu.Item>
-        </Menu>)}
-          {/* <div className={s.banner}>
-            <h1 className={s.bannerTitle}>Eraswap</h1>
-            <p className={s.bannerDesc}>Eraswap Dashboard</p>
-          </div> */}
+        </Menu>)} */}
+         <div className={s.banner}>
+         {this.props.menukey == 1 && (
+             <div>
+            <h1 className={s.bannerTitle}>Computex</h1>
+            <p className={s.bannerDesc}>Computex Dashboard</p>
+    </div>)}
+    {this.props.menukey == 3 && (
+      <div>
+        <h1 className={s.bannerTitle}>Manage P2P</h1>
+        <p className={s.bannerDesc}>Manage Your P2P Listings</p></div>
+    )}
+    {this.props.menukey == 4 && (
+      <div>
+        <h1 className={s.bannerTitle}>P2P MarketPlace</h1>
+        <p className={s.bannerDesc}>P2P Dash board</p></div>
+    )}
+
+
+
+          </div>
         </div>
       </div>
     );

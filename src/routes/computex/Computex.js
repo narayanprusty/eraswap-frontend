@@ -18,7 +18,8 @@ import {
   Icon,
   Steps,
   Spin,
-  notification
+  Table,
+  Badge
 } from 'antd';
 import s from './Computex.css';
 import QrCode from 'qrcode.react';
@@ -32,6 +33,78 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const ButtonGroup = Button.Group;
 const Step = Steps.Step;
+
+
+class TxnHistory extends React.Component {
+  constructor(props) {
+    super(props);
+    const value = props.value || {};
+    this.state = {
+        loading:true,
+        data:[]
+    };
+  }
+componentDidMount =()=>{
+    this.getData();
+}
+getData =()=>{
+    axios.get('/apis/txn/getTxn').then(data=>{
+        if(data && data.data){
+            debugger;
+            this.setState({
+                data:data.data,
+                loading:false
+            })
+        }
+    }).catch(error=>{
+      console.log(error);
+    });
+};
+changePage =(a)=>{
+    //{current:currentpageNumber,pageSize:pageLimit}
+   //you can update the api and keep pagination logic here
+};
+
+
+
+  render(){
+    const columns = [
+        {title:'Exchange Platform',dataIndex:'exchangePlatform',key:'exchangePlatform',align:"center",className:s.exchange},
+        { title: 'Conversion Currency', dataIndex: 'exchFromCurrency', key: 'exchFromCurrency' ,align:'center'},
+        { title: 'Conversion Amount', dataIndex: 'exchFromCurrencyAmt', key: 'exchFromCurrencyAmt' ,align:'center'},
+        { title: 'Converted Currency', dataIndex: 'exchToCurrency', key: 'exchToCurrency' ,align:'center'},
+        { title: 'Converted Amount', dataIndex: 'totalExchangeAmout', key: 'totalExchangeAmout' ,align:'center'},
+        { title: 'Eraswap Deposit Address', dataIndex: 'eraswapAcceptAddress', key: 'eraswapAcceptAddress',align:'left' },
+        {title:'Deposit Status', dataIndex:'dipositTxnStatus',key:"dipositTxnStatus",align:'center',render:(depositStat)=>{
+          return depositStat==="ok" ? (<span><Badge status="success" />Received</span>) : (<span><Badge status="warning" />{depositStat || "Pending"}</span>)
+        }},
+        {title:'Payment Status',dataIndex:'witdrawn',key:'witdrawn',align:'center' ,  render:(keyStat)=>{
+          return keyStat ? (<span><Badge status="success" />Finished</span>) : (<span><Badge status="warning" />Waiting</span>)
+        }},
+        { title:"Created At", dataIndex:"createdAt", key:"createdAt" ,align:'right',render:(date)=>{
+            return new Date(date.toString()).toLocaleDateString() + ' '+ new Date(date.toString()).toLocaleTimeString()
+        }}
+      ];
+
+
+      return(
+        <div className={s.root}>
+        <Card title={this.props.title}>
+        <Table
+    columns={columns}
+    expandedRowRender={record => <p style={{ margin: 0 }}>{JSON.stringify(record)}</p>}
+    dataSource={this.state.data}
+    loader={this.state.loading}
+    onChange={this.changePage}
+  />
+        </Card>
+        </div>
+      )
+  }
+
+
+}
+
 class Computex extends React.Component {
   constructor(props) {
     super(props);
@@ -140,6 +213,8 @@ class Computex extends React.Component {
                 },
               });
             }
+          }).catch(error=>{
+            console.log(error);
           });
       }
     });
@@ -175,6 +250,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
         exchangeRate: this.panel2Out(e.target.value,false),
         totalExchangeAmout:this.panel2Out(e.target.value,false)*this.state.amount
       });
+    }).catch(error=>{
+      console.log(error);
     });
   }
   static propTypes = {
@@ -231,6 +308,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                 ['lctxid']:data.data._id
               });
             }
+          }).catch(error=>{
+            console.log(error);
           });
       }
           this.setState({
@@ -269,6 +348,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
           //log the error here
           console.log(data);
         }
+      }).catch(error=>{
+        console.log(error);
       });
 
 
@@ -315,6 +396,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
           });
           console.log(this.state);
         }
+      }).catch(error=>{
+        console.log(error);
       });
   };
   verifyMain = () => {
@@ -361,6 +444,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
         });
         location.href = '/txnhistory';
       }
+    }).catch(error=>{
+      console.log(error);
     });
   };
   copyToClipboard = text => {
@@ -690,4 +775,48 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     );
   }
 }
-export default Form.create()(withStyles(s)(Computex));
+
+const tabListNoTitle = [
+  {
+    key: 'computex',
+    tab: 'Computex',
+  },
+  {
+    key: 'txnhistory',
+    tab: 'Transaction History',
+  },
+];
+class ManageComputex extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      key: 'computex',
+      noTitleKey: 'computex',
+    };
+  }
+  onTabChange = (key, type) => {
+    console.log(key, type);
+    this.setState({ [type]: key });
+  };
+  contentListNoTitle = {
+    computex: <Computex title={this.props.title} />,
+    txnhistory: <TxnHistory title="Transaction History"/>,
+  };
+  render() {
+    return (
+      <div className={s.root}>
+        <Card
+          style={{ width: '100%' }}
+          tabList={tabListNoTitle}
+          activeTabKey={this.state.noTitleKey}
+          onTabChange={key => {
+            this.onTabChange(key, 'noTitleKey');
+          }}
+        >
+          {this.contentListNoTitle[this.state.noTitleKey]}
+        </Card>
+      </div>
+    );
+  }
+}
+export default Form.create()(withStyles(s)(ManageComputex));
