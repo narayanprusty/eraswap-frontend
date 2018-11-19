@@ -93,7 +93,7 @@ class BuyListTable extends React.Component{
     // render: name => `${name.first} ${name.last}`,
     width: '20%',
   }, {
-    title: 'payment Method',
+    title: 'Payment Method',
     dataIndex: 'paymentMethod',
     width: '20%',
   }, {
