@@ -92,7 +92,7 @@ changePage =(a)=>{
         {/* <Card title={this.props.title}> */}
         <Table
     columns={columns}
-    expandedRowRender={record => <p style={{ margin: 0 }}>{JSON.stringify(record)}</p>}
+    // expandedRowRender={record => <p style={{ margin: 0 }}>{JSON.stringify(record)}</p>}
     dataSource={this.state.data}
     loader={this.state.loading}
     onChange={this.changePage}
@@ -796,13 +796,16 @@ class ManageComputex extends React.Component{
     this.setState({ [type]: key });
   };
   contentListNoTitle = {
-    computex: <Computex title={this.props.title} />,
+    computex: <Computex title={this.props.title} form={this.props.form} />,
     txnhistory: <TxnHistory title="Transaction History"/>,
   };
   render() {
     return (
       <div className={s.root}>
         <Card
+          style={{
+            textAlign:"center"
+          }}
           tabList={tabListNoTitle}
           activeTabKey={this.state.noTitleKey}
           onTabChange={key => {

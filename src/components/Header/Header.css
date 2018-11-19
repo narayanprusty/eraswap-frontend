@@ -14,13 +14,13 @@
 }
 
 .root {
-  background: #49c5b5;
-  color: #fff;
+  background: #ffffff;
+  color: #333333;
 }
 
 .container {
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 10px 0;
   width: 78%;
   max-width: 2100px;
 }
@@ -37,6 +37,9 @@
 
 .banner {
   text-align: center;
+  background-color: #700;
+  background-image: url('./om.jpg');
+  padding:20px 0px;
 }
 
 .bannerTitle {
@@ -44,7 +47,7 @@
   padding: 10px;
   color: white;
   font-weight: normal;
-  font-size: 4em;
+  font-size: 3em;
   line-height: 1em;
 }
 

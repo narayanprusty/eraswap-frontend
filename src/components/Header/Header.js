@@ -14,7 +14,7 @@ import Link from '../Link';
 import Navigation from '../Navigation';
 import logoUrl from './era-logo.png';
 // import logoUrl2x from './logo-small@2x.png';
-import {Menu} from 'antd';
+import {Menu,Button} from 'antd';
 
 class Header extends React.Component {
   constructor(props) {
@@ -61,41 +61,15 @@ class Header extends React.Component {
             <img
               src={logoUrl}
               srcSet={logoUrl}
-              width="110"
-              height="65"
+              width="200"
+              // height="65"
               alt="Eraswap"
             />
             {/* <span className={s.brandTxt}>ErasWap</span> */}
           </Link>
-
-          {/* {this.state.loggedIn && !this.props.itsHome &&(
-          <Menu
-        onClick={this.handleClick}
-        mode="horizontal"
-        defaultSelectedKeys={this.props.menukey ? [this.props.menukey]:[]}
-        style={{
-          lineHeight: '64px',
-          backgroundColor:'transparent'
-         }}
-      >
-        <Menu.Item key="1">
-        <Link to='/computex'>ComputeX</Link>
-        </Menu.Item>
-        <Menu.Item key="2">
-        <Link to='/txnhistory'>Txn History</Link>
-        </Menu.Item>
-        <Menu.Item key="3">
-        <Link to="/add_p2p_listing">
-        Manage P2P Listing
-        </Link>
-        </Menu.Item>
-        <Menu.Item key="4">
-        <Link to="/p2p">
-        P2P MarketPlace
-        </Link>
-        </Menu.Item>
-        </Menu>)} */}
-         <div className={s.banner}>
+</div>
+<div>
+          <div className={s.banner}>
          {this.props.menukey == 1 && (
              <div>
             <h1 className={s.bannerTitle}>Computex</h1>
@@ -115,6 +89,70 @@ class Header extends React.Component {
 
 
           </div>
+
+
+        {
+      //     this.state.loggedIn && !this.props.itsHome
+      //   &&(
+      //     <div style={{textAlign:"center"}}>
+      //     <Menu
+      //   onClick={this.handleClick}
+      //   mode="horizontal"
+      //   defaultSelectedKeys={this.props.menukey ? [this.props.menukey]:[]}
+      //   style={{
+      //     display:"inline-block",
+      //     alignSelf:"center",
+      //     backgroundColor:'transparent'
+      //    }}
+      // >
+      //   <Menu.Item key="1">
+      //     <Button type='primary'>
+      //   <Link to='/computex'>ComputeX</Link>
+      //   </Button>
+      //   </Menu.Item>
+      //   {/* <Menu.Item key="2">
+      //   <Button type='primary'>
+      //   <Link to='/txnhistory'>Txn History</Link></Button>
+      //   </Menu.Item> */}
+      //   <Menu.Item key="3">
+      //   <Button type='primary'>
+      //   <Link to="/add_p2p_listing">
+      //   Manage P2P Listing
+      //   </Link></Button>
+      //   </Menu.Item>
+      //   <Menu.Item key="4">
+      //   <Button type='primary'>
+      //   <Link to="/p2p">
+      //   P2P MarketPlace
+      //   </Link></Button>
+      //   </Menu.Item>
+      //   </Menu>
+      //   </div>
+      //   )
+    }
+
+
+  {/* <div className={s.banner}>
+         {this.props.menukey == 1 && (
+             <div>
+            <h1 className={s.bannerTitle}>Computex</h1>
+            <p className={s.bannerDesc}>Computex Dashboard</p>
+    </div>)}
+    {this.props.menukey == 3 && (
+      <div>
+        <h1 className={s.bannerTitle}>Manage P2P</h1>
+        <p className={s.bannerDesc}>Manage Your P2P Listings</p></div>
+    )}
+    {this.props.menukey == 4 && (
+      <div>
+        <h1 className={s.bannerTitle}>P2P MarketPlace</h1>
+        <p className={s.bannerDesc}>P2P Dash board</p></div>
+    )}
+
+
+
+          </div> */}
+
         </div>
       </div>
     );

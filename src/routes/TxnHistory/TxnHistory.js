@@ -63,7 +63,7 @@ changePage =(a)=>{
         <Card title={this.props.title}>
         <Table
     columns={columns}
-    expandedRowRender={record => <p style={{ margin: 0 }}>{JSON.stringify(record)}</p>}
+    // expandedRowRender={record => <p style={{ margin: 0 }}>{JSON.stringify(record)}</p>}
     dataSource={this.state.data}
     loader={this.state.loading}
     onChange={this.changePage}
