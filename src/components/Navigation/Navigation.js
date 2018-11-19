@@ -26,8 +26,9 @@ class Navigation extends React.Component {
   menu = (
     <Menu>
       <Menu.Item key="1">
-        <Link to='/computex'>ComputeX</Link>
+        <Link to='/computex'><Icon type="database" theme="twoTone"  /> &nbsp;ComputeX</Link>
         </Menu.Item>
+
         <SubMenu title="P2P Dashboards">
         <Menu.Item key="3">
         <Link to="/add_p2p_listing">
@@ -41,10 +42,10 @@ class Navigation extends React.Component {
         </Menu.Item>
         </SubMenu>
         <Menu.Item key="5" disabled>
-        <Link to='/wallet'>Wallet</Link>
+        <Link to='/wallet'><Icon type="wallet" theme="twoTone" /> &nbsp; Wallet</Link>
         </Menu.Item>
         <Menu.Item key="6" disabled>
-        <Link to='/LandB'>Lend {"&"} Borrow</Link>
+        <Link to='/LandB'><Icon type="usergroup-add" theme="twoTone"  />&nbsp;Lend {"&"} Borrow</Link>
         </Menu.Item>
     </Menu>
   );
@@ -76,13 +77,7 @@ class Navigation extends React.Component {
   render() {
     return (
       <div className={s.root} role="navigation">
-      {this.state.loggedIn &&( <Dropdown overlay={this.menu}>
-    <a className="ant-dropdown-link" className={s.link}  href="#">
-      All Apps <Icon type="down" />
-    </a>
-  </Dropdown>
-      )}
-      {this.props.menukey == 3 &&(
+       {this.props.menukey == 3 &&(
         <Link className={s.link} to="/p2p">
           P2P Marketplace
         </Link>
@@ -91,6 +86,13 @@ class Navigation extends React.Component {
         <Link className={s.link} to="/add_p2p_listing">
           Manage Your Listings
         </Link>
+      )}
+
+      {this.state.loggedIn &&( <Dropdown overlay={this.menu}>
+    <a className="ant-dropdown-link" className={s.link}  href="#">
+    <Icon type="appstore" /> <Icon type="down" />
+    </a>
+  </Dropdown>
       )}
 
 

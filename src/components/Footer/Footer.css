@@ -10,9 +10,9 @@
 @import '../variables.css';
 
 .root {
-  background: #333;
+  background: #333333;
   color: #fff;
-  margin-top: 4%
+  margin-top: 4%;
 }
 
 .container {

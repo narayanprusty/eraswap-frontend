@@ -14,7 +14,7 @@
   padding-left: 3.5em;
   padding-right: 3.5em;
   align-self: center;
-  width:75% ;
+  width:87% ;
   max-width: var(--max-content-width);
 }
 
@@ -53,4 +53,28 @@
   img {
     max-width: 100%;
   }
+}
+
+.dashIcon{
+  text-align: center;
+  margin-bottom: 4em;
+  /* box-shadow: 0px 0px 10px #cccccc; */
+}
+
+.icoStyle{
+  /* font-size: 100px;
+  color:#700; */
+  align-self: center;
+  height: 6.2em;
+}
+
+.icoBullet{
+  font-weight: bold;
+  color: #000000;
+  text-align: center;
+}
+
+.icoDes{
+  color: #000000;
+  text-align: center;
 }

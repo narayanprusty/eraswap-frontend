@@ -15,7 +15,10 @@ import newsQuery from './news.graphql';
 import s from './Home.css';
 import { Button, Slider, Row, Col, Card, Icon, Steps } from 'antd';
 import Link from '../../components/Link';
-
+import walletSvg from './wallet.svg';
+import peerSvg  from './peer.svg';
+import computex from './computex.svg';
+import lendingSvg from './lending.svg'
 const { Step } = Steps;
 
 class Home extends React.Component {
@@ -40,33 +43,53 @@ class Home extends React.Component {
           <Card style={{ margin: '20px 0 '}}>
             <Row style={{ margin: '20px 0 '}}>
             <Col span={6}>
-                <Button size="large">
+            <div className={s.dashIcon}>
                 <Link to="/wallet">
-                <Icon type="wallet" theme="twoTone" />
-                 &nbsp;
-                  Wallet</Link>
-                </Button>
+                {/* <Icon type="wallet" theme="twoTone" className={s.icoStyle} /> */}
+                <img src={walletSvg} className={s.icoStyle} />
+                <br />
+                <br />
+                <span className={s.icoBullet}>Wallet </span><br />
+                <span className={s.icoDes}>Powerup your wallet. by using eraswap wallet</span>
+                </Link>
+         </div>
               </Col>
               <Col span={6}>
-                <Button size="large">
+              <div className={s.dashIcon}>
                 <Link to="/computex">
-                <Icon type="database" theme="twoTone"  />&nbsp;
-                Computex</Link>
-                </Button>
+                {/* <Icon type="database" theme="twoTone"  className={s.icoStyle} /> */}
+                <img src={computex} className={s.icoStyle} />
+                <br />
+                <br />
+                <span className={s.icoBullet}>Computex</span><br />
+                <span className={s.icoDes}>Now use exchanges in smart way</span>
+
+                </Link>
+                </div>
               </Col>
               <Col span={6}>
-                <Button size="large">
+              <div className={s.dashIcon}>
                 <Link to="/p2p">
-                <Icon type="swap" theme="twoTone"  />&nbsp;
-                P2P</Link>
-                </Button>
+                {/* <Icon type="swap" theme="twoTone" className={s.icoStyle} /> */}
+                <img src={peerSvg} className={s.icoStyle} />
+                <br />
+                <br />
+                <span className={s.icoBullet}>P2P</span><br />
+                <span className={s.icoDes}>Exchanging your assets never been so easy</span>
+                </Link>
+                </div>
               </Col>
               <Col span={6}>
-                <Button size="large">
+              <div className={s.dashIcon}>
                 <Link to="/LandB">
-                <Icon type="usergroup-delete" theme="twoTone"  />&nbsp;
-                lending and borrowing</Link>
-                </Button>
+                {/* <Icon type="usergroup-add" theme="twoTone" className={s.icoStyle} /> */}
+                <img src={lendingSvg}  className={s.icoStyle} />
+                <br />
+                 <br />
+                <span className={s.icoBullet}>Lending and Borrowing</span><br />
+                <span className={s.icoDes} >Lend and Borrow Your Assets</span>
+                </Link>
+               </div>
               </Col>
             </Row>
           </Card>

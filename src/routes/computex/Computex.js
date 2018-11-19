@@ -50,7 +50,7 @@ componentDidMount =()=>{
 getData =()=>{
     axios.get('/apis/txn/getTxn').then(data=>{
         if(data && data.data){
-            debugger;
+
             this.setState({
                 data:data.data,
                 loading:false
@@ -221,7 +221,7 @@ class Computex extends React.Component {
   };
   checkExchangeSelect = exch => {
     if (this.state.maxExchange.toLowerCase() === exch) {
-      debugger;
+
       return false;
     }
     return true;
@@ -398,7 +398,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
       });
   };
   verifyMain = () => {
-    debugger;
+
     const dataPushable = {
       symbol:this.state.symbol,
       tiMeFrom:this.state.tiMeFrom,
@@ -486,7 +486,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     }
   };
   panel2Out = (exchName,html) => {
-    debugger;
+
     const dataObj = this.state.exchanges.find(element => {
       return element.name.toLowerCase() === exchName.toLowerCase();
     });
