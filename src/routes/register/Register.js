@@ -76,7 +76,7 @@ class Register extends React.Component {
     callback();
   }
 
-  
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const tailFormItemLayout = {
@@ -104,15 +104,14 @@ class Register extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <h1>{this.props.title}</h1>
-          <Form onSubmit={this.handleSubmit}>
+          <Form onSubmit={this.handleSubmit} style={{maxWidth:"500px",width:"40%",marginLeft:"25%" ,paddingBottom:"10em"}}>
           <FormItem
           {...formItemLayout}
-          label="username"
+          label="Username"
         >
           {getFieldDecorator('username', {
             rules: [{
-              required: true, message: 'Please Enter the username!',
+              required: true, message: 'Please enter the username!',
             }],
           })(
             <Input />
@@ -165,7 +164,7 @@ class Register extends React.Component {
         </FormItem>
         </Form>
         </div>
-      </div>
+        </div>
     );
   }
 }

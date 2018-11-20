@@ -12,13 +12,14 @@ import Layout from '../../components/Layout';
 import Login from './Login';
 
 const title = 'Log In';
+const menuKey =0.2;
 
 function action() {
   return {
     chunks: ['login'],
     title,
     component: (
-      <Layout>
+      <Layout menukey={menuKey}>
         <Login title={title} />
       </Layout>
     ),

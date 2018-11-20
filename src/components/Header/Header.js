@@ -69,7 +69,17 @@ class Header extends React.Component {
           </Link>
 </div>
 <div>
-          <div className={s.banner}>
+  <div className={s.banner}>
+          {this.props.menukey == 0.1 && (
+             <div>
+            <h1 className={s.bannerTitle}>User Registration</h1>
+            {/* <p className={s.bannerDesc}>Computex Dashboard</p> */}
+    </div>)}
+    {this.props.menukey == 0.2 && (
+             <div>
+            <h1 className={s.bannerTitle}>User Login</h1>
+            {/* <p className={s.bannerDesc}>Computex Dashboard</p> */}
+    </div>)}
          {this.props.menukey == 1 && (
              <div>
             <h1 className={s.bannerTitle}>Computex</h1>

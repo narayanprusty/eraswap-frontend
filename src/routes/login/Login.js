@@ -79,11 +79,8 @@ class Login extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <h1>{this.props.title}</h1>
-          <p className={s.lead}>
-            Log in with your username or company email address.
-          </p>
-          <div className={s.formGroup}>
+          {/* <h1>{this.props.title}</h1> */}
+          <div className={s.formGroup} style={{paddingTop:"3em"}}>
             <a className={s.facebook} href="/login/facebook">
               <svg
                 className={s.icon}
@@ -147,10 +144,13 @@ class Login extends React.Component {
             </a>
           </div>
           <strong className={s.lineThrough}>OR</strong>
+          <p className={s.lead} style={{textAlign:"center"}}>
+            Log in with your username and password.
+          </p>
           <form onSubmit={this.login}>
             <div className={s.formGroup}>
               <label className={s.label} htmlFor="usernameOrEmail">
-                Username or email address:
+                Username :
                 <input
                   className={s.input}
                   id="usernameOrEmail"

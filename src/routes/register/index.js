@@ -12,13 +12,13 @@ import Layout from '../../components/Layout';
 import Register from './Register';
 
 const title = 'New User Registration';
-
+const menuKey = 0.1;
 function action() {
   return {
     chunks: ['register'],
     title,
     component: (
-      <Layout>
+      <Layout menukey={menuKey} >
         <Register title={title} />
       </Layout>
     ),

@@ -314,7 +314,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
             ourWallet: data.data.address,
             key: '3',
             tiMeFrom: moment.utc().valueOf(),
-            panel2Text: `Best Value is From ${this.state.maxExchange} : ${this
+            panel2Text: `Best value is from ${this.state.maxExchange} : ${this
               .state.exchangeRate +
               ' ' +
               this.state.toCurrency}`,
@@ -654,7 +654,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               {' '}
               <blockquote>
                 {' '}
-                * Best Price [In USD] selected automatically
+                * Best price [in USD] selected automatically
               </blockquote>{' '}
               &nbsp; <br />
               {this.state.exchanges && (
@@ -682,12 +682,12 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                   >
                     Poloniex <br /> {this.panel2Out('poloniex',true)}
                   </RadioButton>
-                  <RadioButton
+                  {/* <RadioButton
                     value="Kraken"
 
                   >
                     Kraken <br /> {this.panel2Out('kraken',true)}
-                  </RadioButton>
+                  </RadioButton> */}
                   <RadioButton
                     value="Yobit"
 
@@ -705,7 +705,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               )}
                {this.state.loader && <Spin size="large" />}
               {this.state.maxExchange === '' && (
-                <span>No Exchange Found for this Conversion</span>
+                <span>No exchange found for this conversion</span>
               )}
             </Panel>
             <Panel
@@ -715,7 +715,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               disabled={false}
               accordion={true}
             >
-              We will be Exchange Through {this.state.maxExchange}. please
+              We will be exchange through {this.state.maxExchange}. please
               transfer {this.state.amount + ' ' + this.state.currency} to this
               below address:<br />
               <div className={s.container}>
@@ -734,7 +734,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                 />
                 <br />
                 <br />
-                please Enter Your receiving Address:
+                Please enter your receiving address:
                 <br />
                 <Input.Search
                   style={{ maxWidth: '45.2%' }}
@@ -762,7 +762,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                   </Button>
                   <Button type="primary" onClick={this.nextStep4}>
                     <Icon type="right" />next
-                  </Button> *click next Only after the transaction.
+                  </Button> *click next only after the transaction.
                 </ButtonGroup>
               )}
             </Panel>
