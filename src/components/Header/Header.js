@@ -54,8 +54,6 @@ class Header extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-
-
           <Navigation menukey={this.props.menukey} />
           <Link className={s.brand} to="/">
             <img
@@ -70,6 +68,11 @@ class Header extends React.Component {
 </div>
 <div>
   <div className={s.banner}>
+          {this.props.menukey == 0.002 && (
+             <div>
+            <h1 className={s.bannerTitle}>Home</h1>
+            {/* <p className={s.bannerDesc}>Computex Dashboard</p> */}
+    </div>)}
           {this.props.menukey == 0.1 && (
              <div>
             <h1 className={s.bannerTitle}>User Registration</h1>

@@ -16,12 +16,13 @@ async function action({ client }) {
   const data = await client.query({
     query: newsQuery,
   });
+  const menuKey =0.002;
   const itsHome = true;
   return {
     title: 'Eraswap | Home',
     chunks: ['home'],
     component: (
-      <Layout itsHome={itsHome} >
+      <Layout itsHome={itsHome} menukey={menuKey} >
         <Home />
       </Layout>
     ),
