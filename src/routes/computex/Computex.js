@@ -689,10 +689,10 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                     Kraken <br /> {this.panel2Out('kraken',true)}
                   </RadioButton> */}
                   <RadioButton
-                    value="Yobit"
+                    value="Okex"
 
                   >
-                    Yobit <br /> {this.panel2Out('yobit',true)}
+                    okex <br /> {this.panel2Out('okex',true)}
                   </RadioButton>
                 </RadioGroup>
               )}
