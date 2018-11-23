@@ -682,17 +682,17 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                   >
                     Poloniex <br /> {this.panel2Out('poloniex',true)}
                   </RadioButton>
-                  {/* <RadioButton
-                    value="Kraken"
-
-                  >
-                    Kraken <br /> {this.panel2Out('kraken',true)}
-                  </RadioButton> */}
                   <RadioButton
-                    value="Okex"
+                    value="Cryptopia"
 
                   >
-                    okex <br /> {this.panel2Out('okex',true)}
+                    Cryptopia <br /> {this.panel2Out('cryptopia',true)}
+                  </RadioButton>
+                  <RadioButton
+                    value="OKEX"
+
+                  >
+                    OkEx <br /> {this.panel2Out('okex',true)}
                   </RadioButton>
                 </RadioGroup>
               )}
