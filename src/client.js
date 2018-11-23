@@ -22,6 +22,7 @@ import createApolloClient from './core/createApolloClient';
 import router from './router';
 import axios from 'axios';
 import { notification ,Icon} from "antd";
+import config from "./config";
 // Universal HTTP client
 const fetch = createFetch(window.fetch, {
   baseUrl: window.App.apiUrl,
@@ -157,7 +158,7 @@ async function onLocationChange(location, action) {
     }
   }
 }
-axios.defaults.baseURL = 'http://localhost:80';
+axios.defaults.baseURL = config.api.serverUrl;
 // axios.defaults.baseURL = 'https://eraswapfront.herokuapp.com'; //for local 'http://localhost:5000';
 axios.defaults.headers.common["authorization"]= localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : '-';
 
