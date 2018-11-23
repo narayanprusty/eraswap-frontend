@@ -173,7 +173,7 @@ class BuyListTable extends React.Component{
       const pagination = { ...this.state.pagination };
       // Read total count from server
       // pagination.total = data.totalCount;
-      debugger;
+      // debugger;
       pagination.total = countData.data.count;
       let allData=[];
 

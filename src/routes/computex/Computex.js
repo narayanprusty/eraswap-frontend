@@ -243,7 +243,7 @@ class Computex extends React.Component {
 
   handleRadioChange = e =>{
 axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='+this.state.symbol).then(data=>{
-  debugger;
+  // debugger;
   console.log(data.data);
       this.setState({
         [e.target.name]: e.target.value,

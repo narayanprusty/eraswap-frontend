@@ -21,7 +21,7 @@ componentDidMount =()=>{
 getData =()=>{
     axios.get('/apis/txn/getTxn').then(data=>{
         if(data && data.data){
-            debugger;
+            // debugger;
             this.setState({
                 data:data.data,
                 loading:false

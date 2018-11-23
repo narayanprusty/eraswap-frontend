@@ -429,7 +429,7 @@ class MyListComponent extends React.Component{
         const pagination = { ...this.state.pagination };
         // Read total count from server
         // pagination.total = data.totalCount;
-        debugger;
+
         pagination.total = countData.data;
         let allData=[];
 
