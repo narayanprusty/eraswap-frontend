@@ -98,9 +98,11 @@ class Header extends React.Component {
         <h1 className={s.bannerTitle}>P2P MarketPlace</h1>
         <p className={s.bannerDesc}>P2P Dash board</p></div>
     )}
-
-
-
+    {this.props.menukey == 5 && (
+      <div>
+        <h1 className={s.bannerTitle}>Wallets</h1>
+        <p className={s.bannerDesc}>Wallet Dashboard</p></div>
+    )}
           </div>
 
 
