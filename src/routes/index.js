@@ -44,6 +44,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'admin' */ './computex'),
     },
     {
+        path: '/wallet',
+        load: () => import(/* webpackChunkName: 'admin' */ './wallet'),
+    },
+    {
       path: '/wallet/:name',
       load: () => import(/* webpackChunkName: 'admin' */ './wallet'),
     },{
