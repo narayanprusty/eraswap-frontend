@@ -41,10 +41,26 @@ class Navigation extends React.Component {
         </Link>
         </Menu.Item>
         </SubMenu>
-        <Menu.Item key="5" disabled>
-        <Link to='/wallet'><Icon type="wallet" theme="twoTone" /> &nbsp; Wallet</Link>
+
+        <SubMenu title="Wallets">
+        <Menu.Item key="5">
+        <Link to='/wallet/Btc'>
+        Bitcoin
+        </Link>
         </Menu.Item>
-        <Menu.Item key="6" disabled>
+        <Menu.Item key="6">
+        <Link to='/wallet/Eth'>
+        Ethereum
+        </Link>
+        </Menu.Item>
+        <Menu.Item key="7">
+        <Link to='/wallet/Est'>
+        EST Token
+        </Link>
+        </Menu.Item>
+        </SubMenu>
+
+        <Menu.Item key="8" disabled>
         <Link to='/LandB'><Icon type="usergroup-add" theme="twoTone"  />&nbsp;Lend {"&"} Borrow</Link>
         </Menu.Item>
     </Menu>

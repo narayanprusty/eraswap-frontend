@@ -5,12 +5,12 @@ import Wallet from './Wallet';
 const title ='Wallet'
 const menukey ='5'
 
-function action() {
+function action(context, params) {
     return {
       title,
       component: (
         <Layout menukey={menukey}>
-          <Wallet title={title} />
+          <Wallet title={title} name={params.name} />
         </Layout>
       ),
     };

@@ -60,6 +60,10 @@ class WalletManager extends React.Component{
         };
     }
 
+    componentDidMount(){
+        this.getBalance();
+    }
+
     onTabChange = (key) => {
         console.log(key);
         this.setState({ noTitleKey: key });
@@ -100,25 +104,19 @@ class WalletManager extends React.Component{
 
         return (
         <div>
-            <Card
-                extra={
-                    <div>Balance: 
-                        {
-                            this.state.balance == "" ? "" : this.state.balance
-                        }
-                        <Icon type="reload" onClick={this.getBalance.bind(this)}/>
-                    </div>
-                } >      
-        
+            <Card title={this.props.header}>      
+                <div style={{marginBottom: '0.5%'}}>Balance: 
+                    {
+                        this.state.balance == "" ? "" : "  "+this.state.balance
+                    }
+                    <Icon type="reload" onClick={this.getBalance.bind(this)} style={{margin: '0.5%'}} />
+                </div>
                 <Card
                     tabList={sendReceiveTabs}
                     activeTabKey={this.state.noTitleKey}
                     onTabChange={key => {
                     this.onTabChange(key);
-                    }} 
-                    extra={
-                        <Button type="primary" icon="download" size={size} onClick={this.downloadPrivateKey}>Download Private Key</Button>
-                    }
+                    }}
                     >
                     {
                         this.state.noTitleKey == "SendForm" ? 
@@ -128,9 +126,9 @@ class WalletManager extends React.Component{
                                 <Input 
                                     type="text"
                                     value={this.state.recipient}
-                                    size={size}
                                     onChange={e => this.setState({recipient: e.target.value})}
-                                    style={{ width: '25%' }}
+                                    style={{ maxWidth: '45.2%' }}
+                                    size="large"
                                 />
                             </FormItem>
                             <FormItem
@@ -138,9 +136,9 @@ class WalletManager extends React.Component{
                                 <Input 
                                     type="number"
                                     value={this.state.amount}
-                                    size={size}
                                     onChange={e => this.setState({amount: e.target.value})}
-                                    style={{ width: '25%' }}
+                                    style={{ maxWidth: '45.2%' }}
+                                    size="large"
                                 />
                             </FormItem>
                             <Button type="primary" onClick={this.send.bind(this)}>
@@ -154,9 +152,9 @@ class WalletManager extends React.Component{
                             <br />
                             <Input.Search
                               style={{ maxWidth: '45.2%' }}
+                              size="large"
                               defaultValue={this.state.ourWallet}
                               enterButton={<Icon type="copy" />}
-                              size="large"
                               onSearch={value => {
                                 this.copyToClipboard(value);
                               }}
@@ -164,6 +162,8 @@ class WalletManager extends React.Component{
                             />
                         </div>)
                     }
+                    <hr />
+                    <Button type="primary" icon="download" size={size} onClick={this.downloadPrivateKey}>Download Private Key</Button>
                 </Card>
 
             </Card>
@@ -176,7 +176,7 @@ class BtcWalletManager extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            header: "Bitcoin",
+            header: "Bitcoin Wallet",
             type: "crypto",
             name: "Btc",
         };
@@ -194,7 +194,7 @@ class EthWalletManager extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            header: "Ethereum",
+            header: "Ethereum Wallet",
             type: "crypto",
             name: "Eth",
         };
@@ -213,7 +213,7 @@ class EstWalletManager extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            header: "EST Token",
+            header: "EST Token Wallet",
             type: "token",
             name: "Est",
         };
@@ -248,13 +248,10 @@ class Wallets extends React.Component{
     super(props);
     this.state = {
       key: 'Btc',
-      noTitleKey: 'Btc',
+      noTitleKey: props.name || 'Btc',
     };
+    console.log("props",props);
   }
-  onTabChange = (key) => {
-    console.log(key);
-    this.setState({ noTitleKey: key });
-  };
   contentListNoTitle = {
     Btc: <BtcWalletManager form={this.props.form} />,
     Eth: <EthWalletManager form={this.props.form} />,
@@ -262,22 +259,11 @@ class Wallets extends React.Component{
   };
   render() {
     return (
-      <div className={s.root}>
-        <Card
-          style={{
-            textAlign:"center"
-          }}
-          tabList={tabListNoTitle}
-          activeTabKey={this.state.noTitleKey}
-          onTabChange={key => {
-            this.onTabChange(key);
-          }}
-        >
+      <div className={s.root} style={{ textAlign:"center" }}>
           {console.log("rendering "+this.state.noTitleKey)}
-          {this.contentListNoTitle[this.state.noTitleKey]}
-        </Card>
+          {this.contentListNoTitle[this.props.name]}
         </div>
     );
   }
 }
-export default Form.create()(withStyles(s)(Wallets));
+export default withStyles(s)(Wallets);
