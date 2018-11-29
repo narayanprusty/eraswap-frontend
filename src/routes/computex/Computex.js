@@ -18,6 +18,7 @@ import {
   Icon,
   Steps,
   Spin,
+  notification,
   Table,
   Badge
 } from 'antd';
@@ -160,6 +161,7 @@ class Computex extends React.Component {
       if (e.target.value > 0) {
         this.setState({
           [e.target.name]: e.target.value,
+          checkVal:false
         });
       }
     } else {
@@ -386,15 +388,15 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     this.fetchCurrency(currency);
     console.log(currency);
     if (!('value' in this.props)) {
-      this.setState({ currency });
-    }
+      this.setState({ checkVal:false,currency });
     this.triggerChange({ currency });
   };
+}
   handletoCurrencyChange = toCurrency => {
     this.fetchCurrency(toCurrency);
     console.log(toCurrency);
     if (!('value' in this.props)) {
-      this.setState({ toCurrency });
+      this.setState({ checkVal:false,toCurrency });
     }
     this.triggerChange({ toCurrency });
   };
@@ -419,19 +421,57 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     const dataObj = this.state.exchanges.find(element => {
       return element.name.toLowerCase() === exchName.toLowerCase();
     });
+    // debugger;
     if (dataObj && dataObj.ask && html) {
+     let expectedAmount;
+     let atAmount;
+      if(dataObj.sym == this.state.currency+'/'+this.state.toCurrency){
+        //sell type
+        expectedAmount=dataObj.ask * this.state.amount;
+        atAmount=dataObj.ask;
+      }else if(dataObj.sym ==this.state.toCurrency+'/'+this.state.currency){
+        //buy type
+        expectedAmount=this.state.amount/dataObj.bid;
+        atAmount=1/dataObj.bid;
+      }
       return (
         <span>
-          {dataObj.ask * this.state.amount + ' ' + this.state.toCurrency}
+          { expectedAmount.toFixed(8)+ ' ' + this.state.toCurrency}
           <br />@<br />
-          {dataObj.ask}
+          {atAmount.toFixed(8)}
         </span>
       );
     }else if (dataObj && dataObj.ask && !html) {
       return dataObj.ask;
+    }else if(dataObj && !dataObj.ask){
+      return (
+        <span>
+         Not Found <br /><br /><br />
+        </span>
+      );
     }
   };
-
+  checkValue=(e)=>{
+    return axios.get("/apis/cur/checkVal?currency="+this.state.currency).then(data=>{
+      debugger;
+        if(data && data.data){
+          const foundData= JSON.parse(data.data);
+            const currencyData = foundData.data[this.state.currency];
+            const usdPrice= currencyData.quote.USD.price;
+            if(usdPrice*this.state.amount >= 20){
+              this.setState({
+                checkVal:true
+              })
+            }else{
+              notification.open({
+                message: "Entered Amount should be equivalent to $20 or more.",
+                description: 'Please change the amount and try again.\n Entered amout value is estimated $'+(usdPrice*this.state.amount).toFixed(4),
+                icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+              });
+            }
+        }
+    })
+  };
   childrenCurrList = () => {
     let children = [];
 
@@ -565,9 +605,17 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                     this.state.amount > 0 &&
                     this.state.currency &&
                     this.state.toCurrency && (
-                      <Button type="primary" htmlType="submit">
+
+
+                      <Button.Group>
+                        <Button type="primary" onClick={this.checkValue.bind(this)} disabled={this.state.checkVal || false}>
+                      Validate
+                      </Button>
+                      <Button type="primary" htmlType="submit" disabled={!this.state.checkVal ? true : false}>
                         <Icon type="right" />next
                       </Button>
+                    </Button.Group>
+
                     )}
                   {this.state.loader && <Spin size="large" />}
                 </FormItem>
@@ -595,7 +643,6 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                 >
                   <RadioButton
                     value="Bittrex"
-
                   >
                     Bittrex <br /> {this.panel2Out('bittrex',true)}{' '}
                   </RadioButton>
@@ -683,7 +730,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                       clientWallet: value,
                     });
                   }}
-                  disabled={this.state.clientWallet || false}
+                  disabled={this.state.clientWallet ? true : false}
                 />
               </div>
               &nbsp;&nbsp;
@@ -707,6 +754,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     );
   }
 }
+
+
 
 const tabListNoTitle = [
   {
