@@ -57,11 +57,13 @@ class WalletManager extends React.Component{
             key: 'SendForm',
             noTitleKey: 'SendForm',
             ourWallet: '',
+            privateKey: '',
         };
     }
 
     componentDidMount(){
         this.getBalance();
+        this.getAddress();
     }
 
     onTabChange = (key) => {
@@ -70,15 +72,51 @@ class WalletManager extends React.Component{
     };
 
     send = () => {
-        console.log(this.state.recipient, this.state.amount);
+        var data = {
+            crypto : this.state.name,
+            receiver : this.state.recipient,
+            amount: this.state.amount
+        };
+        axios.post('/apis/wallet/send', data).then(res => {
+            console.log(res);
+        }).catch(error => {
+            console.log(error);
+        });;
     };
 
     getBalance = () => {
-        this.setState({balance: 1234.009});
+        axios.get('/apis/wallet/getBalance?crypto=' + this.state.name).then(res => {
+            console.log(res.data.balance);
+            this.setState({ balance: res.data.balance });
+        }).catch(error => {
+            console.log(error);
+        });
     };
 
-    downloadPrivateKey = () =>{
+    getAddress = () => {
+        axios.get('/apis/wallet/getAddress?crypto=' + this.state.name).then(res => {
+            console.log(res.data.address);
+            this.setState({ ourWallet: res.data.address });
+        }).catch(error => {
+            console.log(error);
+        });
+    };
 
+    downloadPrivateKey = () => {
+        axios.get('/apis/wallet/getPrivateKey?crypto=' + this.state.name).then(res => {
+            console.log(res.data.address);
+            if (res.data.address) {
+                this.setState({ privateKey: res.data.address });
+                var element = document.createElement("a");
+                var file = new Blob([this.state.privateKey], { type: 'text/plain' });
+                element.href = URL.createObjectURL(file);
+                element.download = "privateKey.txt";
+                element.click();
+                document.body.removeChild(element);
+            }
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     copyToClipboard = text => {
@@ -153,7 +191,7 @@ class WalletManager extends React.Component{
                             <Input.Search
                               style={{ maxWidth: '45.2%' }}
                               size="large"
-                              defaultValue={this.state.ourWallet}
+                              value={this.state.ourWallet}
                               enterButton={<Icon type="copy" />}
                               onSearch={value => {
                                 this.copyToClipboard(value);
