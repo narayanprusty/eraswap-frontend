@@ -18,7 +18,8 @@ import {
   Steps,
   Spin,
   Table,
-  Badge
+  Badge,
+  notification  
 } from 'antd';
 import s from './Wallet.css';
 import QrCode from 'qrcode.react';
@@ -58,6 +59,9 @@ class WalletManager extends React.Component{
             noTitleKey: 'SendForm',
             ourWallet: '',
             privateKey: '',
+            loadingBalance: false,
+            sending : false,
+            gettingPK : false,
         };
     }
 
@@ -72,23 +76,35 @@ class WalletManager extends React.Component{
     };
 
     send = () => {
+        this.setState({ sending: true });
         var data = {
-            crypto : this.state.name,
-            receiver : this.state.recipient,
+            crypto: this.state.name,
+            receiver: this.state.recipient,
             amount: this.state.amount
         };
+        console.log(data);
         axios.post('/apis/wallet/send', data).then(res => {
+            if (res.data.success) {
+                notification.open({
+                    message: 'Success',
+                    description: 'Transaction sent!',
+                });
+            }
             console.log(res);
+            this.setState({ sending: false, recipient: "", amount: "" });
         }).catch(error => {
+            this.setState({ sending: false, recipient: "", amount: "" });
             console.log(error);
-        });;
+        });
     };
 
     getBalance = () => {
+        this.setState({ loadingBalance: true });
         axios.get('/apis/wallet/getBalance?crypto=' + this.state.name).then(res => {
             console.log(res.data.balance);
-            this.setState({ balance: res.data.balance });
+            this.setState({ balance: res.data.balance, loadingBalance: false });
         }).catch(error => {
+            this.setState({ loadingBalance: false });
             console.log(error);
         });
     };
@@ -103,6 +119,7 @@ class WalletManager extends React.Component{
     };
 
     downloadPrivateKey = () => {
+        this.setState({gettingPK : true});
         axios.get('/apis/wallet/getPrivateKey?crypto=' + this.state.name).then(res => {
             console.log(res.data.address);
             if (res.data.address) {
@@ -114,7 +131,9 @@ class WalletManager extends React.Component{
                 element.click();
                 document.body.removeChild(element);
             }
+            this.setState({gettingPK : false});
         }).catch(error => {
+            this.setState({gettingPK : false});
             console.log(error);
         });
     }
@@ -147,7 +166,10 @@ class WalletManager extends React.Component{
                     {
                         this.state.balance == "" ? "" : "  "+this.state.balance
                     }
-                    <Icon type="reload" onClick={this.getBalance.bind(this)} style={{margin: '0.5%'}} />
+                    {
+                        (this.state.loadingBalance ? <Spin /> :
+                        <Icon type="reload" onClick={this.getBalance.bind(this)} style={{margin: '0.5%'}} /> )
+                    }
                 </div>
                 <Card
                     tabList={sendReceiveTabs}
@@ -179,7 +201,7 @@ class WalletManager extends React.Component{
                                     size="large"
                                 />
                             </FormItem>
-                            <Button type="primary" onClick={this.send.bind(this)}>
+                            <Button type="primary" onClick={this.send.bind(this)} loading={this.state.sending}>
                                 Send
                             </Button>
                         </Form>)
@@ -201,7 +223,8 @@ class WalletManager extends React.Component{
                         </div>)
                     }
                     <hr />
-                    <Button type="primary" icon="download" size={size} onClick={this.downloadPrivateKey}>Download Private Key</Button>
+                    <Button type="primary" icon="download" size={size} loading={this.state.gettingPK}
+                     onClick={this.downloadPrivateKey}>Download Private Key</Button>
                 </Card>
 
             </Card>
