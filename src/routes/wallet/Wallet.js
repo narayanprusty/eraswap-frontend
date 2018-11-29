@@ -57,6 +57,7 @@ class WalletManager extends React.Component{
             key: 'SendForm',
             noTitleKey: 'SendForm',
             ourWallet: '',
+            privateKey: '',
         };
     }
 
@@ -101,8 +102,21 @@ class WalletManager extends React.Component{
         });
     };
 
-    downloadPrivateKey = () =>{
-
+    downloadPrivateKey = () => {
+        axios.get('/apis/wallet/getPrivateKey?crypto=' + this.state.name).then(res => {
+            console.log(res.data.address);
+            if (res.data.address) {
+                this.setState({ privateKey: res.data.address });
+                var element = document.createElement("a");
+                var file = new Blob([this.state.privateKey], { type: 'text/plain' });
+                element.href = URL.createObjectURL(file);
+                element.download = "privateKey.txt";
+                element.click();
+                document.body.removeChild(element);
+            }
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     copyToClipboard = text => {
