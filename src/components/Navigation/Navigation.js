@@ -88,7 +88,8 @@ class Navigation extends React.Component {
     this.setState({
       loggedIn: false,
     });
-    location.href = '/login';
+    return true;
+    // location.href = '/login';
   };
   render() {
     return (
@@ -123,7 +124,7 @@ class Navigation extends React.Component {
             </Link>
           )}
         {this.state.loggedIn && <span className={s.spacer}> | </span> && (
-            <Link className={s.link} onClick={this.logout}>
+            <Link className={s.link} onClick={this.logout} to="/login">
             &nbsp; <Icon type="logout" />&nbsp;
             </Link>
           )}
