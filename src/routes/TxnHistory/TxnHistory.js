@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
-import { Card, Icon ,Table,Badge} from 'antd';
+import { List,Card,Table,Badge} from 'antd';
 import s from './TxnHistory.css';
 import QrCode from 'qrcode.react';
 
@@ -36,7 +36,21 @@ changePage =(a)=>{
    //you can update the api and keep pagination logic here
 };
 
-
+ conVertObjToArr =(wholeObj)=>{
+   return [{
+    title: "ComputEx Order Status",
+    content: wholeObj.witdrawn ? "Completed" : "Pendig" } ,
+    {title:"Deposit Status"  ,
+    content: wholeObj.dipositTxnId ? wholeObj.dipositTxnStatus : 'Not Received Yet.'},
+    {title:"Deposit Transaction ID" ,content: wholeObj.dipositTxnId ? wholeObj.dipositTxnId : '-'},
+    {title:"Exchange From/To",content: wholeObj.exchFromCurrency +'/'+wholeObj.exchToCurrency},
+    {title:`Your ${wholeObj.exchFromCurrency} Receiving Address`,content: wholeObj.eraswapSendAddress},
+    {title:"Your Receiving/Received amount [Without Fee]",content:wholeObj.amtToSend ? wholeObj.amtToSend : 'Not yet rendered'},
+    {title:`Order for Exchange placed in  ${wholeObj.exchangePlatform}`,content: wholeObj.orderId ? "YES" : 'Not yet'},
+    {title:"Order Status",content:wholeObj.convertedYet?wholeObj.convertedYet:'Not placed yet'},
+    {title:"Type Of Order",content:wholeObj.side ? wholeObj.side.toUpperCase() : 'Not yet decided',
+ }];
+};
 
   render(){
     const columns = [
@@ -63,7 +77,21 @@ changePage =(a)=>{
         {/* <Card title={this.props.title}> */}
         <Table
     columns={columns}
-    // expandedRowRender={record => <p style={{ margin: 0 }}>{JSON.stringify(record)}</p>}
+    expandedRowRender={record => (
+      <List
+      // grid={{ gutter: 16, column: 4 }}
+      itemLayout="horizontal"
+      dataSource={this.conVertObjToArr(record)}
+      renderItem={item => (
+        <List.Item>
+          <List.Item.Meta
+          title={item.title}
+           />
+          {item.content}
+        </List.Item>
+      )}
+    />
+    )}
     dataSource={this.state.data}
     loader={this.state.loading}
     onChange={this.changePage}
