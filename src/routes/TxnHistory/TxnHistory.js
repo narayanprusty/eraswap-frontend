@@ -59,8 +59,8 @@ changePage =(a)=>{
 
 
       return(
-        <div className={s.root}>
-        <Card title={this.props.title}>
+         <div>
+        {/* <Card title={this.props.title}> */}
         <Table
     columns={columns}
     // expandedRowRender={record => <p style={{ margin: 0 }}>{JSON.stringify(record)}</p>}
@@ -68,8 +68,8 @@ changePage =(a)=>{
     loader={this.state.loading}
     onChange={this.changePage}
   />
-        </Card>
-        </div>
+        {/* </Card> */}
+         </div>
       )
   }
 

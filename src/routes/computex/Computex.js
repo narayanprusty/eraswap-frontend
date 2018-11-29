@@ -24,7 +24,7 @@ import {
 import s from './Computex.css';
 import QrCode from 'qrcode.react';
 import moment from 'moment';
-
+import TxnStat from '../TxnHistory/TxnHistory' ;
 
 const Option = Select.Option;
 const Panel = Collapse.Panel;
@@ -33,77 +33,6 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const ButtonGroup = Button.Group;
 const Step = Steps.Step;
-
-
-class TxnHistory extends React.Component {
-  constructor(props) {
-    super(props);
-    const value = props.value || {};
-    this.state = {
-        loading:true,
-        data:[]
-    };
-  }
-componentDidMount =()=>{
-    this.getData();
-}
-getData =()=>{
-    axios.get('/apis/txn/getTxn').then(data=>{
-        if(data && data.data){
-
-            this.setState({
-                data:data.data,
-                loading:false
-            })
-        }
-    }).catch(error=>{
-      console.log(error);
-    });
-};
-changePage =(a)=>{
-    //{current:currentpageNumber,pageSize:pageLimit}
-   //you can update the api and keep pagination logic here
-};
-
-
-
-  render(){
-    const columns = [
-        {title:'Exchange Platform',dataIndex:'exchangePlatform',key:'exchangePlatform',align:"center",className:s.exchange},
-        { title: 'Conversion Currency', dataIndex: 'exchFromCurrency', key: 'exchFromCurrency' ,align:'center'},
-        { title: 'Conversion Amount', dataIndex: 'exchFromCurrencyAmt', key: 'exchFromCurrencyAmt' ,align:'center'},
-        { title: 'Converted Currency', dataIndex: 'exchToCurrency', key: 'exchToCurrency' ,align:'center'},
-        { title: 'Converted Amount', dataIndex: 'totalExchangeAmout', key: 'totalExchangeAmout' ,align:'center'},
-        { title: 'Eraswap Deposit Address', dataIndex: 'eraswapAcceptAddress', key: 'eraswapAcceptAddress',align:'left' },
-        {title:'Deposit Status', dataIndex:'dipositTxnStatus',key:"dipositTxnStatus",align:'center',render:(depositStat)=>{
-          return depositStat==="ok" ? (<span><Badge status="success" />Received</span>) : (<span><Badge status="warning" />{depositStat || "Pending"}</span>)
-        }},
-        {title:'Payment Status',dataIndex:'witdrawn',key:'witdrawn',align:'center' ,  render:(keyStat)=>{
-          return keyStat ? (<span><Badge status="success" />Finished</span>) : (<span><Badge status="warning" />Waiting</span>)
-        }},
-        { title:"Created At", dataIndex:"createdAt", key:"createdAt" ,align:'right',render:(date)=>{
-            return new Date(date.toString()).toLocaleDateString() + ' '+ new Date(date.toString()).toLocaleTimeString()
-        }}
-      ];
-
-
-      return(
-        <div>
-        {/* <Card title={this.props.title}> */}
-        <Table
-    columns={columns}
-    // expandedRowRender={record => <p style={{ margin: 0 }}>{JSON.stringify(record)}</p>}
-    dataSource={this.state.data}
-    loader={this.state.loading}
-    onChange={this.changePage}
-  />
-        {/* </Card> */}
-        </div>
-      )
-  }
-
-
-}
 
 class Computex extends React.Component {
   constructor(props) {
@@ -803,7 +732,7 @@ class ManageComputex extends React.Component{
   };
   contentListNoTitle = {
     computex: <Computex title={this.props.title} form={this.props.form} />,
-    txnhistory: <TxnHistory title="Transaction History"/>,
+    txnhistory: <TxnStat title="Transaction History" style={{width:"100%"}} />,
   };
   render() {
     return (
