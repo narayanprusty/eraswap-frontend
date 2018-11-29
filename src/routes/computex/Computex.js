@@ -731,8 +731,8 @@ class ManageComputex extends React.Component{
     this.setState({ [type]: key });
   };
   contentListNoTitle = {
-    computex: <Computex title={this.props.title} form={this.props.form} />,
-    txnhistory: <TxnStat title="Transaction History" style={{width:"100%"}} />,
+    computex: <Computex title={this.props.title} form={this.props.form}  />,
+    txnhistory: <TxnStat title="Transaction History" menukey={this.props.menukey} />,
   };
   render() {
     return (

@@ -11,7 +11,7 @@ function action() {
       title,
       component: (
         <Layout menukey={menukey}>
-          <Computex title={title} />
+          <Computex title={title} menukey={menukey} />
         </Layout>
       ),
     };

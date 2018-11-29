@@ -59,7 +59,7 @@ changePage =(a)=>{
 
 
       return(
-         <div>
+         <div className={this.props.menukey=="1" ? null : s.root}>
         {/* <Card title={this.props.title}> */}
         <Table
     columns={columns}
