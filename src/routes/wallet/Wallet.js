@@ -82,8 +82,8 @@ class WalletManager extends React.Component{
             receiver: this.state.recipient,
             amount: this.state.amount
         };
+        console.log(data);
         axios.post('/apis/wallet/send', data).then(res => {
-            this.setState({ sending: false, recipient: "", amount: "" });
             if (res.data.success) {
                 notification.open({
                     message: 'Success',
@@ -91,8 +91,9 @@ class WalletManager extends React.Component{
                 });
             }
             console.log(res);
+            this.setState({ sending: false, recipient: "", amount: "" });
         }).catch(error => {
-            this.setState({ sending: false });
+            this.setState({ sending: false, recipient: "", amount: "" });
             console.log(error);
         });
     };
