@@ -664,18 +664,18 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                   >
                     Cryptopia <br /> {this.panel2Out('cryptopia',true)}
                   </RadioButton>
-                   {/* <RadioButton
+                   <RadioButton
                     value="Kucoin"
 
                   >
                     Kucoin <br /> {this.panel2Out('kucoin',true)}
-                  </RadioButton> */}
-                  <RadioButton
+                  </RadioButton>
+                  {/* <RadioButton
                     value="OKEX"
 
                   >
                     OkEx <br /> {this.panel2Out('okex',true)}
-                  </RadioButton>
+                  </RadioButton> */}
                 </RadioGroup>
               )}
               <br />
