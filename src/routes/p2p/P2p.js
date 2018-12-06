@@ -51,7 +51,9 @@ class BuyListTable extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
+      EST_VAL:{},
       BTC_VAL:{},
+      ETH_VAL:{},
       data: [],
       pagination: {},
       loading: false,
@@ -99,11 +101,16 @@ class BuyListTable extends React.Component{
   }, {
     title: 'Price',
     dataIndex: 'fullPrice',
-    render:(fieldVal,record)=> `${fieldVal} ${record.currency}/BTC`
+    render:(fieldVal,record)=> `${fieldVal} ${record.currency}/${record.cryptoCur ? record.cryptoCur : 'BTC'}`
   },
   {
     title: 'Location',
     dataIndex: 'location',
+  },
+  {
+    title:'Currency',
+    dataIndex:'cryptoCur',
+    render:(fieldVal,record)=> `${fieldVal ? fieldVal :'BTC'}`
   },
   {
     title: 'Maximum Limit',
@@ -120,9 +127,9 @@ class BuyListTable extends React.Component{
     }
   }];
 
-  getCurrentBtcValue = (CUR = 'INR') => {
+  getCurrentBtcValue = (CUR = 'INR',cryptoCur) => {
     return axios
-        .get(`/apis/cur/current_BTC?currency=${CUR}`);
+        .get(`/apis/cur/current_BTC?currency=${CUR}&cryptoCur=${cryptoCur}`);
     };
 
   showInterest =()=>{
@@ -173,7 +180,7 @@ class BuyListTable extends React.Component{
       const pagination = { ...this.state.pagination };
       // Read total count from server
       // pagination.total = data.totalCount;
-      // debugger;
+      debugger;
       pagination.total = countData.data.count;
       let allData=[];
 
@@ -182,16 +189,16 @@ class BuyListTable extends React.Component{
         if(i.fixedPrice){
           BTCVAl=i.fixedPrice
         }
-        else if(this.state.BTC_VAL[i.currency]){
-          BTCVAl = this.state.BTC_VAL[i.currency];
+        else if(this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]){
+          BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency];
         }else{
 
-          let awaitData =await this.getCurrentBtcValue(i.currency);
+          let awaitData =await this.getCurrentBtcValue(i.currency,i.cryptoCur ? i.cryptoCur : 'BTC');
           BTCVAl = awaitData.data.data;
 
           this.setState({
-            BTC_VAL:{
-              ...this.state.BTC_VAL,
+            [`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`]:{
+              ...this.state[i.cryptoCur ? i.cryptoCur : 'BTC'],
               [i.currency]:BTCVAl,
             }
           })
@@ -252,7 +259,7 @@ class BuyListTable extends React.Component{
               <DescriptionItem title="Payment Method" content={this.state.record.paymentMethod} />{' '}
             </Col>
             <Col span={12}>
-              <DescriptionItem title="Price" content={this.state.record.fullPrice  +' '+ this.state.record.currency+"/BTC"} />
+              <DescriptionItem title="Price" content={this.state.record.fullPrice  +' '+ this.state.record.currency+this.state.record.cryptoCur ?this.state.record.cryptoCur :'BTC'} />
             </Col>
           </Row>
           <Row>

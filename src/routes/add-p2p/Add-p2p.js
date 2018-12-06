@@ -32,16 +32,16 @@ class BuyComponent extends React.Component {
     };
   }
   componentDidMount = () => {
-    this.getCurrentBtcValue();
+    // this.getCurrentBtcValue();
   };
   // componentDidUpdate=()=>{
   //   if(this.state.currency){
   //     this.getCurrentBtcValue(this.state.currency);
   //   }
   // }
-  getCurrentBtcValue = (CUR = 'INR') => {
+  getCurrentBtcValue = (CUR = 'INR',cryptoCur) => {
     axios
-      .get(`/apis/cur/current_BTC?currency=${CUR}`)
+      .get(`/apis/cur/current_BTC?currency=${CUR}&cryptoCur=${cryptoCur}`)
       .then(data => {
         if (data && data.data) {
           this.setState({
@@ -58,6 +58,7 @@ class BuyComponent extends React.Component {
   };
   handleSubmit = e => {
     e.preventDefault();
+    //cryptoCur is the crypto attribute
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', JSON.stringify(values));
@@ -110,12 +111,23 @@ class BuyComponent extends React.Component {
     }
   };
 
+  handleSelectChange3rd = value => {
+    if (!('value' in this.props)) {
+      this.setState({ cryptoCur: value });
+    }
+    const onChange = this.props.onChange;
+    if (onChange) {
+      onChange(Object.assign({}, this.state, value));
+    }
+  };
+
   formchange = e => {
     e.preventDefault();
     this.setState({
       [e.target.name]: e.target.value,
     });
   };
+
   childrenCurrList = () => {
     const c = ['INR', 'USD', 'AED'];
     let children = [];
@@ -144,11 +156,39 @@ class BuyComponent extends React.Component {
     return children;
   };
   render() {
+    const { size } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <label>Current BTC Price: {this.state.currentBtc} INR</label>
         <Form onSubmit={this.handleSubmit}>
+        <FormItem
+            label="Select a Crypto"
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 12 }}
+          >
+            {getFieldDecorator('cryptoCur', {
+              rules: [{ required: true, message: 'Crypto currency is required!' }],
+            })(
+              <Select
+              mode="combobox"
+              name="cryptoCur"
+              placeholder="Select Crypto Currency"
+              value={this.props.cryptoCur}
+              size={size}
+              style={{ width: '30%' }}
+              onChange={this.handleSelectChange3rd}
+            >
+              <Option key='1' value='EST'>
+          EST
+        </Option><Option key='2' value='BTC'>
+          BTC
+        </Option>
+        <Option key='3' value='ETH'>
+          ETH
+        </Option>
+            </Select>,
+            )}
+          </FormItem>
           <FormItem
             label="Headline"
             labelCol={{ span: 5 }}
@@ -333,7 +373,9 @@ class MyListComponent extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
+      EST_VAL:{},
       BTC_VAL:{},
+      ETH_VAL:{},
       data: [],
       pagination: {},
       loading: false,
@@ -357,6 +399,11 @@ class MyListComponent extends React.Component{
   {
     title: 'Location',
     dataIndex: 'location',
+  },
+  {
+    title:'Currency',
+    dataIndex:'cryptoCur',
+    render:(fieldVal,record)=> `${fieldVal ? fieldVal :'BTC'}`
   },
   {
     title: 'Maximum Limit',
@@ -390,9 +437,9 @@ class MyListComponent extends React.Component{
       return data;
     });
   }
-  getCurrentBtcValue = (CUR = 'INR') => {
+  getCurrentBtcValue = (CUR = 'INR',cryptoCur) => {
     return axios
-        .get(`/apis/cur/current_BTC?currency=${CUR}`);
+        .get(`/apis/cur/current_BTC?currency=${CUR}&cryptoCur=${cryptoCur}`);
     };
     handleTableChange = (pagination, filters, sorter) => {
       const pager = { ...this.state.pagination };
@@ -438,16 +485,16 @@ class MyListComponent extends React.Component{
           if(i.fixedPrice){
             BTCVAl=i.fixedPrice
           }
-          else if(this.state.BTC_VAL[i.currency]){
-            BTCVAl = this.state.BTC_VAL[i.currency];
+          else if(this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]){
+            BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency];
           }else{
 
-            let awaitData =await this.getCurrentBtcValue(i.currency);
+            let awaitData =await this.getCurrentBtcValue(i.currency,i.cryptoCur ? i.cryptoCur : 'BTC');
             BTCVAl = awaitData.data.data;
 
             this.setState({
-              BTC_VAL:{
-                ...this.state.BTC_VAL,
+              [`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`]:{
+                ...this.state[i.cryptoCur ? i.cryptoCur : 'BTC'],
                 [i.currency]:BTCVAl,
               }
             })
