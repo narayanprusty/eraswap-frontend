@@ -19,7 +19,7 @@ import {
   Spin,
   Table,
   Badge,
-  notification  
+  notification
 } from 'antd';
 import s from './Wallet.css';
 import QrCode from 'qrcode.react';
@@ -161,8 +161,8 @@ class WalletManager extends React.Component{
 
         return (
         <div>
-            <Card title={this.props.header}>      
-                <div style={{marginBottom: '0.5%'}}>Balance: 
+            <Card title={this.props.header}>
+                <div style={{marginBottom: '0.5%'}}>Balance:
                     {
                         this.state.balance == "" ? "" : "  "+this.state.balance
                     }
@@ -179,11 +179,11 @@ class WalletManager extends React.Component{
                     }}
                     >
                     {
-                        this.state.noTitleKey == "SendForm" ? 
+                        this.state.noTitleKey == "SendForm" ?
                         (<Form>
                             <FormItem
                                 label="Recipient address" >
-                                <Input 
+                                <Input
                                     type="text"
                                     value={this.state.recipient}
                                     onChange={e => this.setState({recipient: e.target.value})}
@@ -193,7 +193,7 @@ class WalletManager extends React.Component{
                             </FormItem>
                             <FormItem
                                 label="Amount" >
-                                <Input 
+                                <Input
                                     type="number"
                                     value={this.state.amount}
                                     onChange={e => this.setState({amount: e.target.value})}
@@ -239,7 +239,7 @@ class BtcWalletManager extends React.Component{
         this.state = {
             header: "Bitcoin Wallet",
             type: "crypto",
-            name: "Btc",
+            name: "BTC",
         };
         console.log("manager"+this.state.header);
     }
@@ -257,7 +257,7 @@ class EthWalletManager extends React.Component{
         this.state = {
             header: "Ethereum Wallet",
             type: "crypto",
-            name: "Eth",
+            name: "ETH",
         };
         console.log(props);
         console.log("manager"+this.state.header);
@@ -276,7 +276,7 @@ class EstWalletManager extends React.Component{
         this.state = {
             header: "EST Token Wallet",
             type: "token",
-            name: "Est",
+            name: "EST",
         };
         console.log(props);
         console.log("manager"+this.state.header);
@@ -291,15 +291,15 @@ class EstWalletManager extends React.Component{
 
 const tabListNoTitle = [
   {
-    key: 'Btc',
+    key: 'BTC',
     tab: 'Bitcoin',
   },
   {
-    key: 'Eth',
+    key: 'ETH',
     tab: 'Ethereum',
   },
   {
-    key: 'Est',
+    key: 'EST',
     tab: 'EST Token',
   },
 ];
@@ -308,15 +308,15 @@ class Wallets extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      key: 'Btc',
-      noTitleKey: props.name || 'Btc',
+      key: 'BTC',
+      noTitleKey: props.name || 'BTC',
     };
     console.log("props",props);
   }
   contentListNoTitle = {
-    Btc: <BtcWalletManager form={this.props.form} />,
-    Eth: <EthWalletManager form={this.props.form} />,
-    Est: <EstWalletManager form={this.props.form} />,
+    BTC: <BtcWalletManager form={this.props.form} />,
+    ETH: <EthWalletManager form={this.props.form} />,
+    EST: <EstWalletManager form={this.props.form} />,
   };
   render() {
     return (

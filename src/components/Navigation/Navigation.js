@@ -44,17 +44,17 @@ class Navigation extends React.Component {
 
         <SubMenu title="Wallets">
         <Menu.Item key="5">
-        <Link to='/wallet/Btc'>
+        <Link to='/wallet/BTC'>
         Bitcoin
         </Link>
         </Menu.Item>
         <Menu.Item key="6">
-        <Link to='/wallet/Eth'>
+        <Link to='/wallet/ETH'>
         Ethereum
         </Link>
         </Menu.Item>
         <Menu.Item key="7">
-        <Link to='/wallet/Est'>
+        <Link to='/wallet/EST'>
         EST Token
         </Link>
         </Menu.Item>

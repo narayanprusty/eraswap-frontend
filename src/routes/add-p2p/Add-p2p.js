@@ -147,7 +147,7 @@ class BuyComponent extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <label>Current Btc Price: {this.state.currentBtc} INR</label>
+        <label>Current BTC Price: {this.state.currentBtc} INR</label>
         <Form onSubmit={this.handleSubmit}>
           <FormItem
             label="Headline"

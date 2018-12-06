@@ -32,7 +32,7 @@ class AllWallets extends React.Component {
             >
               <Col span={8}>
                 <div className={s.dashIcon}>
-                  <Link to="/wallet/Btc">
+                  <Link to="/wallet/BTC">
                     {/* <Icon type="wallet" theme="twoTone" className={s.icoStyle} /> */}
                     <img src={walletSvg} className={s.icoStyle} />
                     <br />
@@ -44,7 +44,7 @@ class AllWallets extends React.Component {
               </Col>
               <Col span={8}>
                 <div className={s.dashIcon}>
-                  <Link to="/wallet/Eth">
+                  <Link to="/wallet/ETH">
                     {/* <Icon type="database" theme="twoTone"  className={s.icoStyle} /> */}
                     <img src={walletSvg} className={s.icoStyle} />
                     <br />
@@ -56,7 +56,7 @@ class AllWallets extends React.Component {
               </Col>
               <Col span={8}>
                 <div className={s.dashIcon}>
-                  <Link to="/wallet/Est">
+                  <Link to="/wallet/EST">
                     {/* <Icon type="swap" theme="twoTone" className={s.icoStyle} /> */}
                     <img src={walletSvg} className={s.icoStyle} />
                     <br />
