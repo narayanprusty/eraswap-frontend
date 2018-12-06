@@ -14,7 +14,7 @@
   padding-left: 3.5em;
   padding-right: 3.5em;
   align-self: center;
-  width:94% ;
+  width: 94%;
   max-width: var(--max-content-width);
 }
 
@@ -26,9 +26,18 @@
   max-width: var(--max-content-width);
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
-code {
-    font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-    box-sizing:border-box;
-    word-break:break-word;
 
+code {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  box-sizing: border-box;
+  word-break: break-word;
+
+}
+
+panelStyle {
+  background: '#f7f7f7';
+  border-radius: 4px;
+  margin-bottom: 24;
+  border: 0;
+  overflow: 'hidden';
 }
