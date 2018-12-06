@@ -344,7 +344,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
       eraswapSendAddress: this.state.clientWallet,
       exchangePlatform: this.state.maxExchange,
       totalExchangeAmout:this.state.totalExchangeAmout,
-      lctxid:this.state.lctxid
+      lctxid:this.state.lctxid,
+      platformFeePayOpt:this.state.platformFee
     };
     axios.post('/apis/txn/verifyAndSave', dataPushable).then(data => {
       if (data && data.data) {
