@@ -42,6 +42,7 @@ class Computex extends React.Component {
     this.lastFetchId = 0;
     // this.fetchCurrency = lodash.debounce(this.fetchCurrency, 800);
     this.state = {
+      platformFee:'EST',
       exchanges: [],
       symbol:'',
       maxExchange: '',
@@ -228,7 +229,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               allExchResult: this.state.cur,
               eraswapAcceptAddress: data.data.address,
               exchangePlatform: this.state.maxExchange,
-              totalExchangeAmout:this.state.totalExchangeAmout
+              totalExchangeAmout:this.state.totalExchangeAmout,
+              platformFeePayOpt:this.state.platformFee
             };
           axios.post('/apis/txn/record_txn',postDta).then(data=>{
             if(data && data.data){
@@ -599,6 +601,12 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                   >
                     {this.state.cur && this.childrenCurrList()}
                   </Select>
+                </FormItem>
+                <FormItem label="Pay platform fee using:">
+                <RadioGroup name="platformFee" onChange={this.handleChanges.bind(this)} value={this.state.platformFee} >
+                    <Radio value="EST">EST [50% off]</Radio>
+                    <Radio value="source">{this.state.currency ? this.state.currency : "source currency"}</Radio>
+                  </RadioGroup>
                 </FormItem>
                 <FormItem>
                   {!this.state.loader &&
