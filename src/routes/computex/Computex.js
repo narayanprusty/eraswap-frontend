@@ -454,8 +454,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     }
   };
   checkValue=(e)=>{
-    return axios.get("/apis/cur/checkVal?currency="+this.state.currency).then(data=>{
-      debugger;
+    return axios.get("/apis/cur/checkVal?currency="+this.state.currency+'&amount='+this.state.amount+'&platform='+this.state.platformFee).then(data=>{
         if(data && data.data){
           const foundData= JSON.parse(data.data);
             const currencyData = foundData.data[this.state.currency];
