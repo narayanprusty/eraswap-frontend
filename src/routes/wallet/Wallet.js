@@ -21,6 +21,9 @@ import {
   Badge,
   notification
 } from 'antd';
+
+const { Column } = Table;
+
 import s from './Wallet.css';
 import QrCode from 'qrcode.react';
 import moment from 'moment';
@@ -62,12 +65,14 @@ class WalletManager extends React.Component{
             loadingBalance: false,
             sending : false,
             gettingPK : false,
+            history : "",
         };
     }
 
     componentDidMount(){
         this.getBalance();
         this.getAddress();
+        this.getHistory();
     }
 
     onTabChange = (key) => {
@@ -117,6 +122,15 @@ class WalletManager extends React.Component{
             console.log(error);
         });
     };
+
+    getHistory = () => {
+        axios.get('/apis/wallet/getHistory?crypto=' + this.state.name).then(res => {
+            console.log(res.data.history);
+            this.setState({ history: res.data.history });
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
     downloadPrivateKey = () => {
         this.setState({gettingPK : true});
@@ -226,7 +240,32 @@ class WalletManager extends React.Component{
                     <Button type="primary" icon="download" size={size} loading={this.state.gettingPK}
                      onClick={this.downloadPrivateKey}>Download Private Key</Button>
                 </Card>
-
+                <Collapse accordion>
+                    <Panel header="History" key="1">
+                    <Table dataSource={this.state.history}>
+                        <Column
+                            title="Receiver"
+                            dataIndex="receiver"
+                            key="receiver"
+                        />
+                        <Column
+                            title="Amount"
+                            dataIndex="amount"
+                            key="amount"
+                        />
+                        <Column
+                            title="Status"
+                            dataIndex="status"
+                            key="status"
+                        />
+                        <Column
+                            title="Transaction Hash"
+                            dataIndex="txnHash"
+                            key="txnHash"
+                        />
+                    </Table>
+                </Panel>
+            </Collapse>
             </Card>
         </div>
         );
