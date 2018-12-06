@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import s from './p2p.css';
-import { Card, Button,Table,Modal,Row,Col, Input } from 'antd';
+import { Card, Button,Table,Modal,Row,Col, Input,InputNumber } from 'antd';
 
 const tabListNoTitle = [
   {
@@ -134,7 +134,7 @@ class BuyListTable extends React.Component{
 
   showInterest =()=>{
 
-   return axios.post('/apis/p2p/showInterest',{...this.state.record,specialMessage:this.state.message}).then(data=>{
+   return axios.post('/apis/p2p/showInterest',{...this.state.record,askAmount:this.state.askAmount,specialMessage:this.state.message}).then(data=>{
     this.setState({
       [this.state.record._id]:true,
       visible:false,
@@ -264,16 +264,28 @@ class BuyListTable extends React.Component{
           </Row>
           <Row>
             <Col span={12}>
-              <DescriptionItem title="Minimum Amount" content= {this.state.record.minimum} />{' '}
+              <DescriptionItem title="Minimum Amount" content= {this.state.record.minimum +' '+this.state.record.currency} />{' '}
             </Col>
             <Col span={12}>
-              <DescriptionItem title="Maximum Amount" content={this.state.record.maximum} />
+              <DescriptionItem title="Maximum Amount" content={this.state.record.maximum+' '+this.state.record.currency} />
             </Col>
           </Row>
           <Row>
             <Col span={12}>
               <DescriptionItem title="Special Note" content= {this.state.record.note} />{' '}
             </Col>
+          </Row>
+          <Row>
+            <label>Ask Amount: (Should Be grater or same of Minimum amount or otherwise less or same of maximum amount )</label><br />
+            <Input
+                type='number'
+                placeholder="ask for amount"
+                onChange={this.handleChange}
+                min={this.state.record.minimum}
+                max={this.state.record.maximum}
+                addonAfter={this.state.record.currency || 'USD'}
+                name="askAmount"
+                  />
           </Row>
           <Row>
             <label>Special Message to {this.state.record.username}:</label><br />

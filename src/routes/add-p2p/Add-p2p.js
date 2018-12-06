@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import s from './Add-p2p.css';
-import { Card, Form, Input, Button, Select, Radio,Table } from 'antd';
+import { Card, Form, Input, Button, Select, Radio,Table,List } from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -424,7 +424,21 @@ class MyListComponent extends React.Component{
       return (<Button type="primary" onClick={this.updation.bind(this,record,fieldVal || this.state[record._id] || false)} >{fieldVal || this.state[record._id] ? "Inactive" :"Active"}</Button>)
     }
   }];
-
+  conVertObjToArr = async(record)=>{
+    return axios.get('/apis/p2p/getInterests?listingId='+record._id).then(data=>{
+      if(data && data.data){
+        let pushable = [];
+         for(let i of data.data.userRequests){
+           delete i._id;
+           i.username = i.userId.username;
+           delete i.userId;
+           pushable.push(i);
+         }
+         console.log(pushable)
+         return pushable;
+      }
+    });
+  };
   updation =(record,fieldValue)=>{
     this.setState({
       [record._id]:true
@@ -500,6 +514,7 @@ class MyListComponent extends React.Component{
             })
 
           }
+          i.requests = await this.conVertObjToArr(i);
           this.setState
             i.fullPrice=BTCVAl;
             allData.push(i)
@@ -522,6 +537,29 @@ class MyListComponent extends React.Component{
           columns={this.columns}
           rowKey={record => record._id}
           dataSource={this.state.data}
+          expandedRowRender={record => (
+            <List
+            // grid={{ gutter: 16, column: 4 }}
+            itemLayout="horizontal"
+            dataSource={ record.requests}
+            renderItem={item => (
+              <List.Item>
+                <List.Item.Meta
+                title={item.username}
+                description={"message: "+item.message}
+                 />
+               {item.amount} &nbsp;
+               <Button
+              type="primary"
+              htmlType="button"
+              // onClick={ call matching function here}
+            >
+              Match
+            </Button>
+              </List.Item>
+            )}
+          />
+          )}
           pagination={this.state.pagination}
           loading={this.state.loading}
           onChange={this.handleTableChange}
