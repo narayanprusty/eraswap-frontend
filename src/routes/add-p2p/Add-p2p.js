@@ -430,6 +430,7 @@ class MyListComponent extends React.Component{
         let pushable = [];
          for(let i of data.data.userRequests){
            delete i._id;
+           i.userId = i.userId._id;
            i.username = i.userId.username;
            delete i.userId;
            pushable.push(i);

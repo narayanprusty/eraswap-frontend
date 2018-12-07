@@ -217,8 +217,19 @@ class BuyListTable extends React.Component{
   });
   }
 
+  loadMyOwnInterests = ()=>{
+    return axios.get('/apis/p2p/getMyOwnInterests').then(data=>{
+      if(data && data.data){
+        for(let i of data.data){
+            this.setState({
+              [i.listingId]:true
+            })
+        }
+      }
+    });
+  };
   componentDidMount() {
-
+    this.loadMyOwnInterests();
     this.fetch({wantsToBuy:this.props.sell||false }); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
   }
   componentWillReceiveProps(nextProps){
