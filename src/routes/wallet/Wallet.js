@@ -19,7 +19,10 @@ import {
   Spin,
   Table,
   Badge,
-  notification
+  notification,
+  Dropdown,
+  Menu,
+  AutoComplete 
 } from 'antd';
 
 const { Column } = Table;
@@ -48,6 +51,21 @@ const sendReceiveTabs = [
     },
   ];
 
+  const tabListNoTitle = [
+    {
+      key: 'BTC',
+      tab: 'Bitcoin',
+    },
+    {
+      key: 'ETH',
+      tab: 'Ethereum',
+    },
+    {
+      key: 'EST',
+      tab: 'EST Token',
+    },
+  ];
+
 class WalletManager extends React.Component{
     constructor(props){
         super(props);
@@ -66,6 +84,9 @@ class WalletManager extends React.Component{
             sending : false,
             gettingPK : false,
             history : "",
+            conversionTypes: [],
+            exchangeAmount: "",
+            converting: false,
         };
     }
 
@@ -73,6 +94,22 @@ class WalletManager extends React.Component{
         this.getBalance();
         this.getAddress();
         this.getHistory();
+        this.getConversionCryptos();
+    }
+
+    getConversionCryptos() {
+        var types = [];
+        var index = 1;
+        for (var i = 0; i < tabListNoTitle.length; i++) {
+            if (tabListNoTitle[i].key != this.state.name) {
+                types.push(tabListNoTitle[i].key);
+            }
+        }
+        this.setState({ conversionTypes: types });
+    }
+
+    convert() {
+
     }
 
     onTabChange = (key) => {
@@ -241,7 +278,33 @@ class WalletManager extends React.Component{
                      onClick={this.downloadPrivateKey}>Download Private Key</Button>
                 </Card>
                 <Collapse accordion>
-                    <Panel header="History" key="1">
+                    <Panel header="Exchange" key="1">
+                            <Form layout="inline">
+                                <FormItem
+                                    label="Convert to" >
+                                    <AutoComplete
+                                        style={{ maxWidth: '50%' }}
+                                        dataSource={this.state.conversionTypes}
+                                        placeholder=""
+                                        filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                                        />
+                                </FormItem>
+                                <FormItem
+                                    label="Amount" >
+                                    <Input 
+                                        type="number"
+                                        value={this.state.exchangeAmount}
+                                        onChange={e => this.setState({exchangeAmount: e.target.value})}
+                                        style={{ maxWidth: '50%' }}
+                                        size="medium"
+                                    />
+                                </FormItem>
+                                <Button type="primary" onClick={this.convert.bind(this)} loading={this.state.converting}>
+                                    Convert
+                                </Button>
+                            </Form>
+                        </Panel>
+                    <Panel header="History" key="2">
                     <Table dataSource={this.state.history}>
                         <Column
                             title="Receiver"
@@ -327,21 +390,6 @@ class EstWalletManager extends React.Component{
         );
     }
 }
-
-const tabListNoTitle = [
-  {
-    key: 'BTC',
-    tab: 'Bitcoin',
-  },
-  {
-    key: 'ETH',
-    tab: 'Ethereum',
-  },
-  {
-    key: 'EST',
-    tab: 'EST Token',
-  },
-];
 
 class Wallets extends React.Component{
   constructor(props) {
