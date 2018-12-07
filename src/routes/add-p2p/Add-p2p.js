@@ -430,9 +430,8 @@ class MyListComponent extends React.Component{
         let pushable = [];
          for(let i of data.data.userRequests){
            delete i._id;
-           i.userId = i.userId._id;
            i.username = i.userId.username;
-           delete i.userId;
+           i.userId = i.userId._id;
            pushable.push(i);
          }
          console.log(pushable)
@@ -452,6 +451,31 @@ class MyListComponent extends React.Component{
       return data;
     });
   }
+  initMatch =(record,item)=>{
+    console.log("Clicked initmatch", record
+    ,item)
+    const Postdata = {
+      listingId:record._id,
+      sellerEmail:item.sellerEmail,
+      requester:item.userId,
+      amount:item.amount,
+      cryptoCurrency:record.cryptoCur
+    }
+    return axios.post('/apis/p2p/makeMatch',Postdata).then(data=>{
+      //make that match button and all the match button in that disabled maybe setstate and check for listingId_
+     if(data && data.data){
+      console.log(data.data);
+      this.setState({
+        [record._id]:{
+          [item.userId]:true
+        }
+      });
+     return data.data;
+
+     }
+    })
+  };
+
   getCurrentBtcValue = (CUR = 'INR',cryptoCur) => {
     return axios
         .get(`/apis/cur/current_BTC?currency=${CUR}&cryptoCur=${cryptoCur}`);
@@ -528,8 +552,24 @@ class MyListComponent extends React.Component{
       });
     });
     }
-    componentDidMount() {
+    myListMatches = ()=>{
+      return axios.get('/apis/p2p/myListMatches').then(data=>{
+          if(data.data){
+            console.log(data.data);
+            for(let i of data.data){
+            this.setState({
+              [`${i.listingId}_match`]:{
+                [i.requester]:true
+              }
+            })
+          }
+            return data.data;
+          }
+      })
+    }
 
+    componentDidMount() {
+      this.myListMatches();
       this.fetch(); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
     }
     render() {
@@ -544,19 +584,19 @@ class MyListComponent extends React.Component{
             itemLayout="horizontal"
             dataSource={ record.requests}
             renderItem={item => (
-              <List.Item>
+              <List.Item actions={[  <Button
+                type="primary"
+                onClick={ this.initMatch.bind(this,record,item)}
+                disabled={this.state[`${record._id}_match`] ? true : false }
+              >
+                {this.state[`${record._id}_match`] && this.state[`${record._id}_match`][item.userId] ? 'Matched' :  'Match'}
+              </Button>]}>
                 <List.Item.Meta
                 title={item.username}
                 description={"message: "+item.message}
                  />
                {item.amount} &nbsp;
-               <Button
-              type="primary"
-              htmlType="button"
-              // onClick={ call matching function here}
-            >
-              Match
-            </Button>
+
               </List.Item>
             )}
           />
