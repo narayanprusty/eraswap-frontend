@@ -22,7 +22,8 @@ import {
   notification,
   Dropdown,
   Menu,
-  AutoComplete 
+  AutoComplete, 
+  Checkbox
 } from 'antd';
 
 const { Column } = Table;
@@ -78,17 +79,42 @@ class WalletManager extends React.Component{
             balance: "",
             key: 'SendForm',
             noTitleKey: 'SendForm',
-            ourWallet: '',
+            userWallet: '',
             privateKey: '',
             loadingBalance: false,
             sending : false,
             gettingPK : false,
-            history : "",
+            history : [],
             conversionTypes: [],
             exchangeAmount: "",
+            exchangeToWallet: "",
             converting: false,
+            useEstForFees: false,
+            loader: false,
+            symbol: "",
+            exchanges: "",
+            exchangeRate: "",
+            maxExchange: "",
+            toCurrency: "",
+            checkExchanges: false,
+            lctxid: "",
+            tiMeFrom: 0,
+            cur: [],
         };
     }
+
+    findMinMax = arr => {
+        let min = { name: arr[0].name, ask: arr[0].ask },
+            max = { name: arr[0].name, ask: arr[0].ask };
+
+        for (let i = 1, len = arr.length; i < len; i++) {
+            let v = arr[i].ask;
+            min = v < min.ask ? { name: arr[i].name, ask: v } : min;
+            max = v > max.ask ? { name: arr[i].name, ask: v } : max;
+        }
+
+        return [min, max];
+    };
 
     componentDidMount(){
         this.getBalance();
@@ -108,9 +134,124 @@ class WalletManager extends React.Component{
         this.setState({ conversionTypes: types });
     }
 
-    convert() {
+    checkValue = (e) => {
+        e.preventDefault();
+        this.setState({
+            loader: true,
+        });
 
-    }
+        let platform = this.state.useEstForFees ? 'EST' : this.state.name;
+
+        return axios.get("/apis/cur/checkVal?currency=" + this.state.name + '&amount=' 
+        + this.state.exchangeAmount + '&platform=' + platform + '&fromWallet=true').then(data => {
+            if (data && data.data) {
+                const foundData = JSON.parse(data.data);
+                console.log(foundData);
+                const currencyData = foundData.data[this.state.name];
+                const usdPrice = currencyData.quote.USD.price;
+                console.log("USD Price", usdPrice);
+                if (usdPrice * this.state.exchangeAmount >= 20) {
+                    axios
+                        .get(
+                            `/apis/cur/get_exchange_values?from=${this.state.name}&to=${
+                            this.state.toCurrency
+                            }`,
+                    )
+                        .then(data => {
+                            console.log("get_exchange_values", data);
+                            if (data && data.data) {
+                                const symbol = Object.keys(data.data)[0];
+                                const getMinMax = this.findMinMax(data.data[symbol])[1];
+                                this.setState({
+                                    symbol: symbol,
+                                    loader: false,
+                                    exchanges: data.data[symbol],
+                                    maxExchange: getMinMax.ask !== 0 ? getMinMax.name : '',
+                                    exchangeRate: getMinMax.ask !== 0 ? getMinMax.ask : 0,
+                                    ['totalExchangeAmout']: getMinMax.ask * this.state.exchangeAmount,
+                                    checkExchanges: true,
+                                });
+
+                                const postDta = {
+                                    tiMeFrom: this.state.tiMeFrom,
+                                    exchFromCurrency: this.state.name,
+                                    exchFromCurrencyAmt: this.state.exchangeAmount,
+                                    exchToCurrency: this.state.toCurrency,
+                                    exchToCurrencyRate: this.state.exchangeRate,
+                                    eraswapAcceptAddress: data.data.address,
+                                    exchangePlatform: this.state.maxExchange,
+                                    totalExchangeAmout: this.state.totalExchangeAmout,
+                                    platformFeePayOpt: this.state.platformFee,
+                                    fromWallet: true,
+                                };
+                                axios.post('/apis/txn/record_txn', postDta).then(data => {
+                                    if (data && data.data) {
+                                        this.setState({
+                                            lctxid: data.data._id,
+                                            tiMeFrom: moment.utc().valueOf(),
+                                        });
+
+                                        axios.get('/apis/wallet/getAddress?crypto=' + this.state.toCurrency).then(res => {
+                                            console.log(res.data.address);
+                                            this.setState({ exchangeToWallet: res.data.address });
+
+                                            const dataPushable = {
+                                                symbol: this.state.symbol,
+                                                tiMeFrom: this.state.tiMeFrom,
+                                                exchFromCurrency: this.state.name,
+                                                exchFromCurrencyAmt: this.state.exchangeAmount,
+                                                exchToCurrency: this.state.toCurrency,
+                                                exchToCurrencyRate: this.state.exchangeRate,
+                                                eraswapAcceptAddress: this.state.userWallet,
+                                                eraswapSendAddress: this.state.exchangeToWallet,
+                                                exchangePlatform: this.state.maxExchange,
+                                                totalExchangeAmout: this.state.totalExchangeAmout,
+                                                lctxid: this.state.lctxid,
+                                                platformFeePayOpt: platform,
+                                                fromWallet: true,
+                                            };
+                                            axios.post('/apis/txn/verifyAndSave', dataPushable).then(data => {
+                                                if (data && data.data) {
+                                                    location.href = '/txnhistory';
+                                                }
+                                                this.setState({ loader: false });
+                                            }).catch(error => {
+                                                console.log(error);
+                                                this.setState({ loader: false });
+                                            });
+
+                                        }).catch(error => {
+                                            console.log(error);
+                                        });
+                                    }
+                                }).catch(error => {
+                                    console.log(error);
+                                    this.setState({ loader: false });
+                                });
+                            }
+                            else {
+                                this.setState({ loader: false });
+                            }
+                        }).catch(error => {
+                            this.setState({ loader: false });
+                            console.log(error);
+                        });
+
+                } else {
+                    notification.open({
+                        message: "Entered Amount should be equivalent to $20 or more.",
+                        description: 'Please change the amount and try again.\n Entered amout value is estimated $' + (usdPrice * this.state.exchangeAmount).toFixed(4),
+                        icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+                    });
+                    this.setState({ loader: false });
+                }
+            }
+        }).
+            catch(error => {
+                this.setState({ loader: false });
+                console.log(error);
+            })
+    };
 
     onTabChange = (key) => {
         console.log(key);
@@ -154,7 +295,7 @@ class WalletManager extends React.Component{
     getAddress = () => {
         axios.get('/apis/wallet/getAddress?crypto=' + this.state.name).then(res => {
             console.log(res.data.address);
-            this.setState({ ourWallet: res.data.address });
+            this.setState({ userWallet: res.data.address });
         }).catch(error => {
             console.log(error);
         });
@@ -196,9 +337,9 @@ class WalletManager extends React.Component{
         dummy.select();
         document.execCommand('copy');
         document.body.removeChild(dummy);
-      };
+    };
 
-    render(){
+    render() {
         const customPanelStyle = {
             background: '#f7f7f7',
             borderRadius: 4,
@@ -258,13 +399,13 @@ class WalletManager extends React.Component{
                         </Form>)
                         :
                         ( <div className={s.container}>
-                            <QrCode value={this.state.ourWallet} />
+                            <QrCode value={this.state.userWallet} />
                             <br />
                             <br />
                             <Input.Search
                               style={{ maxWidth: '45.2%' }}
                               size="large"
-                              value={this.state.ourWallet}
+                              value={this.state.userWallet}
                               enterButton={<Icon type="copy" />}
                               onSearch={value => {
                                 this.copyToClipboard(value);
@@ -279,12 +420,14 @@ class WalletManager extends React.Component{
                 </Card>
                 <Collapse accordion>
                     <Panel header="Exchange" key="1">
-                            <Form layout="inline">
+                            <Form layout="inline" onSubmit={this.checkValue}>
                                 <FormItem
                                     label="Convert to" >
                                     <AutoComplete
                                         style={{ maxWidth: '50%' }}
                                         dataSource={this.state.conversionTypes}
+                                        value={this.state.toCurrency}
+                                        onChange={text => this.setState({toCurrency: text})}
                                         placeholder=""
                                         filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                                         />
@@ -296,13 +439,21 @@ class WalletManager extends React.Component{
                                         value={this.state.exchangeAmount}
                                         onChange={e => this.setState({exchangeAmount: e.target.value})}
                                         style={{ maxWidth: '50%' }}
-                                        size="medium"
+                                        size="default"
                                     />
                                 </FormItem>
-                                <Button type="primary" onClick={this.convert.bind(this)} loading={this.state.converting}>
+                                <FormItem label="Fees">
+                                    <Checkbox value={this.state.useEstForFees} onChange={e => this.setState({useEstForFees: e.target.checked})}>
+                                        EST [50% off]
+                                    </Checkbox>
+                                </FormItem>
+                                <Button type="primary" htmlType="submit" loading={this.state.converting} loading={this.state.loader}>
                                     Convert
                                 </Button>
                             </Form>
+                            {this.state.maxExchange === '' && this.state.checkExchanges && (
+                                <span>No exchange found for this conversion</span>
+                            )}
                         </Panel>
                     <Panel header="History" key="2">
                     <Table dataSource={this.state.history}>
