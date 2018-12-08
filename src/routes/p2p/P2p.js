@@ -270,15 +270,15 @@ class BuyListTable extends React.Component{
               <DescriptionItem title="Payment Method" content={this.state.record.paymentMethod} />{' '}
             </Col>
             <Col span={12}>
-              <DescriptionItem title="Price" content={this.state.record.fullPrice  +' '+ this.state.record.currency+this.state.record.cryptoCur ?this.state.record.cryptoCur :'BTC'} />
+              <DescriptionItem title="Price" content={this.state.record.fullPrice  +' '+ this.state.record.currency+'/'+(this.state.record.cryptoCur ?this.state.record.cryptoCur :'BTC')} />
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <DescriptionItem title="Minimum Amount" content= {this.state.record.minimum +' '+this.state.record.currency} />{' '}
+              <DescriptionItem title="Minimum Amount" content= {this.state.record.minimum +' '+this.state.record.cryptoCur} />{' '}
             </Col>
             <Col span={12}>
-              <DescriptionItem title="Maximum Amount" content={this.state.record.maximum+' '+this.state.record.currency} />
+              <DescriptionItem title="Maximum Amount" content={this.state.record.maximum+' '+this.state.record.cryptoCur} />
             </Col>
           </Row>
           <Row>
@@ -294,7 +294,7 @@ class BuyListTable extends React.Component{
                 onChange={this.handleChange}
                 min={this.state.record.minimum}
                 max={this.state.record.maximum}
-                addonAfter={this.state.record.currency || 'USD'}
+                addonAfter={this.state.record.cryptoCur || 'EST'}
                 name="askAmount"
                   />
           </Row>

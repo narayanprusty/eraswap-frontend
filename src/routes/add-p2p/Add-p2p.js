@@ -20,7 +20,10 @@ const tabListNoTitle = [
   {
     key: 'myList',
     tab: 'All My Listing',
-  },
+  },{
+    key:'myRequests',
+    tab:'Sent Requests'
+  }
 ];
 
 class BuyComponent extends React.Component {
@@ -291,7 +294,7 @@ class BuyComponent extends React.Component {
                 placeholder="maximum amount"
                 onChange={this.formchange}
                 name="maxAmt"
-                addonAfter={this.state.currency || 'USD'}
+                addonAfter={this.state.cryptoCur || 'EST'}
               />,
             )}
           </FormItem>
@@ -310,7 +313,7 @@ class BuyComponent extends React.Component {
                 placeholder="minimum amount"
                 onChange={this.formchange}
                 name="minAmt"
-                addonAfter={this.state.currency || 'USD'}
+                addonAfter={this.state.cryptoCur || 'EST'}
               />,
             )}
           </FormItem>
@@ -425,7 +428,7 @@ class MyListComponent extends React.Component{
     }
   }];
   conVertObjToArr = async(record)=>{
-    return axios.get('/apis/p2p/getInterests?listingId='+record._id).then(data=>{
+    return axios.get('/apis/p2p/getInterests?listingId='+record.uniqueIdentifier).then(data=>{
       if(data && data.data){
         let pushable = [];
          for(let i of data.data.userRequests){
@@ -552,11 +555,39 @@ class MyListComponent extends React.Component{
       });
     });
     }
+    finishDeal =async(record,item)=>{
+      var id = this.state[`${record._id}_id`];
+      const data={
+        id:id,
+        record:record,
+        item:item
+      }
+      return axios.post('/apis/p2p/finishDeal',data).then(data=>{
+        return data;
+      })
+    };
+
+
     myListMatches = ()=>{
       return axios.get('/apis/p2p/myListMatches').then(data=>{
           if(data.data){
             console.log(data.data);
             for(let i of data.data){
+              if(i.iPaidVal && !i.finished){
+                this.setState({
+                  [`${i.listingId}_matched`]:{
+                    [i.requester]:true
+                  },
+                  [`${i.listingId}_id`]:i.uniqueIdentifier
+
+                })
+              }else if(i.finished){
+                this.setState({
+                  [`${i.listingId}_finished`]:{
+                    [i.requester]:true
+                  },
+                })
+              }
             this.setState({
               [`${i.listingId}_match`]:{
                 [i.requester]:true
@@ -590,7 +621,14 @@ class MyListComponent extends React.Component{
                 disabled={this.state[`${record._id}_match`] ? true : false }
               >
                 {this.state[`${record._id}_match`] && this.state[`${record._id}_match`][item.userId] ? 'Matched' :  'Match'}
+              </Button>, <Button
+              type='primary'
+              onClick={this.finishDeal.bind(this,record,item)}
+                disabled={this.state[`${record._id}_matched`] && this.state[`${record._id}_matched`][item.userId]  ? false : true }
+              >
+                {this.state[`${record._id}_matched`] && this.state[`${record._id}_matched`][item.userId] ? 'Finish Deal' : ( this.state[`${record._id}_finished`] && this.state[`${record._id}_finished`][item.userId] ? 'Deal closed' : 'No Deal')}
               </Button>]}>
+
                 <List.Item.Meta
                 title={item.username}
                 description={"message: "+item.message}
@@ -610,6 +648,241 @@ class MyListComponent extends React.Component{
 
 }
 
+
+class MyRequests extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      EST_VAL:{},
+      BTC_VAL:{},
+      ETH_VAL:{},
+      data: [],
+      pagination: {},
+      loading: false,
+    };
+  }
+  columns = [{
+    title: 'Username',
+    dataIndex: 'username',
+    sorter: true,
+    // render: name => `${name.first} ${name.last}`,
+    width: '20%',
+  }, {
+    title: 'Payment Method',
+    dataIndex: 'paymentMethod',
+    width: '20%',
+  }, {
+    title: 'Price',
+    dataIndex: 'fullPrice',
+    render:(fieldVal,record)=> `${fieldVal} ${record.currency}/BTC`
+  },
+  {
+    title: 'Location',
+    dataIndex: 'location',
+  },
+  {
+    title:'Currency',
+    dataIndex:'cryptoCur',
+    render:(fieldVal,record)=> `${fieldVal ? fieldVal :'BTC'}`
+  },
+  {
+    title: 'Maximum Limit',
+    dataIndex: 'maximum',
+  },
+  {
+    title: 'Minimum Limit',
+    dataIndex: 'minimum',
+  },
+  {
+    title:"Type",
+    dataIndex:"wantsToBuy",
+    render:(fieldValue)=> `${fieldValue ? 'Buy' : 'Sell'}`
+  },{
+    title:'',
+    dataIndex:'notNeeded',
+    render:(fieldVal,record)=>{
+      return (<Button type="primary"
+      onClick={this.updation.bind(this,record)}
+      disabled={this.state[record._id] ? false :true}
+      >
+      {this.state[record._id] ? "I Have Paid" : (`${this.state[record._id]}_finished` ? "Paid" : "Not Matched") }
+      </Button>)
+    }
+  }];
+  conVertObjToArr = async(record)=>{
+    return axios.get('/apis/p2p/getInterests?listingId='+record.uniqueIdentifier).then(data=>{
+      if(data && data.data){
+        let pushable = [];
+         for(let i of data.data.userRequests){
+           delete i._id;
+           i.username = i.userId.username;
+           i.userId = i.userId._id;
+           pushable.push(i);
+         }
+         console.log(pushable)
+         return pushable;
+      }
+    });
+  };
+  updation =(record)=>{
+    delete this.state[record._id];
+    var id = this.state[`${record._id}_id`];
+    const data={
+      id:id
+    }
+    return axios.post("/apis/p2p/change_status_paid",data).then(data=>{
+      return data;
+    });
+  }
+  initMatch =(record,item)=>{
+    console.log("Clicked initmatch", record
+    ,item)
+    const Postdata = {
+      listingId:record._id,
+      sellerEmail:item.sellerEmail,
+      requester:item.userId,
+      amount:item.amount,
+      cryptoCurrency:record.cryptoCur
+    }
+    return axios.post('/apis/p2p/makeMatch',Postdata).then(data=>{
+      //make that match button and all the match button in that disabled maybe setstate and check for listingId_
+     if(data && data.data){
+      console.log(data.data);
+      this.setState({
+        [record._id]:{
+          [item.userId]:true
+        }
+      });
+     return data.data;
+
+     }
+    })
+  };
+
+  getCurrentBtcValue = (CUR = 'INR',cryptoCur) => {
+    return axios
+        .get(`/apis/cur/current_BTC?currency=${CUR}&cryptoCur=${cryptoCur}`);
+    };
+    handleTableChange = (pagination, filters, sorter) => {
+      const pager = { ...this.state.pagination };
+      pager.current = pagination.current;
+      this.setState({
+        pagination: pager,
+      });
+      this.fetch({},{
+        results: pagination.pageSize,
+        page: pagination.current,
+        sortField: sorter.field,
+        sortOrder: sorter.order,
+        ...filters,
+      });
+    }
+    fetch = (query,params = {}) => {
+      console.log('params:', params);
+      this.setState({ loading: true });
+
+      axios({
+        url: '/apis/p2p/getMyrequests',
+        method: 'get',
+        type: 'json',
+      }).then(async(data) => {
+        // Read total count from server
+        // pagination.total = data.totalCount;
+        let allData=[];
+
+        for(let i of data.data){
+          let BTCVAl ;
+          if(i.fixedPrice){
+            BTCVAl=i.fixedPrice
+          }
+          else if(this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]){
+            BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency];
+          }else{
+
+            let awaitData =await this.getCurrentBtcValue(i.currency,i.cryptoCur ? i.cryptoCur : 'BTC');
+            BTCVAl = awaitData.data.data;
+
+            this.setState({
+              [`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`]:{
+                ...this.state[i.cryptoCur ? i.cryptoCur : 'BTC'],
+                [i.currency]:BTCVAl,
+              }
+            })
+
+          }
+          i.requests = await this.conVertObjToArr(i);
+          this.setState
+            i.fullPrice=BTCVAl;
+            allData.push(i)
+        }
+        this.setState({
+          loading: false,
+          data: allData,
+        });
+    });
+    }
+    myListMatches = ()=>{
+      return axios.get('/apis/p2p/requesterListMatches').then(data=>{
+          if(data.data){
+            console.log(data.data);
+            for(let i of data.data){
+              if(i.showIpaid && !i.finished){
+            this.setState({
+              [`${i.listingId}`]:true,
+              [`${i.listingId}_id`]:i.uniqueIdentifier
+            })
+          }else if(i.finished){
+            this.setState({
+              [`${i.listingId}_finished`]:true
+            })
+          }
+          }
+            return data.data;
+          }
+      })
+    }
+
+    componentDidMount() {
+      this.myListMatches();
+      this.fetch(); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
+    }
+    render() {
+      return (
+        <Table
+          columns={this.columns}
+          rowKey={record => record._id}
+          dataSource={this.state.data}
+          // expandedRowRender={record => (
+          //   <List
+          //   // grid={{ gutter: 16, column: 4 }}
+          //   itemLayout="horizontal"
+          //   dataSource={ record.requests}
+          //   renderItem={item => (
+          //     <List.Item actions={[  <Button
+          //       type="primary"
+          //       onClick={ this.initMatch.bind(this,record,item)}
+          //       disabled={this.state[`${record._id}_match`] ? true : false }
+          //     >
+          //       {this.state[`${record._id}_match`] && this.state[`${record._id}_match`][item.userId] ? 'Matched' :  'Match'}
+          //     </Button>]}>
+          //       <List.Item.Meta
+          //       title={item.username}
+          //       description={"message: "+item.message}
+          //        />
+          //      {item.amount} &nbsp;
+
+          //     </List.Item>
+          //   )}
+          // />
+          // )}
+          // pagination={this.state.pagination}
+          loading={this.state.loading}
+          onChange={this.handleTableChange}
+        />
+      );
+    }
+
+}
 /**
  *  Main Component
  */
@@ -631,7 +904,8 @@ class Addp2p extends React.Component {
   contentListNoTitle = {
     buy: <BuyComponent form={this.props.form} />,
     sell: <BuyComponent form={this.props.form} sell={true} />,
-    myList: <MyListComponent />
+    myList: <MyListComponent />,
+    myRequests:<MyRequests />
   };
   render() {
     return (
