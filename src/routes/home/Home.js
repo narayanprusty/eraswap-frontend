@@ -81,7 +81,7 @@ class Home extends React.Component {
               </Col>
               <Col span={6}>
               <div className={s.dashIcon}>
-                <Link to="/LandB">
+                <Link to="/LendBorrow">
                 {/* <Icon type="usergroup-add" theme="twoTone" className={s.icoStyle} /> */}
                 <img src={lendingSvg}  className={s.icoStyle} />
                 <br />

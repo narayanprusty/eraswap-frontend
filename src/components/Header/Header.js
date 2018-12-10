@@ -106,6 +106,16 @@ class Header extends React.Component {
     {this.props.menukey == 6 && (
       <div>
         <h1 className={s.bannerTitle}>Lend & Borrow</h1>
+        <p className={s.bannerDesc}>Place Order</p></div>
+    )}
+    {this.props.menukey == 7 && (
+      <div>
+        <h1 className={s.bannerTitle}>Lend & Borrow</h1>
+        <p className={s.bannerDesc}>Agreements</p></div>
+    )}
+    {this.props.menukey == 8 && (
+      <div>
+        <h1 className={s.bannerTitle}>Lend & Borrow</h1>
         <p className={s.bannerDesc}>Order Book</p></div>
     )}
           </div>

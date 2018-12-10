@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './BorrowLen.css';
+import s from './PlaceOrder.css';
 import {
     Card,
     Form,
@@ -35,7 +35,7 @@ const lendBorrowTabs = [
     },
   ];
 
-class BorrowLen extends React.Component {
+class PlaceOrder extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
   };
@@ -122,7 +122,7 @@ class BorrowLen extends React.Component {
                 {
                     this.state.noTitleKey == "LendForm" ? 
                     (
-                        <Card title="Lend">
+                        <Card title="Lending Coin Form">
                             <Form onSubmit={this.placeLendingOrder}>
                                 <FormItem
                                     label="Lending Coin" >
@@ -184,7 +184,7 @@ class BorrowLen extends React.Component {
                     ) 
                     :
                     (
-                        <Card title="Borrow">
+                        <Card title="Borrowing Coin Form">
                             <Form onSubmit={this.placeBorrowingOrder}>
                                 <FormItem
                                     label="Borrowing Coin" >
@@ -252,4 +252,4 @@ class BorrowLen extends React.Component {
   }
 }
 
-export default withStyles(s)(BorrowLen);
+export default withStyles(s)(PlaceOrder);

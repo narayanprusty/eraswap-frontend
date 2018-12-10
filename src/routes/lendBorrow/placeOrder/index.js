@@ -8,8 +8,8 @@
  */
 
 import React from 'react';
-import Layout from '../../components/Layout';
-import BorrowLen from './BorrowLen';
+import Layout from '../../../components/Layout';
+import PlaceOrder from './PlaceOrder';
 
 const title = 'Lend & Borrow Page';
 const menukey = 6;
@@ -19,7 +19,7 @@ function action() {
     title,
     component: (
       <Layout menukey={menukey}>
-        <BorrowLen title={title} />
+        <PlaceOrder title={title} />
       </Layout>
     ),
   };
