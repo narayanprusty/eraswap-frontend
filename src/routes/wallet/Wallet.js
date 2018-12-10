@@ -88,7 +88,6 @@ class WalletManager extends React.Component{
             conversionTypes: [],
             exchangeAmount: "",
             exchangeToWallet: "",
-            converting: false,
             useEstForFees: false,
             loader: false,
             symbol: "",
@@ -447,7 +446,7 @@ class WalletManager extends React.Component{
                                         EST [50% off]
                                     </Checkbox>
                                 </FormItem>
-                                <Button type="primary" htmlType="submit" loading={this.state.converting} loading={this.state.loader}>
+                                <Button type="primary" htmlType="submit" loading={this.state.loader}>
                                     Convert
                                 </Button>
                             </Form>
