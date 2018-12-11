@@ -35,6 +35,13 @@ class BuyComponent extends React.Component {
     };
   }
   componentDidMount = () => {
+    axios
+    .get('/apis/ping')
+    .then(data => {
+      if (data && data.data) {
+        console.log('Everything is fine bro');
+      }
+    });
     // this.getCurrentBtcValue();
   };
   // componentDidUpdate=()=>{
@@ -600,6 +607,13 @@ class MyListComponent extends React.Component{
     }
 
     componentDidMount() {
+      axios
+      .get('/apis/ping')
+      .then(data => {
+        if (data && data.data) {
+          console.log('Everything is fine bro');
+        }
+      });
       this.myListMatches();
       this.fetch(); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
     }
@@ -843,6 +857,13 @@ class MyRequests extends React.Component{
     }
 
     componentDidMount() {
+      axios
+      .get('/apis/ping')
+      .then(data => {
+        if (data && data.data) {
+          console.log('Everything is fine bro');
+        }
+      });
       this.myListMatches();
       this.fetch(); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
     }
