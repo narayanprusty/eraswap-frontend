@@ -14,26 +14,12 @@ class Dash extends React.Component {
 
 
   componentDidMount() {
-    if (
-      localStorage &&
-      localStorage.user &&
-      JSON.parse(localStorage.user).admin
-    ) {
-      location.href = '/admin';
-    } else if (
+   if (
       localStorage &&
       localStorage.user &&
       JSON.parse(localStorage.user).admin == false
     ) {
       location.href = '/admin_login?how=force';
-    } else if (
-      localStorage &&
-      localStorage.user &&
-      JSON.parse(localStorage.user)
-    ) {
-      location.href = '/';
-    } else {
-      location.href = '/login';
     }
   }
   render() {

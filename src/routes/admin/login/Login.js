@@ -37,8 +37,6 @@ class Login extends React.Component {
           location.href = '/admin/login';
       }else if(localStorage && localStorage.user && JSON.parse(localStorage.user)){
         location.href = '/'
-      }else{
-        location.href = '/login'
       }
     } else {
       console.log('just skipping');
