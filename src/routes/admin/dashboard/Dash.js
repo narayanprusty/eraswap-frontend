@@ -5,28 +5,40 @@ import axios from 'axios';
 import { Redirect } from 'react-router';
 import queryString from 'stringquery';
 
-class Dash extends React.Component{
+class Dash extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-
-    };
+    this.state = {};
   }
 
-  componentDidMount(){
-    if(localStorage.length){
-     alert("Hii")
-    }else{
-    location.href='/admin/login?how=force'
+
+  componentDidMount() {
+    if (
+      localStorage &&
+      localStorage.user &&
+      JSON.parse(localStorage.user).admin
+    ) {
+      location.href = '/admin';
+    } else if (
+      localStorage &&
+      localStorage.user &&
+      JSON.parse(localStorage.user).admin == false
+    ) {
+      location.href = '/admin_login?how=force';
+    } else if (
+      localStorage &&
+      localStorage.user &&
+      JSON.parse(localStorage.user)
+    ) {
+      location.href = '/';
+    } else {
+      location.href = '/login';
     }
   }
-  render(){
-    return(
-      <dib>Hii</dib>
-    )
+  render() {
+    return <dib>Hii</dib>;
   }
 }
-
 
 export default withStyles()(Dash);

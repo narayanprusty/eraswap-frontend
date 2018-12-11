@@ -167,6 +167,7 @@ class BuyListTable extends React.Component{
       params:query
     })
       .then(countData=>{
+        if(countData.data)
     axios({
       url: '/apis/p2p/search_listing',
       params:{
@@ -180,7 +181,6 @@ class BuyListTable extends React.Component{
       const pagination = { ...this.state.pagination };
       // Read total count from server
       // pagination.total = data.totalCount;
-      debugger;
       pagination.total = countData.data.count;
       let allData=[];
 

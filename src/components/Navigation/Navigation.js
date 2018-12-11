@@ -120,7 +120,7 @@ class Navigation extends React.Component {
         </Link>
       )}
 
-      {this.state.loggedIn && !JSON.parse(localStorage.user).adminLevel.toString() && ( <Dropdown overlay={this.menu}>
+      {this.state.loggedIn && (localStorage.user ?  !JSON.parse(localStorage.user).adminLevel : true) && ( <Dropdown overlay={this.menu}>
     <a className="ant-dropdown-link" className={s.link}  href="#">
     <Icon type="appstore" /> <Icon type="down" />
     </a>
