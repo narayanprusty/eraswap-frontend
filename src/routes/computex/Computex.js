@@ -204,6 +204,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
   unsetState = argState => {
     this.setState({
       clientWallet: false,
+      sendTag:false
     });
   };
   nextStep3 = () => {
@@ -238,11 +239,10 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                 ['lctxid']:data.data._id
               });
             }
-          }).catch(error=>{
-            console.log(error);
           });
       }
           this.setState({
+            depositTag:data.data.tag ? data.data.tag : 'Not Available',
             loader:false,
             ourWallet: data.data.address,
             key: '3',
@@ -341,6 +341,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
       exchToCurrencyRate: this.state.exchangeRate,
       allExchResult: this.state.exchanges,
       eraswapAcceptAddress: this.state.ourWallet,
+      eraswapAcceptTag:this.state.depositTag,
+      eraswapSendTag:this.state.sendTag,
       eraswapSendAddress: this.state.clientWallet,
       exchangePlatform: this.state.maxExchange,
       totalExchangeAmout:this.state.totalExchangeAmout,
@@ -722,9 +724,22 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                   }}
                   disabled={true}
                 />
+                <br/>
+                <br />
+                <Input.Search
+                  style={{ maxWidth: '45.2%' }}
+                  defaultValue={this.state.depositTag}
+                  enterButton={<Icon type="copy" />}
+                  size="large"
+                  onSearch={value => {
+                    this.copyToClipboard(value);
+                  }}
+                  disabled={true}
+                />
+
                 <br />
                 <br />
-                Please enter your receiving address:
+                Please enter your receiving Details:
                 <br />
                 <Input.Search
                   style={{ maxWidth: '45.2%' }}
@@ -739,6 +754,24 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                     });
                   }}
                   disabled={this.state.clientWallet ? true : false}
+                />
+                <br />
+                <br />
+                <Input.Search
+                style={{maxWidth:'45.2%'}}
+                placeholder={
+                  'Please Enter Tag, if required by your deposit Engine'
+                }
+                enterButton='Save'
+                size='large'
+                onSearch={
+                  value=>{
+                    this.setState({
+                      sendTag:value
+                    });
+                  }
+                }
+                disabled={this.state.sendTag ? true : false}
                 />
               </div>
               &nbsp;&nbsp;
