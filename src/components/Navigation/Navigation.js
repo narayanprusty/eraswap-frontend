@@ -61,7 +61,7 @@ class Navigation extends React.Component {
         </SubMenu>
 
         <Menu.Item key="8" disabled>
-        <Link to='/LandB'><Icon type="usergroup-add" theme="twoTone"  />&nbsp;Lend {"&"} Borrow</Link>
+        <Link to='/LendBorrow'><Icon type="usergroup-add" theme="twoTone"  />&nbsp;Lend {"&"} Borrow</Link>
         </Menu.Item>
     </Menu>
   );
@@ -102,6 +102,21 @@ class Navigation extends React.Component {
       {this.props.menukey == 4 &&(
         <Link className={s.link} to="/add_p2p_listing">
           Manage Your Listings
+        </Link>
+      )}
+      {(this.props.menukey >= 6 && this.props.menukey <= 8) &&(
+            <Link className={s.link} to="/LendBorrow/placeOrder">
+                Place Order
+            </Link>
+      )}
+      {(this.props.menukey >= 6 && this.props.menukey <= 8) &&(
+            <Link className={s.link} to="/LendBorrow">
+            Order Book
+        </Link>
+      )}
+      {(this.props.menukey >= 6 && this.props.menukey <= 8) &&(
+            <Link className={s.link} to="/LendBorrow/agreements">
+            Your Agreements
         </Link>
       )}
 

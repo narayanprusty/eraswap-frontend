@@ -45,11 +45,11 @@ const routes = {
     },
     {
         path: '/wallet',
-        load: () => import(/* webpackChunkName: 'admin' */ './wallet'),
+        load: () => import(/* webpackChunkName: 'wallet' */ './wallet'),
     },
     {
       path: '/wallet/:name',
-      load: () => import(/* webpackChunkName: 'admin' */ './wallet'),
+      load: () => import(/* webpackChunkName: 'wallet' */ './wallet'),
     },{
       path:'/txnhistory',
       load: ()=> import('./TxnHistory'),
@@ -65,6 +65,18 @@ const routes = {
     {
       path: '/admin',
       load: () => import(/* webpackChunkName: 'admin' */ './admin'),
+    },
+    {
+        path: '/LendBorrow/placeOrder',
+        load: () => import('./lendBorrow/placeOrder'),
+    },
+    {
+        path: '/LendBorrow/agreements',
+        load: () => import('./lendBorrow/agreements'),
+    },
+    {
+        path: '/LendBorrow',
+        load: () => import('./lendBorrow'),
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
