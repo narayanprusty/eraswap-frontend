@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import axios from 'axios';
 import s from './PlaceOrder.css';
 import {
     Card,
@@ -57,6 +58,41 @@ class PlaceOrder extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.getCoinsOptions();
+    }
+
+    getCoinsOptions = async () => {
+        axios.get('/apis/lendingBorrowing/getCoinsOptions').then(res => {
+            console.log(res.data);
+            if (res.data.length)
+                this.setState({ lendingCoinsOption: res.data, borrowingCoinsOption: res.data });
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    onLendingCoinSelection = async (text) => {
+        this.setState({ lendingCoin: text });
+        axios.get('/apis/lendingBorrowing/getCollateralCoinsOptions?crypto=' + text).then(res => {
+            console.log(res.data);
+            if (res.data.length)
+                this.setState({ collateralCoinsOption: res.data, collateralCoin: "" });
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    onBorrowingCoinSelection = async (text) => {
+        this.setState({ borrowingCoin: text });
+        axios.get('/apis/lendingBorrowing/getCollateralCoinsOptions?crypto=' + text).then(res => {
+            console.log(res.data.balance);
+            this.setState({ collateralCoinsOption: res.data, collateralCoin: "" });
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
     onTabChange = (key) => {
         if (!this.state.placingOrder) {
             console.log(key);
@@ -66,44 +102,108 @@ class PlaceOrder extends React.Component {
                 borrowingCoin: "",
                 collateralCoin: "",
                 interestRate: "",
-                months: "",
-                amount: ""
+                duration: "",
+                amount: "",
+                collateralCoinsOption: [],
             });
+            this.getCoinsOptions();
         }
     };
 
-    placeLendingOrder = (e) => {
+    placeLendingOrder = async (e) => {
+        console.log("lending order", (this.state.lendingCoin != this.state.collateralCoin && this.state.duration > 0 && this.state.amount > 0));
         e.preventDefault();
-        this.setState({
-            placingOrder: true,
-        });
-
-        try {
-
+        if (this.state.lendingCoin != this.state.collateralCoin && this.state.duration > 0 && this.state.amount > 0) {
             this.setState({
-                placingOrder: false,
+                placingOrder: true,
             });
-        } catch (ex) {
-            this.setState({
-                placingOrder: false,
+
+            var data = {
+                orderType: 'lend',
+                coin: this.state.lendingCoin,
+                collateral: this.state.collateralCoin,
+                interest: this.state.interestRate,
+                duration: this.state.months,
+                amount: this.state.amount,
+            };
+            console.log(data);
+            axios.post('/apis/lendingBorrowing/placeOrder', data).then(res => {
+                console.log(res);
+                if (res.data.success) {
+                    notification.open({
+                        message: 'Success',
+                        description: 'Order placed!',
+                    });
+                }
+                else{
+                    notification.open({
+                        message: 'Failed',
+                        description: res.data.message,
+                        icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+                    });
+                }
+                console.log(res);
+                this.setState({
+                    placingOrder: false,
+                });
+            }).catch(error => {
+                this.setState({
+                    placingOrder: false,
+                });
+                notification.open({
+                    message: 'Failed',
+                    description: error.message,
+                    icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+                });
+                console.log(error);
             });
         }
     }
 
-    placeBorrowingOrder = (e) => {
+    placeBorrowingOrder = async (e) => {
         e.preventDefault();
-        this.setState({
-            placingOrder: true,
-        });
-
-        try {
-
+        if (this.state.borrowingCoin != this.state.collateralCoin && this.state.duration > 0 && this.state.amount > 0) {
             this.setState({
-                placingOrder: false,
+                placingOrder: true,
             });
-        } catch (ex) {
-            this.setState({
-                placingOrder: false,
+
+            var data = {
+                orderType: 'borrow',
+                coin: this.state.borrowingCoin,
+                collateral: this.state.collateralCoin,
+                interest: this.state.interestRate,
+                duration: this.state.months,
+                amount: this.state.amount,
+            };
+            console.log(data);
+            axios.post('/apis/lendingBorrowing/placeOrder', data).then(res => {
+                if (res.data.success) {
+                    notification.open({
+                        message: 'Success',
+                        description: 'Order placed!',
+                    });
+                }
+                else{
+                    notification.open({
+                        message: 'Failed',
+                        description: res.data.message,
+                        icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+                    });
+                }
+                console.log(res);
+                this.setState({
+                    placingOrder: false,
+                });
+            }).catch(error => {
+                this.setState({
+                    placingOrder: false,
+                });
+                notification.open({
+                    message: 'Failed',
+                    description: error.message,
+                    icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+                });
+                console.log(error);
             });
         }
     }
@@ -130,8 +230,8 @@ class PlaceOrder extends React.Component {
                                             style={{ maxWidth: '40%' }}
                                             dataSource={this.state.lendingCoinsOption}
                                             value={this.state.lendingCoin}
-                                            onChange={text => this.setState({lendingCoin: text})}
-                                            placeholder=""
+                                            onChange={this.onLendingCoinSelection}
+                                            placeholder="Select Lending Coin"
                                             filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                                     />
                                 </FormItem>
@@ -142,7 +242,7 @@ class PlaceOrder extends React.Component {
                                             dataSource={this.state.collateralCoinsOption}
                                             value={this.state.collateralCoin}
                                             onChange={text => this.setState({collateralCoin: text})}
-                                            placeholder=""
+                                            placeholder="Select Collateral Coin"
                                             filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                                     />
                                 </FormItem>
@@ -154,26 +254,30 @@ class PlaceOrder extends React.Component {
                                             onChange={e => this.setState({interestRate: e.target.value})}
                                             style={{ maxWidth: '40%' }}
                                             size="default"
+                                            placeholder="Enter interest rate"
                                         />
                                 </FormItem>
                                 <FormItem
                                     label="Months" >
                                     <Input 
                                         type="number"
-                                        value={this.state.months}
-                                        onChange={e => this.setState({months: e.target.value})}
+                                        value={this.state.duration}
+                                        onChange={e => this.setState({duration: e.target.value})}
                                         style={{ maxWidth: '40%' }}
                                         size="default"
+                                        placeholder="Enter duration"
                                     />
                                 </FormItem>
                                 <FormItem
                                     label="Amount" >
                                     <Input 
                                         type="number"
-                                        value={this.state.lendingAmount}
-                                        onChange={e => this.setState({lendingAmount: e.target.value})}
+                                        value={this.state.amount}
+                                        onChange={e => this.setState({amount: e.target.value})}
                                         style={{ maxWidth: '40%' }}
                                         size="default"
+                                        addonBefore="$"
+                                        placeholder="Enter amount"
                                     />
                                 </FormItem>
                                 <Button type="primary" htmlType="submit" loading={this.state.placingOrder}>
@@ -192,8 +296,8 @@ class PlaceOrder extends React.Component {
                                             style={{ maxWidth: '40%' }}
                                             dataSource={this.state.borrowingCoinsOption}
                                             value={this.state.borrowingCoin}
-                                            onChange={text => this.setState({borrowingCoin: text})}
-                                            placeholder=""
+                                            onChange={this.onBorrowingCoinSelection}
+                                            placeholder="Select Borrowing Coin"
                                             filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                                     />
                                 </FormItem>
@@ -204,7 +308,7 @@ class PlaceOrder extends React.Component {
                                             dataSource={this.state.collateralCoinsOption}
                                             value={this.state.collateralCoin}
                                             onChange={text => this.setState({collateralCoin: text})}
-                                            placeholder=""
+                                            placeholder="Select Collateral Coin"
                                             filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                                     />
                                 </FormItem>
@@ -216,26 +320,30 @@ class PlaceOrder extends React.Component {
                                             onChange={e => this.setState({interestRate: e.target.value})}
                                             style={{ maxWidth: '40%' }}
                                             size="default"
+                                            placeholder="Enter interest rate"
                                         />
                                 </FormItem>
                                 <FormItem
                                     label="Months" >
                                     <Input 
                                         type="number"
-                                        value={this.state.months}
-                                        onChange={e => this.setState({months: e.target.value})}
+                                        value={this.state.duration}
+                                        onChange={e => this.setState({duration: e.target.value})}
                                         style={{ maxWidth: '40%' }}
                                         size="default"
+                                        placeholder="Enter duration"
                                     />
                                 </FormItem>
                                 <FormItem
                                     label="Amount" >
                                     <Input 
                                         type="number"
-                                        value={this.state.lendingAmount}
-                                        onChange={e => this.setState({lendingAmount: e.target.value})}
+                                        value={this.state.amount}
+                                        onChange={e => this.setState({amount: e.target.value})}
                                         style={{ maxWidth: '40%' }}
                                         size="default"
+                                        addonBefore="$"
+                                        placeholder="Enter amount"
                                     />
                                 </FormItem>
                                 <Button type="primary" htmlType="submit" loading={this.state.placingOrder}>
