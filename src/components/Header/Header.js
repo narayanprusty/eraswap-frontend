@@ -55,7 +55,7 @@ class Header extends React.Component {
       <div className={s.root}>
         <div className={s.container}>
           <Navigation menukey={this.props.menukey} />
-          <Link className={s.brand} to="/">
+          <Link className={s.brand} to="/" >
             <img
               src={logoUrl}
               srcSet={logoUrl}

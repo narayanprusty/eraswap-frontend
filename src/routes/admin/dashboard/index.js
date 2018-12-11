@@ -8,23 +8,18 @@
  */
 
 import React from 'react';
-import Layout from '../../components/Layout';
-import Admin from './Admin';
+import Layout from '../../../components/Layout';
+import Dash from './Dash';
 
-const title = 'Admin Page';
-const isAdmin = false;
+const title = 'Dashborad';
+const menuKey =4.1;
 
 function action() {
-  if (!isAdmin) {
-    return { redirect: '/login' };
-  }
-
   return {
-    chunks: ['admin'],
     title,
     component: (
-      <Layout>
-        <Admin title={title} />
+      <Layout menukey={menuKey}>
+        <Dash title={title} />
       </Layout>
     ),
   };

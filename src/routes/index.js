@@ -63,10 +63,6 @@ const routes = {
       load: ()=> import('./p2p'),
     },
     {
-      path: '/admin',
-      load: () => import(/* webpackChunkName: 'admin' */ './admin'),
-    },
-    {
         path: '/LendBorrow/placeOrder',
         load: () => import('./lendBorrow/placeOrder'),
     },
@@ -77,6 +73,14 @@ const routes = {
     {
         path: '/LendBorrow',
         load: () => import('./lendBorrow'),
+    },
+    {
+      path: '/admin',
+      load: ()=> import('./admin/dashboard'),
+    },
+    {
+      path: '/admin/login',
+      load:()=> import('./admin/login'),
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {

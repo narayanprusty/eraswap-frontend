@@ -168,7 +168,6 @@ axios.interceptors.response.use(
     if(error && error.response){
     if (error.response.status === 401) {
       window.location.href = '/login?how=force';
-      console.log('>>>>>>>');
     }else{
 
       notification.open({
@@ -178,10 +177,9 @@ axios.interceptors.response.use(
       });
     }
   }
-  // console.log(error)
-    // return error;
   },
 );
+
 
 // Handle client-side navigation by using HTML5 History API
 // For more information visit https://github.com/mjackson/history#readme
