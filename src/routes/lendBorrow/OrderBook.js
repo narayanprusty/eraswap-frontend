@@ -23,7 +23,7 @@ import {
     Checkbox
   } from 'antd';
 
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 
 const FormItem = Form.Item;
 
@@ -41,10 +41,32 @@ class OrderBook extends React.Component {
 
     constructor(props) {
         super(props);
-        var filters = this.getFilters.bind(this)();
         this.state = {
+            ordersData: [],
+            coinFilter: [],
+            loadingOrders: false,
+        }
+    }
+
+    componentDidMount() {
+        this.getOrders();
+        var filters = this.getFilters.bind(this)();
+        this.setState({
             ordersData: orders,
-            coinFilter: filters
+            coinFilter: filters,
+        });
+    }
+
+    getOrders = async () => {
+        try {
+            this.setState({ loadingOrders: true });
+            var ordersData = orders;
+
+            var filters = this.getFilters();
+            
+            this.setState({ ordersData: ordersData, coinFilter: filters, loadingOrders: false });
+        } catch (ex) {
+            this.setState({ loadingOrders: false });
         }
     }
 
@@ -66,7 +88,8 @@ class OrderBook extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-            <Card>
+            <Card extra={(this.state.loadingOrders ? <Spin /> :
+                        <Icon type="reload" onClick={this.getOrders.bind(this)} style={{margin: '0.5%'}} /> )}>
                 <Table dataSource={this.state.ordersData}>
                     <Column
                         title="Order Type"
