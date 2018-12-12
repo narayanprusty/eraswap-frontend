@@ -42,6 +42,7 @@ class Computex extends React.Component {
     this.lastFetchId = 0;
     // this.fetchCurrency = lodash.debounce(this.fetchCurrency, 800);
     this.state = {
+      sendTag:undefined,
       platformFee:'EST',
       exchanges: [],
       symbol:'',
@@ -723,6 +724,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                 />
                 <br/>
                 <br />
+                {this.state.depositTag && this.state.depositTag != "Not Available" && this.state.depositTag != this.state.ourWallet && (
                 <Input.Search
                   style={{ maxWidth: '45.2%' }}
                   defaultValue={this.state.depositTag}
@@ -732,7 +734,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                     this.copyToClipboard(value);
                   }}
                   disabled={true}
-                />
+                />)}
 
                 <br />
                 <br />
@@ -754,6 +756,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                 />
                 <br />
                 <br />
+                {this.state.depositTag && this.state.depositTag != "Not Available" &&this.state.depositTag != this.state.ourWallet && (
                 <Input.Search
                 style={{maxWidth:'45.2%'}}
                 placeholder={
@@ -770,6 +773,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                 }
                 disabled={this.state.sendTag ? true : false}
                 />
+                )}
               </div>
               &nbsp;&nbsp;
               {this.state.clientWallet && (
