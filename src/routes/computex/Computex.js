@@ -802,7 +802,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
 const tabListNoTitle = [
   {
     key: 'computex',
-    tab: 'Computex',
+    tab: 'ComputeEx',
   },
   {
     key: 'txnhistory',

@@ -3,7 +3,7 @@ import Layout from '../../components/Layout';
 // import Page from '../../components/Page';
 import Computex from './Computex';
 
-const title ='ComputeX'
+const title ='ComputeEx'
 const menukey ='1'
 
 function action() {

@@ -53,7 +53,7 @@ class Dash extends React.Component {
               <Col span={6}>
                 <Card
                   style={{ margin: '1.5em' }}
-                  title="ComputeX Txns"
+                  title="ComputeEx Txns"
                   actions={[<Link to="/admin/txns"><Icon type="setting"> View Transactions</Icon></Link>]}
                 >
                   Finished:{this.state.txns ? this.state.txns.finished : 'Loading...'} <br />

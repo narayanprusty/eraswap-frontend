@@ -61,7 +61,7 @@ class Home extends React.Component {
                 <img src={computex} className={s.icoStyle} />
                 <br />
                 <br />
-                <span className={s.icoBullet}>Computex</span><br />
+                <span className={s.icoBullet}>ComputeEx</span><br />
                 <span className={s.icoDes}>Now use exchanges in smart way</span>
 
                 </Link>
