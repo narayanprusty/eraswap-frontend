@@ -102,7 +102,7 @@ class PlaceOrder extends React.Component {
                 borrowingCoin: "",
                 collateralCoin: "",
                 interestRate: "",
-                duration: "",
+                months: "",
                 amount: "",
                 collateralCoinsOption: [],
             });
@@ -113,7 +113,7 @@ class PlaceOrder extends React.Component {
     placeLendingOrder = async (e) => {
         console.log("lending order", (this.state.lendingCoin != this.state.collateralCoin && this.state.duration > 0 && this.state.amount > 0));
         e.preventDefault();
-        if (this.state.lendingCoin != this.state.collateralCoin && this.state.duration > 0 && this.state.amount > 0) {
+        if (this.state.lendingCoin != this.state.collateralCoin && this.state.months > 0 && this.state.amount > 0) {
             this.setState({
                 placingOrder: true,
             });
@@ -162,7 +162,7 @@ class PlaceOrder extends React.Component {
 
     placeBorrowingOrder = async (e) => {
         e.preventDefault();
-        if (this.state.borrowingCoin != this.state.collateralCoin && this.state.duration > 0 && this.state.amount > 0) {
+        if (this.state.borrowingCoin != this.state.collateralCoin && this.state.months > 0 && this.state.amount > 0) {
             this.setState({
                 placingOrder: true,
             });
@@ -261,8 +261,8 @@ class PlaceOrder extends React.Component {
                                     label="Months" >
                                     <Input 
                                         type="number"
-                                        value={this.state.duration}
-                                        onChange={e => this.setState({duration: e.target.value})}
+                                        value={this.state.months}
+                                        onChange={e => this.setState({months: e.target.value})}
                                         style={{ maxWidth: '40%' }}
                                         size="default"
                                         placeholder="Enter duration"
@@ -327,8 +327,8 @@ class PlaceOrder extends React.Component {
                                     label="Months" >
                                     <Input 
                                         type="number"
-                                        value={this.state.duration}
-                                        onChange={e => this.setState({duration: e.target.value})}
+                                        value={this.state.months}
+                                        onChange={e => this.setState({months: e.target.value})}
                                         style={{ maxWidth: '40%' }}
                                         size="default"
                                         placeholder="Enter duration"
