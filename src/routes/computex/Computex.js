@@ -247,10 +247,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
             ourWallet: data.data.address,
             key: '3',
             tiMeFrom: moment.utc().valueOf(),
-            panel2Text: `Best value is from ${this.state.maxExchange} : ${this
-              .state.exchangeRate +
-              ' ' +
-              this.state.toCurrency}`,
+            panel2Text: `Best value is from ${this.state.maxExchange} : for 1 ${this.state.symbol.split('/')[0]} , ${this.state.exchangeRate +' '+this.state.symbol.split('/')[1]}`,
             stepsO: {
               firstStep: {
                 status: 'finish',
