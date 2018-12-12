@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import Link from '../../../components/Link';
-import { Card, Table, Icon,Tag,List } from 'antd';
+import { Card, Table, Icon,Tag,List,Button } from 'antd';
 import s from './Users.css';
 
 class Users extends React.Component {
@@ -55,6 +55,35 @@ class Users extends React.Component {
 
   });
   }
+
+  makeadmin =(record)=>{
+    const data= {
+      id:record._id
+    };
+    axios.post('/admins/apis/users/make_admin',data).then(data=>{
+      if(data.data){
+        this.setState({
+          [record._id]:true
+        })
+      }else{
+        console.log('Unknown error');
+      }
+    });
+  }
+  revokeadmin =(record)=>{
+    const data= {
+      id:record._id
+    };
+    axios.post('/admins/apis/users/revoke_admin',data).then(data=>{
+      if(data.data){
+        this.setState({
+          [`${record._id}_revoke`]:true
+        })
+      }else{
+        console.log('Unknown error');
+      }
+    });
+  }
   componentDidMount() {
     if (
       localStorage &&
@@ -77,11 +106,11 @@ class Users extends React.Component {
   },{
     title:'Is Admin',
     dataIndex:"admin",
-    render: (fieldval)=>{
+    render: (fieldval,record)=>{
       if(fieldval == true){
-      return       <Tag color="green">Admin</Tag>
+      return <div><Tag color="green">Admin</Tag> | <Button type='danger' size='default' onClick={this.revokeadmin.bind(this,record)} disabled={this.state[`${record._id}_revoke`] ? true :false} ghost> Revoke Access</Button></div>
     }else{
-      return '-'
+      return <Button type='primary' size='success' onClick={this.makeadmin.bind(this,record)} disabled={this.state[record._id] ? true :false} ghost> Make admin</Button>
     }
   }
   }]
@@ -114,7 +143,8 @@ class Users extends React.Component {
         itemLayout="horizontal"
         dataSource={this.conVertObjToArr(record)}
         renderItem={item => (
-          <List.Item>
+          <List.Item
+          >
             <List.Item.Meta
             title={item.title}
              />
