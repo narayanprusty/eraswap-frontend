@@ -1,6 +1,7 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
+import Link from '../../../components/Link';
 import { Card, Row, Col, Icon } from 'antd';
 import s from './Dash.css';
 
@@ -42,7 +43,7 @@ class Dash extends React.Component {
                 <Card
                   style={{ margin: '1.5em' }}
                   title="Users"
-                  actions={[<Icon type="setting">Manage Users</Icon>]}
+                  actions={[<Link to="/admin/users"><Icon type="setting" />Manage Users </Link>]}
                 >
                   Users: { this.state.users ? (this.state.users.totalUser - this.state.users.admin) : 'Loading...'} <br />
                   Admins:{this.state.users ? this.state.users.admin :'Loading...'} <br />
