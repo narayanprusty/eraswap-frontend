@@ -78,10 +78,6 @@ const routes = {
       path: '/admin',
       load: ()=> import('./admin/dashboard'),
     },
-    {
-      path: '/admin_login',
-      load:()=> import('./admin/login'),
-    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

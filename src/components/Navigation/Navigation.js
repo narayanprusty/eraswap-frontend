@@ -67,8 +67,15 @@ class Navigation extends React.Component {
   );
   componentDidMount() {
    this.loginStateSet();
+
   }
   loginStateSet = ()=>{
+    if(localStorage.getItem('user') && localStorage.getItem('user').length){
+      this.setState({
+        admin:JSON.parse(localStorage.getItem('user')).admin || false,
+        adminLevel:JSON.parse(localStorage.getItem('user')).adminLevel || null
+      })
+    }
     if (
       localStorage.getItem('token') &&
       localStorage.getItem('token').length > 0
@@ -119,7 +126,13 @@ class Navigation extends React.Component {
             Your Agreements
         </Link>
       )}
-
+        {
+          this.state.admin && (
+            <Link className={s.link} to='/admin'>
+            Admin Dashboards
+            </Link>
+          )
+        }
       {this.state.loggedIn && (localStorage.user ?  !JSON.parse(localStorage.user).adminLevel : true) && ( <Dropdown overlay={this.menu}>
     <a className="ant-dropdown-link" className={s.link}  href="#">
     <Icon type="appstore" /> <Icon type="down" />
