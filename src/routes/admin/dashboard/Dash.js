@@ -43,7 +43,7 @@ class Dash extends React.Component {
                 <Card
                   style={{ margin: '1.5em' }}
                   title="Users"
-                  actions={[<Link to="/admin/users"><Icon type="setting" />Manage Users </Link>]}
+                  actions={[<Link to="/admin/users"><Icon type="setting"> Manage Users</Icon> </Link>]}
                 >
                   Users: { this.state.users ? (this.state.users.totalUser - this.state.users.admin) : 'Loading...'} <br />
                   Admins:{this.state.users ? this.state.users.admin :'Loading...'} <br />
@@ -54,7 +54,7 @@ class Dash extends React.Component {
                 <Card
                   style={{ margin: '1.5em' }}
                   title="ComputeX Txns"
-                  actions={[<Icon type="setting">View Transactions</Icon>]}
+                  actions={[<Link to="/admin/txns"><Icon type="setting"> View Transactions</Icon></Link>]}
                 >
                   Finished:{this.state.txns ? this.state.txns.finished : 'Loading...'} <br />
                   in Process:{this.state.txns ? (this.state.txns.total- this.state.txns.finished ): 'Loading...'} <br />
