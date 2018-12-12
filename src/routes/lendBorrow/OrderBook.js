@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './OrderBook.css';
+import axios from 'axios';
 import orders from './orders';
 import {
     Card,
@@ -35,7 +36,7 @@ class OrderBook extends React.Component {
     apply = (record) => {
         notification.open({
             message:("Applied"),
-            description:("Record Number "+record.id)
+            description:("Record Number "+record.uniqueIdentifier)
         });
     };
 
@@ -44,44 +45,60 @@ class OrderBook extends React.Component {
         this.state = {
             ordersData: [],
             coinFilter: [],
+            userFilter: [],
             loadingOrders: false,
         }
     }
 
     componentDidMount() {
         this.getOrders();
-        var filters = this.getFilters.bind(this)();
-        this.setState({
-            ordersData: orders,
-            coinFilter: filters,
-        });
     }
 
     getOrders = async () => {
         try {
             this.setState({ loadingOrders: true });
-            var ordersData = orders;
-
-            var filters = this.getFilters();
+            axios.get('/apis/lendingBorrowing/getOrderBook').then(res => {
+                console.log(res.data);
+                var filters = this.getFilters(res.data);
             
-            this.setState({ ordersData: ordersData, coinFilter: filters, loadingOrders: false });
+            this.setState({ ordersData: res.data, coinFilter: filters[0], userFilter: filters[1], loadingOrders: false });
+            }).catch(error => {
+                console.log(error);
+            });
+
+            
         } catch (ex) {
             this.setState({ loadingOrders: false });
         }
     }
 
-    getFilters = () => {
-        var coinFilter = new Set(orders.map(a => a.coin), orders.map(a => a.collateralCoin));
+    getFilters = (data) => {
+
+        var coinFilter = new Set(data.map(a => a.coin), data.map(a => a.collateral));
+        data.map(a => coinFilter.add(a.coin));
+        data.map(a => coinFilter.add(a.collateral));
         console.log(coinFilter);
-        var filter = [];
+        var filter1 = [];
         coinFilter.forEach(a => {
-            filter.push({
+            filter1.push({
                 text: a,
                 value: a
             });
         });
-        console.log("filter", filter);
-        return filter;
+        console.log("filter", filter1);
+
+        var userFilter = new Set(data.map(a => a.username));
+        console.log(userFilter);
+        var filter2 = [];
+        userFilter.forEach(a => {
+            filter2.push({
+                text: a,
+                value: a
+            });
+        });
+        console.log("filter", filter2);
+
+        return [filter1, filter2];
     }
 
   render() {
@@ -90,21 +107,29 @@ class OrderBook extends React.Component {
         <div className={s.container}>
             <Card extra={(this.state.loadingOrders ? <Spin /> :
                         <Icon type="reload" onClick={this.getOrders.bind(this)} style={{margin: '0.5%'}} /> )}>
-                <Table dataSource={this.state.ordersData}>
+                <Table dataSource={this.state.ordersData} rowKey="uniqueIdentifier">
                     <Column
                         title="Order Type"
-                        Key="type"
-                        dataIndex="type"
+                        Key="orderType"
+                        dataIndex="orderType"
                         filters={ [{
-                            text: 'Lending',
-                            value: 'Lending',
+                            text: 'Lend',
+                            value: 'lend',
                           }, {
-                            text: 'Borrowing',
-                            value: 'Borrowing',
+                            text: 'Borrow',
+                            value: 'borrow',
                           }]}
                           filterMultiple= {false}
-                          onFilter= {(value, record) => record.type.indexOf(value) === 0}
+                          onFilter= {(value, record) => record.orderType.indexOf(value) === 0}
                     />
+                    <Column
+                            title="User"
+                            Key="username"
+                            dataIndex="username"
+                            filters={this.state.userFilter}
+                            filterMultiple= {true}
+                            onFilter= {(value, record) => record.username.indexOf(value) === 0}
+                        />
                     <Column
                         title="Coin"
                         Key="coin"
@@ -115,11 +140,11 @@ class OrderBook extends React.Component {
                     />
                     <Column
                         title="Collateral Coin"
-                        Key="collateralCoin"
-                        dataIndex="collateralCoin"
+                        Key="collateral"
+                        dataIndex="collateral"
                         filters={this.state.coinFilter}
                           filterMultiple= {true}
-                          onFilter= {(value, record) => record.collateralCoin.indexOf(value) === 0}
+                          onFilter= {(value, record) => record.collateral.indexOf(value) === 0}
                     />
                     <Column
                         title="Interest"
@@ -129,9 +154,9 @@ class OrderBook extends React.Component {
                     />
                     <Column
                         title="Months"
-                        Key="months"
-                        dataIndex="months"
-                        sorter= {(a, b) => a.months - b.months}
+                        Key="duration"
+                        dataIndex="duration"
+                        sorter= {(a, b) => a.duration - b.duration}
                     />
                     <Column
                         title="Amount"
@@ -144,7 +169,7 @@ class OrderBook extends React.Component {
                         key="action"
                         render={(text, record) => (
                             <span>
-                            <Button type="primary" onClick={this.apply.bind(this, record)}>Apply</Button>
+                            {record.selfOrder ? "" : <Button type="primary" onClick={this.apply.bind(this, record)}>Apply</Button>}
                             </span>
                         )}
                     />
