@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import Link from '../../../components/Link';
-import { Card, Table, Icon,Tag } from 'antd';
+import { Card, Table, Icon,Tag,List } from 'antd';
 import s from './Users.css';
 
 class Users extends React.Component {
@@ -85,6 +85,21 @@ class Users extends React.Component {
     }
   }
   }]
+
+  conVertObjToArr =(wholeObj)=>{
+    let b = [];
+    for(let i of wholeObj.walletsDetails){
+      b.push({
+        title:`${i.currency} Address`,
+        content: i.address
+      });
+      b.push({
+        title:`${i.currency} Balance`,
+        content: i.balance
+      });
+    }
+    return b;
+ };
   render(){
     return(
       <div className={s.root}>
@@ -93,6 +108,21 @@ class Users extends React.Component {
       columns={this.columns}
       rowKey={record => record._id}
       dataSource={this.state.data}
+      expandedRowRender={record => (
+        <List
+        // grid={{ gutter: 16, column: 4 }}
+        itemLayout="horizontal"
+        dataSource={this.conVertObjToArr(record)}
+        renderItem={item => (
+          <List.Item>
+            <List.Item.Meta
+            title={item.title}
+             />
+            {item.content}
+          </List.Item>
+        )}
+        />
+      )}
       pagination={this.state.pagination}
       loading={this.state.loading}
       onChange={this.handleTableChange}
