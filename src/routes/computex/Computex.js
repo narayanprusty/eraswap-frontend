@@ -606,6 +606,11 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                   </RadioGroup>
                 </FormItem>
                 <FormItem>
+                  {
+                    this.state.toCurrency == this.state.currency && (
+                      <div>* Source Currency and Destination Currency cannot be same</div>
+                    )
+                  }
                   {!this.state.loader &&
                     this.state.amount > 0 &&
                     this.state.currency &&
@@ -613,7 +618,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
 
 
                       <Button.Group>
-                        <Button type="primary" onClick={this.checkValue.bind(this)} disabled={this.state.checkVal || false}>
+                        <Button type="primary" onClick={this.checkValue.bind(this)} disabled={this.state.checkVal || (this.state.toCurrency == this.state.currency) || false}>
                       Validate
                       </Button>
                       <Button type="primary" htmlType="submit" disabled={!this.state.checkVal ? true : false}>
@@ -711,6 +716,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                 <br />
                 <Input.Search
                   style={{ maxWidth: '45.2%' }}
+                  defaultValue={this.state.ourWallet}
                   defaultValue={this.state.ourWallet}
                   enterButton={<Icon type="copy" />}
                   size="large"
