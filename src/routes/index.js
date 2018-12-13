@@ -86,6 +86,10 @@ const routes = {
       path: '/admin/txns',
       load: ()=> import('./admin/txns'),
     },
+    {
+      path: '/admin/p2p',
+      load: ()=> import('./admin/p2p'),
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

@@ -431,7 +431,7 @@ class MyListComponent extends React.Component{
     title:'',
     dataIndex: 'show',
     render:(fieldVal,record)=>{
-      return (<Button type="primary" onClick={this.updation.bind(this,record,fieldVal || this.state[record._id] || false)} >{fieldVal || this.state[record._id] ? "Inactive" :"Active"}</Button>)
+      return (<Button type="primary" onClick={this.updation.bind(this,record,fieldVal || this.state[record.uniqueIdentifier] || false)} >{fieldVal || this.state[record.uniqueIdentifier] ? "Inactive" :"Active"}</Button>)
     }
   }];
   conVertObjToArr = async(record)=>{
@@ -451,7 +451,7 @@ class MyListComponent extends React.Component{
   };
   updation =(record,fieldValue)=>{
     this.setState({
-      [record._id]:true
+      [record.uniqueIdentifier]:true
     });
     const data={
       id:record.uniqueIdentifier,
@@ -465,7 +465,7 @@ class MyListComponent extends React.Component{
     console.log("Clicked initmatch", record
     ,item)
     const Postdata = {
-      listingId:record._id,
+      listingId:record.uniqueIdentifier,
       sellerEmail:item.sellerEmail,
       requester:item.userId,
       amount:item.amount,
@@ -476,7 +476,7 @@ class MyListComponent extends React.Component{
      if(data && data.data){
       console.log(data.data);
       this.setState({
-        [record._id]:{
+        [Postdata.listingId]:{
           [item.userId]:true
         }
       });
@@ -563,7 +563,7 @@ class MyListComponent extends React.Component{
     });
     }
     finishDeal =async(record,item)=>{
-      var id = this.state[`${record._id}_id`];
+      var id = this.state[`${record.uniqueIdentifier}_id`];
       const data={
         id:id,
         record:record,
@@ -632,15 +632,15 @@ class MyListComponent extends React.Component{
               <List.Item actions={[  <Button
                 type="primary"
                 onClick={ this.initMatch.bind(this,record,item)}
-                disabled={this.state[`${record._id}_match`] ? true : false }
+                disabled={this.state[`${record.uniqueIdentifier}_match`] ? true : false }
               >
-                {this.state[`${record._id}_match`] && this.state[`${record._id}_match`][item.userId] ? 'Matched' :  'Match'}
+                {this.state[`${record.uniqueIdentifier}_match`] && this.state[`${record.uniqueIdentifier}_match`][item.userId] ? 'Matched' :  'Match'}
               </Button>, <Button
               type='primary'
               onClick={this.finishDeal.bind(this,record,item)}
-                disabled={this.state[`${record._id}_matched`] && this.state[`${record._id}_matched`][item.userId]  ? false : true }
+                disabled={this.state[`${record.uniqueIdentifier}_matched`] && this.state[`${record.uniqueIdentifier}_matched`][item.userId]  ? false : true }
               >
-                {this.state[`${record._id}_matched`] && this.state[`${record._id}_matched`][item.userId] ? 'Finish Deal' : ( this.state[`${record._id}_finished`] && this.state[`${record._id}_finished`][item.userId] ? 'Deal closed' : 'No Deal')}
+                {this.state[`${record.uniqueIdentifier}_matched`] && this.state[`${record.uniqueIdentifier}_matched`][item.userId] ? 'Finish Deal' : ( this.state[`${record.uniqueIdentifier}_finished`] && this.state[`${record.uniqueIdentifier}_finished`][item.userId] ? 'Deal closed' : 'No Deal')}
               </Button>]}>
 
                 <List.Item.Meta
@@ -717,9 +717,9 @@ class MyRequests extends React.Component{
     render:(fieldVal,record)=>{
       return (<Button type="primary"
       onClick={this.updation.bind(this,record)}
-      disabled={this.state[record._id] ? false :true}
+      disabled={this.state[record.uniqueIdentifier] ? false :true}
       >
-      {this.state[record._id] ? "I Have Paid" : (`${this.state[record._id]}_finished` ? "Paid" : "Not Matched") }
+      {this.state[record.uniqueIdentifier] ? "I Have Paid" : (`${this.state[record.uniqueIdentifier]}_finished` ? "Paid" : "Not Matched") }
       </Button>)
     }
   }];
@@ -739,8 +739,8 @@ class MyRequests extends React.Component{
     });
   };
   updation =(record)=>{
-    delete this.state[record._id];
-    var id = this.state[`${record._id}_id`];
+    delete this.state[record.uniqueIdentifier];
+    var id = this.state[`${record.uniqueIdentifier}_id`];
     const data={
       id:id
     }
@@ -752,7 +752,7 @@ class MyRequests extends React.Component{
     console.log("Clicked initmatch", record
     ,item)
     const Postdata = {
-      listingId:record._id,
+      listingId:record.uniqueIdentifier,
       sellerEmail:item.sellerEmail,
       requester:item.userId,
       amount:item.amount,
@@ -763,7 +763,7 @@ class MyRequests extends React.Component{
      if(data && data.data){
       console.log(data.data);
       this.setState({
-        [record._id]:{
+        [record.uniqueIdentifier]:{
           [item.userId]:true
         }
       });
@@ -871,7 +871,7 @@ class MyRequests extends React.Component{
       return (
         <Table
           columns={this.columns}
-          rowKey={record => record._id}
+          rowKey={record => record.uniqueIdentifier}
           dataSource={this.state.data}
           // expandedRowRender={record => (
           //   <List
@@ -882,9 +882,9 @@ class MyRequests extends React.Component{
           //     <List.Item actions={[  <Button
           //       type="primary"
           //       onClick={ this.initMatch.bind(this,record,item)}
-          //       disabled={this.state[`${record._id}_match`] ? true : false }
+          //       disabled={this.state[`${record.uniqueIdentifier}_match`] ? true : false }
           //     >
-          //       {this.state[`${record._id}_match`] && this.state[`${record._id}_match`][item.userId] ? 'Matched' :  'Match'}
+          //       {this.state[`${record.uniqueIdentifier}_match`] && this.state[`${record.uniqueIdentifier}_match`][item.userId] ? 'Matched' :  'Match'}
           //     </Button>]}>
           //       <List.Item.Meta
           //       title={item.username}

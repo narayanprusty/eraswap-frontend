@@ -62,7 +62,9 @@ class Dash extends React.Component {
                 </Card>{' '}
               </Col>
               <Col span={6}>
-                <Card style={{ margin: '1.5em' }} title="P2P Matches">
+                <Card style={{ margin: '1.5em' }} title="P2P Matches"
+                 actions={[<Link to='/admin/p2p'><Icon type="setting"> View Matches</Icon></Link>]}
+                >
                   Active Listings: {this.state.p2p ? this.state.p2p.active.message : 'Loading...'} <br />
                   Inactive Listings: {this.state.p2p ? (this.state.p2p.total.message - this.state.p2p.active.message) : 'Loading...'} <br />
                   Matched :{this.state.p2p ? this.state.p2p.match.message : 'Loading...'}<br />
