@@ -39,7 +39,7 @@ changePage =(a)=>{
  conVertObjToArr =(wholeObj)=>{
    return [{
     title: "ComputeEx Order Status",
-    content: wholeObj.witdrawn ? "Completed" : "Pendig" } ,
+    content: wholeObj.witdrawn ? "Completed" : "Pending" } ,
     {title:"Deposit Status"  ,
     content: wholeObj.dipositTxnId ? wholeObj.dipositTxnStatus : 'Not Received Yet.'},
     {title:"Deposit Transaction ID" ,content: wholeObj.dipositTxnId ? wholeObj.dipositTxnId : '-'},
