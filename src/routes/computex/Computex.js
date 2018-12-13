@@ -35,7 +35,7 @@ const RadioGroup = Radio.Group;
 const ButtonGroup = Button.Group;
 const Step = Steps.Step;
 
-class Computex extends React.Component {
+class ComputeEx extends React.Component {
   constructor(props) {
     super(props);
     const value = props.value || {};
@@ -800,7 +800,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
 
 const tabListNoTitle = [
   {
-    key: 'computex',
+    key: 'ComputeEx',
     tab: 'ComputeEx',
   },
   {
@@ -808,12 +808,12 @@ const tabListNoTitle = [
     tab: 'Transaction History',
   },
 ];
-class ManageComputex extends React.Component{
+class ManageComputeEx extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      key: 'computex',
-      noTitleKey: 'computex',
+      key: 'ComputeEx',
+      noTitleKey: 'ComputeEx',
     };
   }
   onTabChange = (key, type) => {
@@ -821,7 +821,7 @@ class ManageComputex extends React.Component{
     this.setState({ [type]: key });
   };
   contentListNoTitle = {
-    computex: <Computex title={this.props.title} form={this.props.form}  />,
+    ComputeEx: <ComputeEx title={this.props.title} form={this.props.form}  />,
     txnhistory: <TxnStat title="Transaction History" menukey={this.props.menukey} />,
   };
   render() {
@@ -844,4 +844,4 @@ class ManageComputex extends React.Component{
     );
   }
 }
-export default Form.create()(withStyles(s)(ManageComputex));
+export default Form.create()(withStyles(s)(ManageComputeEx));

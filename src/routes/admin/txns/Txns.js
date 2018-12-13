@@ -28,7 +28,7 @@ class Txns extends React.Component {
   }
   conVertObjToArr =(wholeObj)=>{
     return [{
-     title: "ComputEx Order Status",
+     title: "ComputeEx Order Status",
      content: wholeObj.witdrawn ? "Completed" : "Pendig" } ,
      {title:"Deposit Status"  ,
      content: wholeObj.dipositTxnId ? wholeObj.dipositTxnStatus : 'Not Received Yet.'},

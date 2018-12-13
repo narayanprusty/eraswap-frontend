@@ -26,7 +26,7 @@ class Navigation extends React.Component {
   menu = (
     <Menu>
       <Menu.Item key="1">
-        <Link to='/computex'><Icon type="database" theme="twoTone"  /> &nbsp;ComputeEx</Link>
+        <Link to='/ComputeEx'><Icon type="database" theme="twoTone"  /> &nbsp;ComputeEx</Link>
         </Menu.Item>
 
         <SubMenu title="P2P Dashboards">

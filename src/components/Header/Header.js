@@ -71,22 +71,22 @@ class Header extends React.Component {
           {this.props.menukey == 0.002 && (
              <div>
             <h1 className={s.bannerTitle}>Home</h1>
-            {/* <p className={s.bannerDesc}>Computex Dashboard</p> */}
+            {/* <p className={s.bannerDesc}>ComputeEx Dashboard</p> */}
     </div>)}
           {this.props.menukey == 0.1 && (
              <div>
             <h1 className={s.bannerTitle}>User Registration</h1>
-            {/* <p className={s.bannerDesc}>Computex Dashboard</p> */}
+            {/* <p className={s.bannerDesc}>ComputeEx Dashboard</p> */}
     </div>)}
     {this.props.menukey == 0.2 && (
              <div>
             <h1 className={s.bannerTitle}>User Login</h1>
-            {/* <p className={s.bannerDesc}>Computex Dashboard</p> */}
+            {/* <p className={s.bannerDesc}>ComputeEx Dashboard</p> */}
     </div>)}
          {this.props.menukey == 1 && (
              <div>
-            <h1 className={s.bannerTitle}>Computex</h1>
-            <p className={s.bannerDesc}>Computex Dashboard</p>
+            <h1 className={s.bannerTitle}>ComputeEx</h1>
+            <p className={s.bannerDesc}>ComputeEx Dashboard</p>
     </div>)}
     {this.props.menukey == 3 && (
       <div>
@@ -137,7 +137,7 @@ class Header extends React.Component {
       // >
       //   <Menu.Item key="1">
       //     <Button type='primary'>
-      //   <Link to='/computex'>ComputeX</Link>
+      //   <Link to='/ComputeEx'>ComputeEx</Link>
       //   </Button>
       //   </Menu.Item>
       //   {/* <Menu.Item key="2">
@@ -165,8 +165,8 @@ class Header extends React.Component {
   {/* <div className={s.banner}>
          {this.props.menukey == 1 && (
              <div>
-            <h1 className={s.bannerTitle}>Computex</h1>
-            <p className={s.bannerDesc}>Computex Dashboard</p>
+            <h1 className={s.bannerTitle}>ComputeEx</h1>
+            <p className={s.bannerDesc}>ComputeEx Dashboard</p>
     </div>)}
     {this.props.menukey == 3 && (
       <div>

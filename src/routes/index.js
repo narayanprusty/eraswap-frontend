@@ -40,7 +40,7 @@ const routes = {
       load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
     },
     {
-      path: '/computex',
+      path: '/ComputeEx',
       load: () => import(/* webpackChunkName: 'admin' */ './computex'),
     },
     {

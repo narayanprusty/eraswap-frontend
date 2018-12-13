@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../../components/Layout';
 // import Page from '../../components/Page';
-import Computex from './Computex';
+import ComputeEx from './Computex';
 
 const title ='ComputeEx'
 const menukey ='1'
@@ -11,7 +11,7 @@ function action() {
       title,
       component: (
         <Layout menukey={menukey}>
-          <Computex title={title} menukey={menukey} />
+          <ComputeEx title={title} menukey={menukey} />
         </Layout>
       ),
     };

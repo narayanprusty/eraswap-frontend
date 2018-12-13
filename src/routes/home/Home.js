@@ -17,7 +17,7 @@ import { Button, Slider, Row, Col, Card, Icon, Steps } from 'antd';
 import Link from '../../components/Link';
 import walletSvg from './wallet.svg';
 import peerSvg  from './peer.svg';
-import computex from './computex.svg';
+import ComputeEx from './computex.svg';
 import lendingSvg from './lending.svg'
 const { Step } = Steps;
 
@@ -56,9 +56,9 @@ class Home extends React.Component {
               </Col>
               <Col span={6}>
               <div className={s.dashIcon}>
-                <Link to="/computex">
+                <Link to="/ComputeEx">
                 {/* <Icon type="database" theme="twoTone"  className={s.icoStyle} /> */}
-                <img src={computex} className={s.icoStyle} />
+                <img src={ComputeEx} className={s.icoStyle} />
                 <br />
                 <br />
                 <span className={s.icoBullet}>ComputeEx</span><br />
