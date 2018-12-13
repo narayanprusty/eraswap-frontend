@@ -542,7 +542,6 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               <Form onSubmit={this.handleSubmit}>
                 <FormItem label="Convert">
                   <Input
-                    type="number"
                     name="amount"
                     size={size}
                     value={state.amount}

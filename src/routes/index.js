@@ -90,6 +90,10 @@ const routes = {
       path: '/admin/p2p',
       load: ()=> import('./admin/p2p'),
     },
+    {
+      path: '/admin/escrow',
+      load: ()=> import('./admin/escrow'),
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

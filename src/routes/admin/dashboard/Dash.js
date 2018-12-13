@@ -41,7 +41,7 @@ class Dash extends React.Component {
             <Row style={{ margin: '20px 0 ' }}>
               <Col span={6}>
                 <Card
-                  style={{ margin: '1.5em' }}
+                  style={{ margin: '1em' }}
                   title="Users"
                   actions={[<Link to="/admin/users"><Icon type="setting"> Manage Users</Icon> </Link>]}
                 >
@@ -52,7 +52,7 @@ class Dash extends React.Component {
               </Col>
               <Col span={6}>
                 <Card
-                  style={{ margin: '1.5em' }}
+                  style={{ margin: '1em' }}
                   title="ComputeEx Txns"
                   actions={[<Link to="/admin/txns"><Icon type="setting"> View Transactions</Icon></Link>]}
                 >
@@ -62,7 +62,7 @@ class Dash extends React.Component {
                 </Card>{' '}
               </Col>
               <Col span={6}>
-                <Card style={{ margin: '1.5em' }} title="P2P Matches"
+                <Card style={{ margin: '1em' }} title="P2P Matches"
                  actions={[<Link to='/admin/p2p'><Icon type="setting"> View Matches</Icon></Link>]}
                 >
                   Active Listings: {this.state.p2p ? this.state.p2p.active.message : 'Loading...'} <br />
@@ -73,9 +73,9 @@ class Dash extends React.Component {
               </Col>
               <Col span={6}>
                 <Card
-                  style={{ margin: '1.5em' }}
+                  style={{ margin: '1em' }}
                   title="Escrow Balances"
-                  actions={[<Icon type="setting">Manage Escrow</Icon>]}
+                  actions={[<Link to='/admin/escrow'><Icon type="setting">Manage Escrow</Icon></Link>]}
                 >
                   ETH : {this.state.escrow ? this.state.escrow.eth: 'Loading...'}  <br />
                   EST: {this.state.escrow ? this.state.escrow.est: 'Loading...'} <br />
