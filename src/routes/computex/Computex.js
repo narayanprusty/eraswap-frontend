@@ -48,7 +48,7 @@ class ComputeEx extends React.Component {
       symbol:'',
       maxExchange: '',
       key: '1',
-      amount: value.amount || 0,
+      amount: value.amount || null,
       exchangeRate: 0,
       currency: value.currency,
       toCurrency: value.toCurrency,
@@ -160,12 +160,10 @@ class ComputeEx extends React.Component {
   };
   handleChanges = e => {
     if (e.target.name === 'amount') {
-      if (e.target.value > 0) {
         this.setState({
           [e.target.name]: e.target.value,
           checkVal:false
         });
-      }
     } else {
       this.setState({
         [e.target.name]: e.target.value,
