@@ -97,6 +97,8 @@ class ComputeEx extends React.Component {
     this.setState({
       loader: true,
     });
+    this.checkValue(e).then(data=>{
+      if(data == true){
     this.props.form.validateFields((err, values) => {
       if (!err) {
         // console.log('Received values of form: ', values);
@@ -150,6 +152,12 @@ class ComputeEx extends React.Component {
           });
       }
     });
+  }else{
+    this.setState({
+      loader:false
+    })
+  }
+  });
   };
   checkExchangeSelect = exch => {
     if (this.state.maxExchange.toLowerCase() === exch) {
@@ -452,7 +460,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
       );
     }
   };
-  checkValue=(e)=>{
+  checkValue=async(e)=>{
     return axios.get("/apis/cur/checkVal?currency="+this.state.currency+'&amount='+this.state.amount+'&platform='+this.state.platformFee).then(data=>{
         if(data && data.data){
           const foundData= JSON.parse(data.data);
@@ -462,6 +470,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               this.setState({
                 checkVal:true
               })
+             return true;
             }else{
               notification.open({
                 message: "Entered Amount should be equivalent to $20 or more.",
@@ -470,7 +479,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               });
             }
         }
-    })
+    });
+
   };
   childrenCurrList = () => {
     let children = [];
@@ -618,10 +628,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
 
 
                       <Button.Group>
-                        <Button type="primary" onClick={this.checkValue.bind(this)} disabled={this.state.checkVal || (this.state.toCurrency == this.state.currency) || false}>
-                      Validate
-                      </Button>
-                      <Button type="primary" htmlType="submit" disabled={!this.state.checkVal ? true : false}>
+                      <Button type="primary" htmlType="submit" disabled={ (this.state.toCurrency == this.state.currency)  ? true : false}>
                         <Icon type="right" />next
                       </Button>
                     </Button.Group>
