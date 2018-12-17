@@ -155,7 +155,7 @@ class Agreements extends React.Component {
                             sorter= {(a, b) => a.months - b.months}
                         />
                         <Column
-                            title="Amount ($)"
+                            title="Amount"
                             Key="amount"
                             dataIndex="amount"
                             sorter= {(a, b) => a.amount - b.amount}

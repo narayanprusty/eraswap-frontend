@@ -276,7 +276,6 @@ class PlaceOrder extends React.Component {
                                         onChange={e => this.setState({amount: e.target.value})}
                                         style={{ maxWidth: '40%' }}
                                         size="default"
-                                        addonBefore="$"
                                         placeholder="Enter amount"
                                     />
                                 </FormItem>
@@ -342,7 +341,6 @@ class PlaceOrder extends React.Component {
                                         onChange={e => this.setState({amount: e.target.value})}
                                         style={{ maxWidth: '40%' }}
                                         size="default"
-                                        addonBefore="$"
                                         placeholder="Enter amount"
                                     />
                                 </FormItem>
