@@ -34,9 +34,26 @@ class OrderBook extends React.Component {
   };
 
     apply = (record) => {
+        console.log("Applying for order ",record.uniqueIdentifier);
         notification.open({
-            message:("Applied"),
-            description:("Record Number "+record.uniqueIdentifier)
+            message: ("Applying"),
+            description: ("Record Number " + record.uniqueIdentifier)
+        });
+        axios.post('/apis/lendingBorrowing/apply', {
+            orderId: record.uniqueIdentifier
+        }).then(res => {
+            if (res.data.success) {
+                notification.open({
+                    message: 'Success',
+                    description: 'Order placed!',
+                });
+            }
+            else {
+                notification.open({
+                    message: 'Failed',
+                    description: res.data.message,
+                });
+            }
         });
     };
 
@@ -159,7 +176,7 @@ class OrderBook extends React.Component {
                         sorter= {(a, b) => a.duration - b.duration}
                     />
                     <Column
-                        title="Amount"
+                        title="Amount ($)"
                         Key="amount"
                         dataIndex="amount"
                         sorter= {(a, b) => a.amount - b.amount}
