@@ -22,7 +22,7 @@ import {
   notification,
   Dropdown,
   Menu,
-  AutoComplete, 
+  AutoComplete,
   Checkbox
 } from 'antd';
 
@@ -141,7 +141,7 @@ class WalletManager extends React.Component{
 
         let platform = this.state.useEstForFees ? 'EST' : this.state.name;
 
-        return axios.get("/apis/cur/checkVal?currency=" + this.state.name + '&amount=' 
+        return axios.get("/apis/cur/checkVal?currency=" + this.state.name + '&amount='
         + this.state.exchangeAmount + '&platform=' + platform + '&fromWallet=true').then(data => {
             if (data && data.data) {
                 const foundData = JSON.parse(data.data);
@@ -316,9 +316,8 @@ class WalletManager extends React.Component{
             if (res.data.address) {
                 this.setState({ privateKey: res.data.address });
                 var element = document.createElement("a");
-                var file = new Blob([this.state.privateKey], { type: 'text/plain' });
-                element.href = URL.createObjectURL(file);
-                element.download = "privateKey.txt";
+                element.href = "data:application/octet-stream;base64,"+res.data.address;
+                element.download = `${this.state.name}_PrivateKey_Eraswap.pdf`
                 element.click();
                 document.body.removeChild(element);
             }
@@ -433,7 +432,7 @@ class WalletManager extends React.Component{
                                 </FormItem>
                                 <FormItem
                                     label="Amount" >
-                                    <Input 
+                                    <Input
                                         type="number"
                                         value={this.state.exchangeAmount}
                                         onChange={e => this.setState({exchangeAmount: e.target.value})}
