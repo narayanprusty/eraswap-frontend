@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Agreements.css';
 import agreementsData from './agreementsData';
+import axios from 'axios';
 import {
     Card,
     Form,
@@ -48,18 +49,23 @@ class Agreements extends React.Component {
     getAgreements = async () => {
         try {
             this.setState({ loading: true });
-            var data = agreementsData;
+            axios.get('/apis/lendingBorrowing/getAgreements').then(res => {
+                console.log(res.data);
+                var filters = this.getFilters(res.data);
 
-            var filters = this.getFilters();
+                this.setState({ agreementsData: res.data, coinFilter: filters[0], userFilter: filters[1], loading: false });
 
-            this.setState({ agreementsData: data, coinFilter: filters[0], userFilter: filters[1], loading: false });
+            }).catch(error => {
+                this.setState({ loading: false });
+                console.log(error);
+            });
         } catch (ex) {
             this.setState({ loading: false });
         }
     }
 
-    getFilters = () => {
-        var coinFilter = new Set(agreementsData.map(a => a.coin), agreementsData.map(a => a.collateralCoin));
+    getFilters = (data) => {
+        var coinFilter = new Set(data.map(a => a.coin), data.map(a => a.collateralCoin));
         console.log(coinFilter);
         var filter1 = [];
         coinFilter.forEach(a => {
@@ -70,7 +76,7 @@ class Agreements extends React.Component {
         });
         console.log("filter", filter1);
 
-        var userFilter = new Set(agreementsData.map(a => a.user));
+        var userFilter = new Set(data.map(a => a.user));
         console.log(userFilter);
         var filter2 = [];
         userFilter.forEach(a => {
@@ -93,8 +99,9 @@ class Agreements extends React.Component {
                     <Table dataSource={this.state.agreementsData} 
                         expandedRowRender=
                         {
-                            record => 
-                            <p style={{ margin: 0 }}>Payment Due date: {record.nextPaymentDate}<br />Amount Due: {record.nextPayment}</p>
+                            record => {
+                            return <p style={{ margin: 0 }}>Payment Due date: {record.nextPaymentDate}<br />Amount Due: {record.nextPayment}</p>
+                            }
                         }
                     >
                         <Column
@@ -111,10 +118,10 @@ class Agreements extends React.Component {
                             dataIndex="type"
                             filters={ [{
                                 text: 'Lending',
-                                value: 'Lending',
+                                value: 'Lend',
                             }, {
                                 text: 'Borrowing',
-                                value: 'Borrowing',
+                                value: 'Borrow',
                             }]}
                             filterMultiple= {false}
                             onFilter= {(value, record) => record.type.indexOf(value) === 0}
@@ -148,7 +155,7 @@ class Agreements extends React.Component {
                             sorter= {(a, b) => a.months - b.months}
                         />
                         <Column
-                            title="Amount"
+                            title="Amount ($)"
                             Key="amount"
                             dataIndex="amount"
                             sorter= {(a, b) => a.amount - b.amount}

@@ -176,7 +176,7 @@ class OrderBook extends React.Component {
                         sorter= {(a, b) => a.duration - b.duration}
                     />
                     <Column
-                        title="Amount"
+                        title="Amount ($)"
                         Key="amount"
                         dataIndex="amount"
                         sorter= {(a, b) => a.amount - b.amount}
