@@ -111,7 +111,7 @@ class PlaceOrder extends React.Component {
     };
 
     placeLendingOrder = async (e) => {
-        console.log("lending order", (this.state.lendingCoin != this.state.collateralCoin && this.state.duration > 0 && this.state.amount > 0));
+        console.log("lending order", (this.state.lendingCoin != this.state.collateralCoin && this.state.months > 0 && this.state.amount > 0));
         e.preventDefault();
         if (this.state.lendingCoin != this.state.collateralCoin && this.state.months > 0 && this.state.amount > 0) {
             this.setState({
