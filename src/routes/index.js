@@ -24,6 +24,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'contact' */ './contact'),
     },
     {
+      path: '/activate',
+      load: () => import(/* webpackChunkName: 'login' */ './activate'),
+    },
+    {
       path: '/login',
       load: () => import(/* webpackChunkName: 'login' */ './login'),
     },
