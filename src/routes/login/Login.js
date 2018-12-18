@@ -15,6 +15,7 @@ import axios from 'axios';
 import {Spin,Card} from 'antd';
 import queryString from 'stringquery';
 import { from } from 'zen-observable';
+
 const SOCIAL ={
   GOOGLE:{
       CLIENT_ID:'524726124380-u1nngf3k396jhtgrbmnqc6gchvsr6s3k.apps.googleusercontent.com',
@@ -231,6 +232,8 @@ class Login extends React.Component {
                 />
               </label>
             </div>
+            <a href="/forgotPassword">Forgot Password</a>
+            <br />
             <div className={s.formGroup}>
               <button className={s.button} type="submit">
                 Log in

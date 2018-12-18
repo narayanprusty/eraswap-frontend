@@ -83,6 +83,11 @@ class Header extends React.Component {
             <h1 className={s.bannerTitle}>User Login</h1>
             {/* <p className={s.bannerDesc}>ComputeEx Dashboard</p> */}
     </div>)}
+    {this.props.menukey == 0.3 && (
+             <div>
+            <h1 className={s.bannerTitle}>Forgot Password</h1>
+            {/* <p className={s.bannerDesc}>ComputeEx Dashboard</p> */}
+    </div>)}
          {this.props.menukey == 1 && (
              <div>
             <h1 className={s.bannerTitle}>ComputeEx</h1>

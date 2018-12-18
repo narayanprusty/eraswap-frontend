@@ -32,6 +32,14 @@ const routes = {
       load: () => import(/* webpackChunkName: 'login' */ './login'),
     },
     {
+        path: '/forgotPassword',
+        load: () => import(/* webpackChunkName: 'login' */ './forgotPassword'),
+    },
+    {
+        path: '/reset',
+        load: () => import(/* webpackChunkName: 'login' */ './resetPassword'),
+    },
+    {
       path: '/register',
       load: () => import(/* webpackChunkName: 'register' */ './register'),
     },
