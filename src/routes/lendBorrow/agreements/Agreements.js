@@ -64,6 +64,22 @@ class Agreements extends React.Component {
         }
     }
 
+    convertToPlainNumber = (number) => {
+        if (number.toString().indexOf("e") != -1) {
+            var parts = number.toString().split("e");
+            if (parts.length >= 2) {
+                var exp = parts[1] > 0 ? parts[1] : parts[1] * -1;
+                var extra = 0;
+                if(parts[0].indexOf(".") != -1){
+                    extra = parts[0].split(".")[1].length;
+                }
+                return number.toFixed(extra + exp);
+            }
+            return parts[0];
+        }
+        return number;
+    }
+
     getFilters = (data) => {
         var coinFilter = new Set(data.map(a => a.coin), data.map(a => a.collateralCoin));
         console.log(coinFilter);
@@ -100,7 +116,11 @@ class Agreements extends React.Component {
                         expandedRowRender=
                         {
                             record => {
-                            return <p style={{ margin: 0 }}>Payment Due date: {record.nextPaymentDate}<br />Amount Due: {record.nextPayment}</p>
+                            return <p style={{ margin: 0 }}>Payment Due date: {new Date(record.nextPaymentDate).toDateString()}
+                            <br />EMI: {this.convertToPlainNumber(record.nextPayment)}
+                            <br />Number of EMI Paid: {record.emiPaidCount}
+                            <br />Number of EMI Paid using Collateral: {record.emiPaidInCollateral}
+                            <br />Number of EMI Remaining: {record.months - (record.emiPaidCount + record.emiPaidInCollateral)}</p>
                             }
                         }
                     >
