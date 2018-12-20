@@ -3,7 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import Link from '../../../components/Link';
 import { Card, Table, Tag } from 'antd';
-import s from './Lb.css';
+import s from './LB.css';
 
 class Lb extends React.Component {
   constructor(props) {
@@ -11,24 +11,6 @@ class Lb extends React.Component {
 
     this.state = {};
   }
-
-  handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
-    pager.current = pagination.current;
-    this.setState({
-      pagination: pager,
-    });
-    this.fetch(
-      {},
-      {
-        results: pagination.pageSize,
-        page: pagination.current,
-        sortField: sorter.field,
-        sortOrder: sorter.order,
-        ...filters,
-      },
-    );
-  };
 
   fetch = (query, params = {}) => {
     console.log('params:', params);
@@ -57,6 +39,25 @@ class Lb extends React.Component {
           }
         });
     });
+  };
+
+
+  handleTableChange = (pagination, filters, sorter) => {
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current;
+    this.setState({
+      pagination: pager,
+    });
+    this.fetch(
+      {},
+      {
+        results: pagination.pageSize,
+        page: pagination.current,
+        sortField: sorter.field,
+        sortOrder: sorter.order,
+        ...filters,
+      },
+    );
   };
 
   componentDidMount() {
