@@ -18,6 +18,13 @@ class Dash extends React.Component {
       }
     })
   }
+  fetchlb =()=>{
+    axios.get('/admins/apis/lb/getCounts').then(data=>{
+      if(data.data){
+        this.setState(data.data);
+      }
+    })
+  }
 
   componentDidMount() {
     if (
@@ -31,14 +38,15 @@ class Dash extends React.Component {
       location.href = '/login?how=force';
     }
     this.fetchDetails();
+    this.fetchlb();
   }
 
   render() {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <Card style={{ margin: '20px 0 ' }}>
-            <Row style={{ margin: '20px 0 ' }}>
+          <Card style={{ margin: '20px 0 ',textAlign:"center" }}>
+            <Row style={{ margin: '20px 0 ' ,textAlign:"center"}}>
               <Col span={6}>
                 <Card
                   style={{ margin: '1em' }}
@@ -82,7 +90,20 @@ class Dash extends React.Component {
                   BTC: {this.state.escrow ? this.state.escrow.btc: 'Loading...'} <br />
                 </Card>
               </Col>
-            </Row>
+
+              <Col span={6} >
+                <Card
+                  style={{ margin: '1em' }}
+                  title="Lend & Borrow"
+                  actions={[<Link to='/admin/lb'><Icon type="setting">Lend  & Borrow</Icon></Link>]}
+                >
+                  Lend Requests : {this.state.total_L ? this.state.total_L: 'Loading...'}  <br />
+                  Borrow Requests: {this.state.total_LB ? ( this.state.total_LB - this.state.total_L): 'Loading...'} <br />
+                  Total: {this.state.total_LB ? this.state.total_LB: 'Loading...'} <br />
+                  Agreements: {this.state.total_A ? this.state.total_A: 'Loading...'} <br />
+                </Card>
+              </Col>
+              </Row>
           </Card>
         </div>
       </div>
