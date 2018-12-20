@@ -106,6 +106,10 @@ const routes = {
       path: '/admin/escrow',
       load: ()=> import('./admin/escrow'),
     },
+    {
+      path: '/admin/lb',
+      load: ()=> import('./admin/lb'),
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',
