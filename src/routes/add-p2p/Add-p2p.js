@@ -139,7 +139,7 @@ class BuyComponent extends React.Component {
   };
 
   childrenCurrList = () => {
-    const c = ['INR', 'USD', 'AED'];
+    const c = ["AED", "USD", "INR", "LBP", "BOB", "CRC", "PHP", "PLN", "JPY", "JOD", "PAB", "GBP", "DZD", "CHF", "ARS", "SAR", "EGP", "CNY", "ZAR", "OMR", "AUD", "SGD", "NOK", "MAD", "ILS", "NIO", "HKD", "TWD", "BGN", "ISK", "UYU", "KRW", "THB", "RSD", "IDR", "CLP", "RUB", "PEN", "DOP", "UAH", "CAD", "MXN", "NZD", "RON", "MKD", "GTQ", "SEK", "MYR", "QAR", "BHD", "HNL", "HRK", "COP", "ALL", "DKK", "BRL", "EUR", "HUF", "IQD"];
     let children = [];
 
     for (let i of c) {
