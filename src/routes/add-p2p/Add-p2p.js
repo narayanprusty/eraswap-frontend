@@ -404,7 +404,7 @@ class MyListComponent extends React.Component{
   }, {
     title: 'Price',
     dataIndex: 'fullPrice',
-    render:(fieldVal,record)=> `${fieldVal} ${record.currency}/BTC`
+    render:(fieldVal,record)=> `${fieldVal} ${record.currency}/${record.cryptoCur}`
   },
   {
     title: 'Location',
@@ -598,7 +598,8 @@ class MyListComponent extends React.Component{
             this.setState({
               [`${i.listingId}_match`]:{
                 [i.requester]:true
-              }
+              },
+              [`${i.listingId}_match_fee`]:i.fee
             })
           }
             return data.data;
@@ -641,7 +642,7 @@ class MyListComponent extends React.Component{
                 disabled={this.state[`${record.uniqueIdentifier}_matched`] && this.state[`${record.uniqueIdentifier}_matched`][item.userId]  ? false : true }
               >
                 {this.state[`${record.uniqueIdentifier}_matched`] && this.state[`${record.uniqueIdentifier}_matched`][item.userId] ? 'Finish Deal' : ( this.state[`${record.uniqueIdentifier}_finished`] && this.state[`${record.uniqueIdentifier}_finished`][item.userId] ? 'Deal closed' : 'No Deal')}
-              </Button>]}>
+              </Button>,this.state[`${record.uniqueIdentifier}_match_fee`] && <span>Seller Fee: {this.state[`${record.uniqueIdentifier}_match_fee`]}</span>]}>
 
                 <List.Item.Meta
                 title={item.username}
@@ -688,7 +689,7 @@ class MyRequests extends React.Component{
   }, {
     title: 'Price',
     dataIndex: 'fullPrice',
-    render:(fieldVal,record)=> `${fieldVal} ${record.currency}/BTC`
+    render:(fieldVal,record)=> `${fieldVal} ${record.currency}/${record.cryptoCur}`
   },
   {
     title: 'Location',
