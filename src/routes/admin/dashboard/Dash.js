@@ -11,20 +11,20 @@ class Dash extends React.Component {
 
     this.state = {};
   }
-  fetchDetails = ()=>{
-    axios.get('/admins/apis/users/dash').then(data=>{
-      if(data.data){
+  fetchDetails = () => {
+    axios.get('/admins/apis/users/dash').then(data => {
+      if (data.data) {
         this.setState(data.data);
       }
-    })
-  }
-  fetchlb =()=>{
-    axios.get('/admins/apis/lb/getCounts').then(data=>{
-      if(data.data){
+    });
+  };
+  fetchlb = () => {
+    axios.get('/admins/apis/lb/getCounts').then(data => {
+      if (data.data) {
         this.setState(data.data);
       }
-    })
-  }
+    });
+  };
 
   componentDidMount() {
     if (
@@ -45,65 +45,138 @@ class Dash extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <Card style={{ margin: '20px 0 ',textAlign:"center" }}>
-            <Row style={{ margin: '20px 0 ' ,textAlign:"center"}}>
+          <Card style={{ margin: '20px 0 ', textAlign: 'center' }}>
+            <Row style={{ margin: '20px 0 ', textAlign: 'center' }}>
               <Col span={6}>
                 <Card
                   style={{ margin: '1em' }}
                   title="Users"
-                  actions={[<Link to="/admin/users"><Icon type="setting"> Manage Users</Icon> </Link>]}
+                  actions={[
+                    <Link to="/admin/users">
+                      <Icon type="setting"> Manage Users</Icon>{' '}
+                    </Link>,
+                  ]}
                 >
-                  Users: { this.state.users ? (this.state.users.totalUser - this.state.users.admin) : 'Loading...'} <br />
-                  Admins:{this.state.users ? this.state.users.admin :'Loading...'} <br />
-                  Total: {this.state.users ? this.state.users.totalUser : 'Loading...'}
+                  Users:{' '}
+                  {this.state.users
+                    ? this.state.users.totalUser - this.state.users.admin
+                    : 'Loading...'}{' '}
+                  <br />
+                  Admins:{this.state.users
+                    ? this.state.users.admin
+                    : 'Loading...'}{' '}
+                  <br />
+                  Total:{' '}
+                  {this.state.users ? this.state.users.totalUser : 'Loading...'}
                 </Card>
               </Col>
               <Col span={6}>
                 <Card
                   style={{ margin: '1em' }}
                   title="ComputeEx Txns"
-                  actions={[<Link to="/admin/txns"><Icon type="setting"> View Transactions</Icon></Link>]}
+                  actions={[
+                    <Link to="/admin/txns">
+                      <Icon type="setting"> View Transactions</Icon>
+                    </Link>,
+                  ]}
                 >
-                  Finished:{this.state.txns ? this.state.txns.finished : 'Loading...'} <br />
-                  in Process:{this.state.txns ? (this.state.txns.total- this.state.txns.finished ): 'Loading...'} <br />
-                  Total: {this.state.txns ? this.state.txns.total : 'Loading...'}
+                  Finished:{this.state.txns
+                    ? this.state.txns.finished
+                    : 'Loading...'}{' '}
+                  <br />
+                  in Process:{this.state.txns
+                    ? this.state.txns.total - this.state.txns.finished
+                    : 'Loading...'}{' '}
+                  <br />
+                  Total:{' '}
+                  {this.state.txns ? this.state.txns.total : 'Loading...'}
                 </Card>{' '}
               </Col>
               <Col span={6}>
-                <Card style={{ margin: '1em' }} title="P2P Matches"
-                 actions={[<Link to='/admin/p2p'><Icon type="setting"> View Matches</Icon></Link>]}
+                <Card
+                  style={{ margin: '1em' }}
+                  title="P2P Matches"
+                  actions={[
+                    <Link to="/admin/p2p">
+                      <Icon type="setting"> View Matches</Icon>
+                    </Link>,
+                  ]}
                 >
-                  Active Listings: {this.state.p2p ? this.state.p2p.active.message : 'Loading...'} <br />
-                  Inactive Listings: {this.state.p2p ? (this.state.p2p.total.message - this.state.p2p.active.message) : 'Loading...'} <br />
-                  Matched :{this.state.p2p ? this.state.p2p.match.message : 'Loading...'}<br />
-                  Total Listing: {this.state.p2p ? this.state.p2p.total.message : 'Loading...'}
+                  Active Listings:{' '}
+                  {this.state.p2p
+                    ? this.state.p2p.active.message
+                    : 'Loading...'}{' '}
+                  <br />
+                  Inactive Listings:{' '}
+                  {this.state.p2p
+                    ? this.state.p2p.total.message -
+                      this.state.p2p.active.message
+                    : 'Loading...'}{' '}
+                  <br />
+                  Matched :{this.state.p2p
+                    ? this.state.p2p.match.message
+                    : 'Loading...'}
+                  <br />
+                  Total Listing:{' '}
+                  {this.state.p2p ? this.state.p2p.total.message : 'Loading...'}
                 </Card>{' '}
               </Col>
               <Col span={6}>
                 <Card
                   style={{ margin: '1em' }}
                   title="Escrow Balances"
-                  actions={[<Link to='/admin/escrow'><Icon type="setting">Manage Escrow</Icon></Link>]}
+                  actions={[
+                    <Link to="/admin/escrow">
+                      <Icon type="setting">Manage Escrow</Icon>
+                    </Link>,
+                  ]}
                 >
-                  ETH : {this.state.escrow ? this.state.escrow.eth: 'Loading...'}  <br />
-                  EST: {this.state.escrow ? this.state.escrow.est: 'Loading...'} <br />
-                  BTC: {this.state.escrow ? this.state.escrow.btc: 'Loading...'} <br />
+                  ETH :{' '}
+                  {this.state.escrow ? this.state.escrow.eth : 'Loading...'}{' '}
+                  <br />
+                  EST:{' '}
+                  {this.state.escrow
+                    ? this.state.escrow.est
+                    : 'Loading...'}{' '}
+                  <br />
+                  BTC:{' '}
+                  {this.state.escrow
+                    ? this.state.escrow.btc
+                    : 'Loading...'}{' '}
+                  <br />
                 </Card>
               </Col>
-
-              <Col span={6} >
+            </Row>
+            <Row style={{ margin: '20px 0 ', textAlign: 'center' }}>
+              <Col span={6}>
                 <Card
                   style={{ margin: '1em' }}
                   title="Lend & Borrow"
-                  actions={[<Link to='/admin/lb'><Icon type="setting">Lend  & Borrow</Icon></Link>]}
+                  actions={[
+                    <Link to="/admin/lb">
+                      <Icon type="setting">Lend & Borrow</Icon>
+                    </Link>,
+                  ]}
                 >
-                  Lend Requests : {this.state.total_L ? this.state.total_L: 'Loading...'}  <br />
-                  Borrow Requests: {this.state.total_LB ? ( this.state.total_LB - this.state.total_L): 'Loading...'} <br />
-                  Total: {this.state.total_LB ? this.state.total_LB: 'Loading...'} <br />
-                  Agreements: {this.state.total_A ? this.state.total_A: 'Loading...'} <br />
+                  Lend Requests :{' '}
+                  {this.state.total_L ? this.state.total_L : 'Loading...'}{' '}
+                  <br />
+                  Borrow Requests:{' '}
+                  {this.state.total_LB
+                    ? this.state.total_LB - this.state.total_L
+                    : 'Loading...'}{' '}
+                  <br />
+                  Total:{' '}
+                  {this.state.total_LB
+                    ? this.state.total_LB
+                    : 'Loading...'}{' '}
+                  <br />
+                  Agreements:{' '}
+                  {this.state.total_A ? this.state.total_A : 'Loading...'}{' '}
+                  <br />
                 </Card>
               </Col>
-              </Row>
+            </Row>
           </Card>
         </div>
       </div>
