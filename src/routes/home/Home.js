@@ -40,8 +40,8 @@ class Home extends React.Component {
       <div className={s.root}>
         <div className={s.container}>
 
-          <Card style={{ margin: '20px 0 '}}>
-            <Row style={{ margin: '20px 0 '}}>
+          <Card>
+            <Row>
             <Col span={6}>
             <div className={s.dashIcon}>
                 <Link to="/wallet">

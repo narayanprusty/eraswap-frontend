@@ -12,7 +12,7 @@ import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Navigation.css';
 import Link from '../Link';
-import {Icon,Dropdown,Menu} from "antd";
+import {Icon,Dropdown,Menu,Button} from "antd";
 
 const SubMenu = Menu.SubMenu;
 class Navigation extends React.Component {
@@ -29,32 +29,42 @@ class Navigation extends React.Component {
         <Link to='/ComputeEx'><Icon type="database" theme="twoTone"  /> &nbsp;ComputeEx</Link>
         </Menu.Item>
 
-        <SubMenu title="P2P Dashboards">
+  <SubMenu title={<span><i className="fas fa-users"/>&nbsp;P2P Buy/Sell</span>}>
+
         <Menu.Item key="3">
         <Link to="/add_p2p_listing">
+        <Icon type="setting" />&nbsp;
         Manage P2P Listing
         </Link>
         </Menu.Item>
         <Menu.Item key="4">
         <Link to="/p2p">
+        <Icon type="notification" />&nbsp;
         P2P MarketPlace
         </Link>
         </Menu.Item>
         </SubMenu>
 
-        <SubMenu title="Wallets">
+        <SubMenu title={<span><i className="fas fa-wallet"/>&nbsp;Wallets</span>}>
         <Menu.Item key="5">
         <Link to='/wallet/BTC'>
+
+        <i className="fab fa-bitcoin"/>
+    &nbsp;
         Bitcoin
         </Link>
         </Menu.Item>
         <Menu.Item key="6">
         <Link to='/wallet/ETH'>
+        <i className="fab fa-ethereum"/>
+    &nbsp;
         Ethereum
         </Link>
         </Menu.Item>
         <Menu.Item key="7">
         <Link to='/wallet/EST'>
+        <i className="fab fa-ethereum"/>
+    &nbsp;
         EST Token
         </Link>
         </Menu.Item>
@@ -126,13 +136,19 @@ class Navigation extends React.Component {
             Your Agreements
         </Link>
       )}
-        {
+
+{
           this.state.admin && (
+            <Button type='primary' ghost>
+            <i class="fas fa-tachometer-alt" />
             <Link className={s.link} to='/admin'>
-            Admin Dashboards
+            Admin Dashboard
             </Link>
+            </Button>
           )
         }
+
+
       {this.state.loggedIn && (localStorage.user ?  !JSON.parse(localStorage.user).adminLevel : true) && ( <Dropdown overlay={this.menu}>
     <a className="ant-dropdown-link" className={s.link}  href="#">
     <Icon type="appstore" /> <Icon type="down" />
@@ -153,7 +169,7 @@ class Navigation extends React.Component {
           )}
         {this.state.loggedIn && <span className={s.spacer}> | </span> && (
             <Link className={s.link} onClick={this.logout} to="/login">
-            &nbsp; <Icon type="logout" />&nbsp;
+          <Icon type="logout" />&nbsp;
             </Link>
           )}
       </div>
