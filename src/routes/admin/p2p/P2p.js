@@ -34,6 +34,7 @@ class P2p extends React.Component {
       owner:record.ownerUser,
       requester:record.requester,
       amount:record.amount,
+      fee:record.fee,
       cryptoCurrency:record.cryptoCurrency
     }
     axios.post('/admins/apis/p2p/dispute/send_back_to_seller',data).then(data=>{
