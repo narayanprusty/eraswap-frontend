@@ -140,7 +140,7 @@ class Navigation extends React.Component {
 {
           this.state.admin && (
             <Button type='primary' ghost>
-            <i class="fas fa-tachometer-alt" />
+            <i className="fas fa-tachometer-alt" />
             <Link className={s.link} to='/admin'>
             Admin Dashboard
             </Link>

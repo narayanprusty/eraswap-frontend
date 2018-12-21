@@ -123,7 +123,7 @@ class BuyListTable extends React.Component{
     title:'',
     dataIndex: 'operation',
     render:(fieldVal,record)=>{
-      return (<Button type="primary" onClick={this.showModal.bind(this,record)} disabled={this.state[record._id] ? true : false}>Show Interest</Button>)
+      return (<Button type="primary" onClick={this.showModal.bind(this,record)} disabled={this.state[record.uniqueIdentifier] ? true : false}>Show Interest</Button>)
     }
   }];
 
@@ -136,7 +136,7 @@ class BuyListTable extends React.Component{
 
    return axios.post('/apis/p2p/showInterest',{...this.state.record,askAmount:this.state.askAmount,specialMessage:this.state.message}).then(data=>{
     this.setState({
-      [this.state.record._id]:true,
+      [this.state.record.uniqueIdentifier]:true,
       visible:false,
       confirmLoading:false
     });
