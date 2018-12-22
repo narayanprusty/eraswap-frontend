@@ -16,19 +16,41 @@ import axios from 'axios';
 
 const FormItem = Form.Item;
 
+
+const SOCIAL ={
+  GOOGLE:{
+      CLIENT_ID:'524726124380-u1nngf3k396jhtgrbmnqc6gchvsr6s3k.apps.googleusercontent.com',
+      REDIRECT_URI:'http://ec2-18-220-230-245.us-east-2.compute.amazonaws.com:3000/login'
+  },
+  FB:{
+      CLIENT_ID:"570289253420635",
+      REDIRECT_URI:'https://7d9a37c6.ngrok.io/login'  //FB needs HTTPS only
+  }
+}
+
 class Register extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {};
   }
   static propTypes = {
     title: PropTypes.string.isRequired,
   };
+
+  handleChanges = e => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
+    const values={
+      username:this.state.username,
+      email:this.state.email,
+      password:this.state.password
+    };
+
         axios.post('/auth/signup',values).then(response=>{
           const key = `open${Date.now()}`;
           const btn = (
@@ -36,12 +58,14 @@ class Register extends React.Component {
               login
             </Button>
           );
+          if(response.status == 200){
           notification.open({
             message: 'Success',
             description: 'Account Has been created, please login',
             btn,
             key
           });
+        }
         }).catch(error=>{
           console.log(error);
           notification.open({
@@ -49,14 +73,7 @@ class Register extends React.Component {
             description: 'Unable to create Please try again.'
           });
         });
-      }else{
-        console.log(err);
-        notification.open({
-          message: 'Error',
-          description: 'Unable to create Please try again.'
-        });
-      }
-    });
+
       }
 
   compareToFirstPassword = (rule, value, callback) => {
@@ -104,67 +121,97 @@ class Register extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
+          {/* <h1>{this.props.title}</h1> */}
+          <div className={s.formGroup} style={{paddingTop:"3em"}}>
+            <a className={s.facebook} href={`https://www.facebook.com/v3.2/dialog/oauth?client_id=${SOCIAL.FB.CLIENT_ID}&redirect_uri=${SOCIAL.FB.REDIRECT_URI}&state=fb&scope=email`}>
+              <svg
+                className={s.icon}
+                width="30"
+                height="30"
+                viewBox="0 0 30 30"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M22 16l1-5h-5V7c0-1.544.784-2 3-2h2V0h-4c-4.072 0-7 2.435-7 7v4H7v5h5v14h6V16h4z" />
+              </svg>
+              <span>Log in with Facebook</span>
+            </a>
+          </div>
+          <div className={s.formGroup}>
+            <a className={s.google} href={`https://accounts.google.com/o/oauth2/auth?client_id=${SOCIAL.GOOGLE.CLIENT_ID}&redirect_uri=${SOCIAL.GOOGLE.REDIRECT_URI}&scope=email&response_type=code&state=google`}>
+              <svg
+                className={s.icon}
+                width="30"
+                height="30"
+                viewBox="0 0 30 30"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d={
+                    'M30 13h-4V9h-2v4h-4v2h4v4h2v-4h4m-15 2s-2-1.15-2-2c0 0-.5-1.828 1-3 ' +
+                    '1.537-1.2 3-3.035 3-5 0-2.336-1.046-5-3-6h3l2.387-1H10C5.835 0 2 3.345 2 7c0 ' +
+                    '3.735 2.85 6.56 7.086 6.56.295 0 .58-.006.86-.025-.273.526-.47 1.12-.47 1.735 ' +
+                    '0 1.037.817 2.042 1.523 2.73H9c-5.16 0-9 2.593-9 6 0 3.355 4.87 6 10.03 6 5.882 ' +
+                    '0 9.97-3 9.97-7 0-2.69-2.545-4.264-5-6zm-4-4c-2.395 0-5.587-2.857-6-6C4.587 ' +
+                    '3.856 6.607.93 9 1c2.394.07 4.603 2.908 5.017 6.052C14.43 10.195 13 13 11 ' +
+                    '13zm-1 15c-3.566 0-7-1.29-7-4 0-2.658 3.434-5.038 7-5 .832.01 2 0 2 0 1 0 ' +
+                    '2.88.88 4 2 1 1 1 2.674 1 3 0 3-1.986 4-7 4z'
+                  }
+                />
+              </svg>
+              <span>Log in with Google</span>
+            </a>
+          </div>
 
-          <Form onSubmit={this.handleSubmit} style={{paddingLeft:"35%",width:'65%',paddingBottom:"10em"}}>
-          <FormItem
-          {...formItemLayout}
-          label="Username"
-        >
-          {getFieldDecorator('username', {
-            rules: [{
-              required: true, message: 'Please enter the username!',
-            }],
-          })(
-            <Input placeholder="Username" />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="E-mail"
-        >
-          {getFieldDecorator('email', {
-            rules: [{
-              type: 'email', message: 'This is not valid E-mail!',
-            }, {
-              required: true, message: 'Please input your E-mail!',
-            }],
-          })(
-            <Input placeholder="Email" />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="Password"
-        >
-          {getFieldDecorator('password', {
-            rules: [{
-              required: true, message: 'Please input your password!',
-            }, {
-              validator: this.validateToNextPassword,
-            }],
-          })(
-            <Input type="password" placeholder="password" />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="Confirm"
-        >
-          {getFieldDecorator('confirm', {
-            rules: [{
-              required: true, message: 'Please confirm your password!',
-            }, {
-              validator: this.compareToFirstPassword,
-            }],
-          })(
-            <Input type="password" placeholder="Confirm Password" onBlur={this.handleConfirmBlur} />
-          )}
-        </FormItem>
-        <FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">Register</Button>
-        </FormItem>
-        </Form>
+          <strong className={s.lineThrough}>OR</strong>
+          <p className={s.lead} style={{textAlign:"center"}}>
+           Register with us
+          </p>
+          <form onSubmit={this.handleSubmit}>
+          <div className={s.formGroup}>
+              <label className={s.label} htmlFor="username">
+                Username :
+                <input
+                  className={s.input}
+                  id="username"
+                  type="text"
+                  name="username"
+                  onChange={this.handleChanges}
+                  autoFocus // eslint-disable-line jsx-a11y/no-autofocus
+                />
+              </label>
+            </div>
+            <div className={s.formGroup}>
+              <label className={s.label} htmlFor="email">
+                Email :
+                <input
+                  className={s.input}
+                  id="email"
+                  type="text"
+                  name="email"
+                  onChange={this.handleChanges}
+                  autoFocus // eslint-disable-line jsx-a11y/no-autofocus
+                />
+              </label>
+            </div>
+            <div className={s.formGroup}>
+              <label className={s.label} htmlFor="password">
+                Password:
+                <input
+                  className={s.input}
+                  id="password"
+                  type="password"
+                  name="password"
+                  onChange={this.handleChanges}
+                />
+              </label>
+            </div>
 
+            <div className={s.formGroup}>
+              <button className={s.button} type="submit" disabled={this.state.email && this.state.password && this.state.username ? false :true}>
+               Register
+              </button>
+            </div>
+          </form>
         </div>
         </div>
     );
