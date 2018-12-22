@@ -12,7 +12,7 @@ import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Navigation.css';
 import Link from '../Link';
-import {Icon,Dropdown,Menu,Button} from "antd";
+import { Icon, Dropdown, Menu, Button } from 'antd';
 
 const SubMenu = Menu.SubMenu;
 class Navigation extends React.Component {
@@ -26,65 +26,73 @@ class Navigation extends React.Component {
   menu = (
     <Menu>
       <Menu.Item key="1">
-        <Link to='/ComputeEx'><Icon type="database" theme="twoTone"  /> &nbsp;ComputeEx</Link>
-        </Menu.Item>
-
-  <SubMenu title={<span><i className="fas fa-users"/>&nbsp;P2P Buy/Sell</span>}>
-
-        <Menu.Item key="3">
-        <Link to="/add_p2p_listing">
-        <Icon type="setting" />&nbsp;
-        Manage P2P Listing
+        <Link to="/ComputeEx">
+          <Icon type="database" theme="twoTone" /> &nbsp;ComputeEx
         </Link>
+      </Menu.Item>
+
+      <SubMenu
+        title={
+          <span>
+            <i className="fas fa-users" />&nbsp;P2P Buy/Sell
+          </span>
+        }
+      >
+        <Menu.Item key="3">
+          <Link to="/add_p2p_listing">
+            <Icon type="setting" />&nbsp; Manage P2P Listing
+          </Link>
         </Menu.Item>
         <Menu.Item key="4">
-        <Link to="/p2p">
-        <Icon type="notification" />&nbsp;
-        P2P MarketPlace
-        </Link>
+          <Link to="/p2p">
+            <Icon type="notification" />&nbsp; P2P MarketPlace
+          </Link>
         </Menu.Item>
-        </SubMenu>
+      </SubMenu>
 
-        <SubMenu title={<span><i className="fas fa-wallet"/>&nbsp;Wallets</span>}>
+      <SubMenu
+        title={
+          <span>
+            <i className="fas fa-wallet" />&nbsp;Wallets
+          </span>
+        }
+      >
         <Menu.Item key="5">
-        <Link to='/wallet/BTC'>
-
-        <i className="fab fa-bitcoin"/>
-    &nbsp;
-        Bitcoin
-        </Link>
+          <Link to="/wallet/BTC">
+            <i className="fab fa-bitcoin" />
+            &nbsp; Bitcoin
+          </Link>
         </Menu.Item>
         <Menu.Item key="6">
-        <Link to='/wallet/ETH'>
-        <i className="fab fa-ethereum"/>
-    &nbsp;
-        Ethereum
-        </Link>
+          <Link to="/wallet/ETH">
+            <i className="fab fa-ethereum" />
+            &nbsp; Ethereum
+          </Link>
         </Menu.Item>
         <Menu.Item key="7">
-        <Link to='/wallet/EST'>
-        <i className="fab fa-ethereum"/>
-    &nbsp;
-        EST Token
-        </Link>
+          <Link to="/wallet/EST">
+            <i className="fab fa-ethereum" />
+            &nbsp; EST Token
+          </Link>
         </Menu.Item>
-        </SubMenu>
+      </SubMenu>
 
-        <Menu.Item key="8" disabled>
-        <Link to='/LendBorrow'><Icon type="usergroup-add" theme="twoTone"  />&nbsp;Lend {"&"} Borrow</Link>
-        </Menu.Item>
+      <Menu.Item key="8" disabled>
+        <Link to="/LendBorrow">
+          <Icon type="usergroup-add" theme="twoTone" />&nbsp;Lend {'&'} Borrow
+        </Link>
+      </Menu.Item>
     </Menu>
   );
   componentDidMount() {
-   this.loginStateSet();
-
+    this.loginStateSet();
   }
-  loginStateSet = ()=>{
-    if(localStorage.getItem('user') && localStorage.getItem('user').length){
+  loginStateSet = () => {
+    if (localStorage.getItem('user') && localStorage.getItem('user').length) {
       this.setState({
-        admin:JSON.parse(localStorage.getItem('user')).admin || false,
-        adminLevel:JSON.parse(localStorage.getItem('user')).adminLevel || null
-      })
+        admin: JSON.parse(localStorage.getItem('user')).admin || false,
+        adminLevel: JSON.parse(localStorage.getItem('user')).adminLevel || null,
+      });
     }
     if (
       localStorage.getItem('token') &&
@@ -98,7 +106,7 @@ class Navigation extends React.Component {
         loggedIn: false,
       });
     }
-  }
+  };
 
   logout = () => {
     localStorage.clear();
@@ -111,95 +119,80 @@ class Navigation extends React.Component {
   render() {
     return (
       <div className={s.root} role="navigation">
-       {this.props.menukey == 3 &&(
-        <Link className={s.link} to="/p2p">
-          P2P Marketplace
-        </Link>
-      )}
-      {this.props.menukey == 4 &&(
-        <Link className={s.link} to="/add_p2p_listing">
-          Manage Your Listings
-        </Link>
-      )}
-      {(this.props.menukey >= 6 && this.props.menukey <= 8) &&(
+        {this.props.menukey == 3 && (
+          <Link className={s.link} to="/p2p">
+            P2P Marketplace
+          </Link>
+        )}
+        {this.props.menukey == 4 && (
+          <Link className={s.link} to="/add_p2p_listing">
+            Manage Your Listings
+          </Link>
+        )}
+        {this.props.menukey >= 6 &&
+          this.props.menukey <= 8 && (
             <Link className={s.link} to="/LendBorrow/placeOrder">
-                Place Order
+              Place Order
             </Link>
-      )}
-      {(this.props.menukey >= 6 && this.props.menukey <= 8) &&(
-            <Link className={s.link} to="/LendBorrow">
-            Order Book
-        </Link>
-      )}
-      {(this.props.menukey >= 6 && this.props.menukey <= 8) &&(
-            <Link className={s.link} to="/LendBorrow/agreements">
-            Your Agreements
-        </Link>
-      )}
-
-        {
-          this.state.admin &&(
-
-            <span className={s.spacer}>&nbsp;</span>
-          )
-        }
-        {
-          this.state.admin && (
-            <Button type='primary' ghost>
-            <i className="fas fa-tachometer-alt" />
-            <Link className={s.link} to='/admin'>
-            Admin Dashboard
-            </Link>
-            </Button>
-          )
-        }
-        {
-          this.state.admin &&(
-
-            <span className={s.spacer}>&nbsp; | </span>
-          )
-        }
-
-
-      {this.state.loggedIn && (localStorage.user ?  !JSON.parse(localStorage.user).adminLevel : true) && ( <Dropdown overlay={this.menu}>
-    <a className="ant-dropdown-link" className={s.link}  href="#">
-    <Icon type="appstore" /> <Icon type="down" />
-    </a>
-  </Dropdown>
-      )}
-
-
-        {!this.state.loggedIn &&  (
-
-
-          <Button type='dashed'>
-           <i className="fas fa-sign-in-alt" />&nbsp;
-            <Link className={s.link} to="/login?how=force">
-            Login
-            </Link>
-            </Button>
-
           )}
-        {
-          !this.state.loggedIn && (
-            <span className={s.spacer}> | </span>
-          )
-        }
-        {!this.state.loggedIn && (
+        {this.props.menukey >= 6 &&
+          this.props.menukey <= 8 && (
+            <Link className={s.link} to="/LendBorrow">
+              Order Book
+            </Link>
+          )}
+        {this.props.menukey >= 6 &&
+          this.props.menukey <= 8 && (
+            <Link className={s.link} to="/LendBorrow/agreements">
+              Your Agreements
+            </Link>
+          )}
 
-             <Button type='default'>
-               <i className="fas fa-user-plus" />
+        {this.state.admin && <span className={s.spacer}>&nbsp;</span>}
+        {this.state.admin && (
+          <Button type="primary" style={{marginRight: '10px'}} ghost>
+            <i className="fas fa-tachometer-alt" />
+            <Link className={s.link} style={{marginRight: '0px'}} to="/admin">
+              Admin Dashboard
+            </Link>
+          </Button>
+        )}
+
+        {this.state.admin && <span className={s.spacer}>&nbsp; | </span>}
+
+        {this.state.loggedIn &&
+          (localStorage.user
+            ? !JSON.parse(localStorage.user).adminLevel
+            : true) && (
+            <Dropdown overlay={this.menu}>
+              <a className="ant-dropdown-link" style={{marginRight: '4px'}} className={s.link} href="#">
+                <Icon type="appstore" /> <Icon type="down" />
+              </a>
+            </Dropdown>
+          )}
+
+        {!this.state.loggedIn && (
+          <Button type="dashed">
+            <i className="fas fa-sign-in-alt" />&nbsp;
+            <Link className={s.link} to="/login?how=force">
+              Login
+            </Link>
+          </Button>
+        )}
+        {!this.state.loggedIn && <span className={s.spacer}> | </span>}
+        {!this.state.loggedIn && (
+          <Button type="default">
+            <i className="fas fa-user-plus" />
             <Link className={s.link} to="/register">
               Sign up
             </Link>
-            </Button>
-
-          )}
+          </Button>
+        )}
         {this.state.loggedIn && (
-            <Link className={s.link} onClick={this.logout} to="/login?how=force">
-          <Icon type="logout" />&nbsp;
-            </Link>
-          )}
+          <Link className={s.link} style={{marginRight: '0px'}} onClick={this.logout} to="/login?how=force">
+            <Icon type="logout" />&nbsp;
+          </Link>
+        )}
       </div>
     );
   }

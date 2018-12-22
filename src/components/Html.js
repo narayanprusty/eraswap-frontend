@@ -82,7 +82,12 @@ class Html extends React.Component {
               defer
             />
           )}
-          <script defer src="https://use.fontawesome.com/releases/v5.6.1/js/all.js" integrity="sha384-R5JkiUweZpJjELPWqttAYmYM1P3SNEJRM6ecTQF05pFFtxmCO+Y1CiUhvuDzgSVZ" crossorigin="anonymous"></script>
+          <script
+            defer
+            src="https://use.fontawesome.com/releases/v5.6.1/js/all.js"
+            integrity="sha384-R5JkiUweZpJjELPWqttAYmYM1P3SNEJRM6ecTQF05pFFtxmCO+Y1CiUhvuDzgSVZ"
+            crossorigin="anonymous"
+          />
         </body>
       </html>
     );
