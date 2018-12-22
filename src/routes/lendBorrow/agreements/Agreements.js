@@ -31,7 +31,7 @@ class Agreements extends React.Component {
     static propTypes = {
         title: PropTypes.string.isRequired,
       };
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -112,7 +112,7 @@ class Agreements extends React.Component {
             <div className={s.container}>
                 <Card extra={(this.state.loading ? <Spin /> :
                         <Icon type="reload" onClick={this.getAgreements.bind(this)} style={{margin: '0.5%'}} /> )}>
-                    <Table dataSource={this.state.agreementsData} 
+                    <Table    style={{wordBreak:'break-all'}} dataSource={this.state.agreementsData}
                         expandedRowRender=
                         {
                             record => {

@@ -134,6 +134,7 @@ class Users extends React.Component {
       <div className={s.root}>
       <Card>
       <Table
+         style={{wordBreak:'break-all'}}
       columns={this.columns}
       rowKey={record => record._id}
       dataSource={this.state.data}
