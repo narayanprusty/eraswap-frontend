@@ -133,7 +133,7 @@ class Register extends React.Component {
               >
                 <path d="M22 16l1-5h-5V7c0-1.544.784-2 3-2h2V0h-4c-4.072 0-7 2.435-7 7v4H7v5h5v14h6V16h4z" />
               </svg>
-              <span>Log in with Facebook</span>
+              <span>Register with Facebook</span>
             </a>
           </div>
           <div className={s.formGroup}>
@@ -158,7 +158,7 @@ class Register extends React.Component {
                   }
                 />
               </svg>
-              <span>Log in with Google</span>
+              <span>Register with Google</span>
             </a>
           </div>
 
