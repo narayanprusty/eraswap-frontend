@@ -121,6 +121,7 @@ class Txns extends React.Component {
       <div className={s.root}>
       <Card>
       <Table
+         style={{wordBreak:'break-word'}}
       columns={columns}
       rowKey={record => record._id}
       dataSource={this.state.data}

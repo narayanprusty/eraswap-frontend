@@ -20,7 +20,7 @@ import {
     notification,
     Dropdown,
     Menu,
-    AutoComplete, 
+    AutoComplete,
     Checkbox
   } from 'antd';
 
@@ -77,13 +77,13 @@ class OrderBook extends React.Component {
             axios.get('/apis/lendingBorrowing/getOrderBook').then(res => {
                 console.log(res.data);
                 var filters = this.getFilters(res.data);
-            
+
             this.setState({ ordersData: res.data, coinFilter: filters[0], userFilter: filters[1], loadingOrders: false });
             }).catch(error => {
                 console.log(error);
             });
 
-            
+
         } catch (ex) {
             this.setState({ loadingOrders: false });
         }
@@ -124,7 +124,7 @@ class OrderBook extends React.Component {
         <div className={s.container}>
             <Card extra={(this.state.loadingOrders ? <Spin /> :
                         <Icon type="reload" onClick={this.getOrders.bind(this)} style={{margin: '0.5%'}} /> )}>
-                <Table dataSource={this.state.ordersData} rowKey="uniqueIdentifier">
+                <Table    style={{wordBreak:'break-word'}} dataSource={this.state.ordersData} rowKey="uniqueIdentifier">
                     <Column
                         title="Order Type"
                         Key="orderType"
