@@ -232,8 +232,9 @@ class Login extends React.Component {
                 />
               </label>
             </div>
+            <div className={s.forgotpass}>
             <a href="/forgotPassword">Forgot Password</a>
-            <br />
+            </div>
             <div className={s.formGroup}>
               <button className={s.button} type="submit">
                 Log in
