@@ -130,7 +130,7 @@ class Login extends React.Component {
   login = e => {
     e.preventDefault();
     const data = {
-      username: this.state.username,
+      email: this.state.email,
       password: this.state.password,
     };
     axios
@@ -209,12 +209,12 @@ class Login extends React.Component {
           <form onSubmit={this.login}>
             <div className={s.formGroup}>
               <label className={s.label} htmlFor="usernameOrEmail">
-                Username :
+                Email :
                 <input
                   className={s.input}
                   id="usernameOrEmail"
                   type="text"
-                  name="username"
+                  name="email"
                   onChange={this.handleChanges}
                   autoFocus // eslint-disable-line jsx-a11y/no-autofocus
                 />

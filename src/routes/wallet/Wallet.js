@@ -549,6 +549,11 @@ class Wallets extends React.Component{
     };
     console.log("props",props);
   }
+  componentDidMount = ()=>{
+    if(!localStorage.user){
+      location.href = '/login?how=force'
+    }
+  }
   contentListNoTitle = {
     BTC: <BtcWalletManager form={this.props.form} />,
     ETH: <EthWalletManager form={this.props.form} />,

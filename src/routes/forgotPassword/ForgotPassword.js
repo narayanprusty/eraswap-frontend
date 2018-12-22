@@ -41,7 +41,7 @@ class ForgotPassword extends React.Component {
         if (this.state.email != '') {
             this.setState({ loading: true });
             axios
-                .get('/auth/forgotPassword?email=' + this.state.email)
+                .post('/auth/forgotPassword',{email:this.state.email})
                 .then(response => {
                     if (response.data) {
                         console.log(response.data);
@@ -86,7 +86,7 @@ class ForgotPassword extends React.Component {
             <Form onSubmit={this.ForgotPassword}>
                 <FormItem
                     label="Email" >
-                    <Input 
+                    <Input
                         type="email"
                         value={this.state.email}
                         onChange={e => this.setState({email: e.target.value})}

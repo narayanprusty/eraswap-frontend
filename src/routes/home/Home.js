@@ -34,6 +34,11 @@ class Home extends React.Component {
       ),
     }).isRequired,
   };
+  componentDidMount = ()=>{
+    if(!localStorage.user){
+      location.href = '/login?how=force'
+    }
+  }
 
   render() {
     return (

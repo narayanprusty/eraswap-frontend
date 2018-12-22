@@ -916,6 +916,11 @@ class Addp2p extends React.Component {
       noTitleKey: 'buy',
     };
   }
+  componentDidMount = ()=>{
+    if(!localStorage.user){
+      location.href = '/login?how=force'
+    }
+  }
 
   onTabChange = (key, type) => {
     console.log(key, type);

@@ -827,6 +827,11 @@ class ManageComputeEx extends React.Component{
       noTitleKey: 'ComputeEx',
     };
   }
+  componentDidMount = ()=>{
+    if(!localStorage.user){
+      location.href = '/login?how=force'
+    }
+  }
   onTabChange = (key, type) => {
     console.log(key, type);
     this.setState({ [type]: key });

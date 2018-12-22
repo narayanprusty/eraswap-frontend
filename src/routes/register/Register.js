@@ -11,7 +11,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Register.css';
-import { Form, Input, Button, notification } from 'antd';
+import { Form, Input, Button,Card, notification } from 'antd';
 import axios from 'axios';
 
 const FormItem = Form.Item;
@@ -104,7 +104,8 @@ class Register extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <Form onSubmit={this.handleSubmit} style={{maxWidth:"500px",width:"40%",marginLeft:"25%" ,paddingBottom:"10em"}}>
+
+          <Form onSubmit={this.handleSubmit} style={{paddingLeft:"35%",width:'65%',paddingBottom:"10em"}}>
           <FormItem
           {...formItemLayout}
           label="Username"
@@ -114,7 +115,7 @@ class Register extends React.Component {
               required: true, message: 'Please enter the username!',
             }],
           })(
-            <Input />
+            <Input placeholder="Username" />
           )}
         </FormItem>
         <FormItem
@@ -128,7 +129,7 @@ class Register extends React.Component {
               required: true, message: 'Please input your E-mail!',
             }],
           })(
-            <Input />
+            <Input placeholder="Email" />
           )}
         </FormItem>
         <FormItem
@@ -142,12 +143,12 @@ class Register extends React.Component {
               validator: this.validateToNextPassword,
             }],
           })(
-            <Input type="password" />
+            <Input type="password" placeholder="password" />
           )}
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Confirm Password"
+          label="Confirm"
         >
           {getFieldDecorator('confirm', {
             rules: [{
@@ -156,13 +157,14 @@ class Register extends React.Component {
               validator: this.compareToFirstPassword,
             }],
           })(
-            <Input type="password" onBlur={this.handleConfirmBlur} />
+            <Input type="password" placeholder="Confirm Password" onBlur={this.handleConfirmBlur} />
           )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">Register</Button>
         </FormItem>
         </Form>
+
         </div>
         </div>
     );

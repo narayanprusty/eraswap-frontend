@@ -137,7 +137,13 @@ class Navigation extends React.Component {
         </Link>
       )}
 
-{
+        {
+          this.state.admin &&(
+
+            <span className={s.spacer}>&nbsp;</span>
+          )
+        }
+        {
           this.state.admin && (
             <Button type='primary' ghost>
             <i className="fas fa-tachometer-alt" />
@@ -145,6 +151,12 @@ class Navigation extends React.Component {
             Admin Dashboard
             </Link>
             </Button>
+          )
+        }
+        {
+          this.state.admin &&(
+
+            <span className={s.spacer}>&nbsp; | </span>
           )
         }
 
@@ -157,18 +169,34 @@ class Navigation extends React.Component {
       )}
 
 
-        {!this.state.loggedIn && <span className={s.spacer}> | </span> && (
-            <Link className={s.link} to="/login">
-              Log in
+        {!this.state.loggedIn &&  (
+
+
+          <Button type='dashed'>
+           <i className="fas fa-sign-in-alt" />&nbsp;
+            <Link className={s.link} to="/login?how=force">
+            Login
             </Link>
+            </Button>
+
           )}
-        {!this.state.loggedIn && <span className={s.spacer}>or</span> && (
-            <Link className={cx(s.link, s.highlight)} to="/register">
+        {
+          !this.state.loggedIn && (
+            <span className={s.spacer}> | </span>
+          )
+        }
+        {!this.state.loggedIn && (
+
+             <Button type='default'>
+               <i className="fas fa-user-plus" />
+            <Link className={s.link} to="/register">
               Sign up
             </Link>
+            </Button>
+
           )}
-        {this.state.loggedIn && <span className={s.spacer}> | </span> && (
-            <Link className={s.link} onClick={this.logout} to="/login">
+        {this.state.loggedIn && (
+            <Link className={s.link} onClick={this.logout} to="/login?how=force">
           <Icon type="logout" />&nbsp;
             </Link>
           )}
