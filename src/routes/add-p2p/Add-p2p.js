@@ -621,7 +621,7 @@ class MyListComponent extends React.Component{
     render() {
       return (
         <Table
-          style={{wordBreak:'break-all'}}
+          style={{wordBreak:'break-word'}}
           columns={this.columns}
           rowKey={record => record._id}
           dataSource={this.state.data}
@@ -872,7 +872,7 @@ class MyRequests extends React.Component{
     render() {
       return (
         <Table
-        style={{wordBreak:'break-all'}}
+        style={{wordBreak:'break-word'}}
           columns={this.columns}
           rowKey={record => record.uniqueIdentifier}
           dataSource={this.state.data}

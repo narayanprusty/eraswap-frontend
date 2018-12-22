@@ -112,7 +112,7 @@ class Agreements extends React.Component {
             <div className={s.container}>
                 <Card extra={(this.state.loading ? <Spin /> :
                         <Icon type="reload" onClick={this.getAgreements.bind(this)} style={{margin: '0.5%'}} /> )}>
-                    <Table    style={{wordBreak:'break-all'}} dataSource={this.state.agreementsData}
+                    <Table    style={{wordBreak:'break-word'}} dataSource={this.state.agreementsData}
                         expandedRowRender=
                         {
                             record => {

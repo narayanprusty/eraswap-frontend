@@ -124,7 +124,7 @@ class OrderBook extends React.Component {
         <div className={s.container}>
             <Card extra={(this.state.loadingOrders ? <Spin /> :
                         <Icon type="reload" onClick={this.getOrders.bind(this)} style={{margin: '0.5%'}} /> )}>
-                <Table    style={{wordBreak:'break-all'}} dataSource={this.state.ordersData} rowKey="uniqueIdentifier">
+                <Table    style={{wordBreak:'break-word'}} dataSource={this.state.ordersData} rowKey="uniqueIdentifier">
                     <Column
                         title="Order Type"
                         Key="orderType"
