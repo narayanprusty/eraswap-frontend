@@ -148,7 +148,6 @@ class Navigation extends React.Component {
             </Link>
           )}
 
-        {this.state.admin && <span className={s.spacer}>&nbsp;</span>}
         {this.state.admin && (
           <Button type="primary" style={{marginRight: '10px'}} ghost>
             <i className="fas fa-tachometer-alt" />
@@ -158,7 +157,6 @@ class Navigation extends React.Component {
           </Button>
         )}
 
-        {this.state.admin && <span className={s.spacer}>&nbsp; | </span>}
 
         {this.state.loggedIn &&
           (localStorage.user
@@ -179,7 +177,6 @@ class Navigation extends React.Component {
             </Link>
           </Button>
         )}
-        {!this.state.loggedIn && <span className={s.spacer}> | </span>}
         {!this.state.loggedIn && (
           <Button type="default">
             <i className="fas fa-user-plus" />
