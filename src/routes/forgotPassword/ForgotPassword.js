@@ -40,8 +40,9 @@ class ForgotPassword extends React.Component {
         e.preventDefault();
         if (this.state.email != '') {
             this.setState({ loading: true });
+            var host = location.protocol + "//" + location.host;
             axios
-                .post('/auth/forgotPassword',{email:this.state.email})
+                .post('/auth/forgotPassword',{email:this.state.email, host: host})
                 .then(response => {
                     if (response.data) {
                         console.log(response.data);
