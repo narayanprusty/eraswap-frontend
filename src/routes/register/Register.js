@@ -48,7 +48,8 @@ class Register extends React.Component {
     const values={
       username:this.state.username,
       email:this.state.email,
-      password:this.state.password
+      password:this.state.password,
+      host:location.protocol + "//" + location.host
     };
 
         axios.post('/auth/signup',values).then(response=>{

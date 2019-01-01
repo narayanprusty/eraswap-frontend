@@ -70,8 +70,8 @@ class Header extends React.Component {
   <div className={s.banner}>
           {this.props.menukey == 0.002 && (
              <div>
-            <h1 className={s.bannerTitle}>Home</h1>
-            {/* <p className={s.bannerDesc}>ComputeEx Dashboard</p> */}
+            <h1 className={s.bannerTitle}>Sub-Apps</h1>
+            <p className={s.bannerDesc}>Welcome to EraSwap Control Panel</p>
     </div>)}
           {this.props.menukey == 0.1 && (
              <div>
