@@ -14,9 +14,10 @@
   padding-left: 3.5em;
   padding-right: 3.5em;
   align-self: center;
-  width:87% ;
+  width:94% ;
   max-width: var(--max-content-width);
 }
+
 
 .container {
   margin: 0 auto;

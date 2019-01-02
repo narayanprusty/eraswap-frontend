@@ -14,8 +14,6 @@ import Link from '../Link';
 import Navigation from '../Navigation';
 import logoUrl from './era-logo.png';
 // import logoUrl2x from './logo-small@2x.png';
-import {Menu,Button} from 'antd';
-
 class Header extends React.Component {
   constructor(props) {
     super(props);

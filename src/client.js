@@ -21,8 +21,8 @@ import history from './history';
 import createApolloClient from './core/createApolloClient';
 import router from './router';
 import axios from 'axios';
-import { notification ,Icon} from "antd";
-
+import Icon from "antd/lib/icon";
+import notification from "antd/lib/notification";
 // Universal HTTP client
 const fetch = createFetch(window.fetch, {
   baseUrl: window.App.apiUrl,
@@ -169,7 +169,6 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       window.location.href = '/login?how=force';
     }else{
-
       notification.open({
         message: error.response.data.message,
         // description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',

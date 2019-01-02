@@ -19,6 +19,16 @@
  * Base styles
  * ========================================================================== */
 
+
+
+.root {
+    margin: 0 auto;
+    padding: 10px 0;
+    width: 86%;
+    max-width: 2100px;
+}
+
+
 html {
   color: #222;
   font-weight: 100;
