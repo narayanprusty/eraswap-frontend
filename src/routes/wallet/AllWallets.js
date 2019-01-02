@@ -5,6 +5,8 @@ import s from './AllWallets.css';
 import { Button, Slider, Row, Col, Card, Icon, Steps } from 'antd';
 import Link from '../../components/Link';
 import walletSvg from './wallet.svg';
+import ethSvg from './ETH.svg';
+import btcSvg from './BTC.svg';
 
 class AllWallets extends React.Component {
   static propTypes = {
@@ -34,7 +36,7 @@ class AllWallets extends React.Component {
                 <div className={s.dashIcon}>
                   <Link to="/wallet/BTC">
                     {/* <Icon type="wallet" theme="twoTone" className={s.icoStyle} /> */}
-                    <img src={walletSvg} className={s.icoStyle} />
+                    <img src={btcSvg} className={s.icoStyle} />
                     <br />
                     <br />
                     <span className={s.icoBullet}>Bitcoin</span>
@@ -46,7 +48,7 @@ class AllWallets extends React.Component {
                 <div className={s.dashIcon}>
                   <Link to="/wallet/ETH">
                     {/* <Icon type="database" theme="twoTone"  className={s.icoStyle} /> */}
-                    <img src={walletSvg} className={s.icoStyle} />
+                    <img src={ethSvg} className={s.icoStyle} />
                     <br />
                     <br />
                     <span className={s.icoBullet}>Ethereum</span>
@@ -58,7 +60,7 @@ class AllWallets extends React.Component {
                 <div className={s.dashIcon}>
                   <Link to="/wallet/EST">
                     {/* <Icon type="swap" theme="twoTone" className={s.icoStyle} /> */}
-                    <img src={walletSvg} className={s.icoStyle} />
+                    <img src={ethSvg} className={s.icoStyle} />
                     <br />
                     <br />
                     <span className={s.icoBullet}>EST Token</span>
