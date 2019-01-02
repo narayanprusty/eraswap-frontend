@@ -33,6 +33,29 @@ class OrderBook extends React.Component {
     title: PropTypes.string.isRequired,
   };
 
+    delete = (record) => {
+        notification.open({
+            message: ("Deleting"),
+            description: ("Record Number " + record.uniqueIdentifier)
+        });
+        axios.post('/apis/lendingBorrowing/deleteOrder', {
+            orderId: record.uniqueIdentifier
+        }).then(res => {
+            if (res.data.success) {
+                notification.open({
+                    message: 'Success',
+                    description: 'Order Deleted!',
+                });
+            }
+            else {
+                notification.open({
+                    message: 'Failed',
+                    description: res.data.message,
+                });
+            }
+        });
+    }
+
     apply = (record) => {
         console.log("Applying for order ",record.uniqueIdentifier);
         notification.open({
@@ -186,7 +209,7 @@ class OrderBook extends React.Component {
                         key="action"
                         render={(text, record) => (
                             <span>
-                            {record.selfOrder ? "" : <Button type="primary" onClick={this.apply.bind(this, record)}>Apply</Button>}
+                            {record.selfOrder ? <Button type="danger" onClick={this.delete.bind(this, record)}>Delete</Button> : <Button type="primary" onClick={this.apply.bind(this, record)}>Apply</Button>}
                             </span>
                         )}
                     />
