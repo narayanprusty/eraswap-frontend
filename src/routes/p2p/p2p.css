@@ -1,14 +1,14 @@
 @import '../../components/variables.css';
 
+
 .root {
   padding-top: 1.3em;
   padding-left: 3.5em;
   padding-right: 3.5em;
   align-self: center;
-  width:89% ;
+  width:94% ;
   max-width: var(--max-content-width);
 }
-
 .container {
   margin: 0 auto;
   padding: 0 0 40px;

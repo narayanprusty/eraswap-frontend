@@ -9,12 +9,17 @@
 
 @import '../../components/variables.css';
 
+
 .root {
   padding-top: 1.3em;
   padding-left: 3.5em;
   padding-right: 3.5em;
   align-self: center;
+<<<<<<< HEAD
   width: 100%;
+=======
+  width:94% ;
+>>>>>>> 67fd8fc4335ce787384b4cb49e33c3991a74726e
   max-width: var(--max-content-width);
 }
 
