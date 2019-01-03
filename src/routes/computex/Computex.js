@@ -463,10 +463,9 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
   checkValue=async(e)=>{
     return axios.get("/apis/cur/checkVal?currency="+this.state.currency+'&amount='+this.state.amount+'&platform='+this.state.platformFee).then(data=>{
         if(data && data.data){
-          const foundData= JSON.parse(data.data);
-            const currencyData = foundData.data[this.state.currency];
-            const usdPrice= currencyData.quote.USD.price;
-            if(usdPrice*this.state.amount >= 20){
+          const foundData= data.data;
+            const currencyData = foundData[this.state.currency];
+            if(currencyData*this.state.amount >= 20){
               this.setState({
                 checkVal:true
               })
