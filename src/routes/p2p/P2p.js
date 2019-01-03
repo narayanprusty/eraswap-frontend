@@ -328,8 +328,8 @@ class P2p extends React.Component {
     this.setState({ [type]: key });
   };
   contentListNoTitle = {
-    buy: <BuyListTable />,
-    sell: <BuyListTable sell={true} />,
+    sell: <BuyListTable />,
+    buy: <BuyListTable sell={true} />,
   };
   render() {
     return (
