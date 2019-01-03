@@ -26,49 +26,50 @@ class AllWallets extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <Card style={{ margin: '20px 0 ' }}>
-            <Row
-              type="flex"
-              justify="space-around"
-              style={{ margin: '20px 0 ' }}
-            >
-              <Col span={8}>
-                <div className={s.dashIcon}>
-                  <Link to="/wallet/BTC">
-                    {/* <Icon type="wallet" theme="twoTone" className={s.icoStyle} /> */}
-                    <img src={btcSvg} className={s.icoStyle} />
-                    <br />
-                    <br />
-                    <span className={s.icoBullet}>Bitcoin</span>
-                    <br />
-                  </Link>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className={s.dashIcon}>
-                  <Link to="/wallet/ETH">
-                    {/* <Icon type="database" theme="twoTone"  className={s.icoStyle} /> */}
-                    <img src={ethSvg} className={s.icoStyle} />
-                    <br />
-                    <br />
-                    <span className={s.icoBullet}>Ethereum</span>
-                    <br />
-                  </Link>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className={s.dashIcon}>
-                  <Link to="/wallet/EST">
-                    {/* <Icon type="swap" theme="twoTone" className={s.icoStyle} /> */}
-                    <img src={ethSvg} className={s.icoStyle} />
-                    <br />
-                    <br />
-                    <span className={s.icoBullet}>EST Token</span>
-                    <br />
-                  </Link>
-                </div>
-              </Col>
-            </Row>
+          <Card>
+              <center>
+                <Row
+                type="flex"
+                justify="space-around"
+                >
+                <Col span={8}>
+                    <div className={s.dashIcon}>
+                    <Link to="/wallet/BTC">
+                        {/* <Icon type="wallet" theme="twoTone" className={s.icoStyle} /> */}
+                        <img src={btcSvg} className={s.icoStyle} />
+                        <br />
+                        <br />
+                        <span className={s.icoBullet}>Bitcoin</span>
+                        <br />
+                    </Link>
+                    </div>
+                </Col>
+                <Col span={8}>
+                    <div className={s.dashIcon}>
+                    <Link to="/wallet/ETH">
+                        {/* <Icon type="database" theme="twoTone"  className={s.icoStyle} /> */}
+                        <img src={ethSvg} className={s.icoStyle} />
+                        <br />
+                        <br />
+                        <span className={s.icoBullet}>Ethereum</span>
+                        <br />
+                    </Link>
+                    </div>
+                </Col>
+                <Col span={8}>
+                    <div className={s.dashIcon}>
+                    <Link to="/wallet/EST">
+                        {/* <Icon type="swap" theme="twoTone" className={s.icoStyle} /> */}
+                        <img src={ethSvg} className={s.icoStyle} />
+                        <br />
+                        <br />
+                        <span className={s.icoBullet}>EST Token</span>
+                        <br />
+                    </Link>
+                    </div>
+                </Col>
+                </Row>
+              </center>
           </Card>
         </div>
       </div>
