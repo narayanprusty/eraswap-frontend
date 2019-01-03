@@ -758,7 +758,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                   size="large"
                   onSearch={value => {
                     this.setState({
-                      clientWallet: value,
+                      clientWallet: value.toLocaleLowerCase(),
                     });
                   }}
                   disabled={this.state.clientWallet ? true : false}

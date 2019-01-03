@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import s from './p2p.css';
-import { Card, Button,Table,Modal,Row,Col, Input,InputNumber } from 'antd';
+import { Card, Button,Table,Modal,Row,Col, Input } from 'antd';
 
 const tabListNoTitle = [
   {
