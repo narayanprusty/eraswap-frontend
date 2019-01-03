@@ -465,7 +465,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
         if(data && data.data){
           const foundData= data.data;
             const currencyData = foundData[this.state.currency];
-            if(currencyData*this.state.amount >= 20){
+            if(currencyData >= 20){
               this.setState({
                 checkVal:true
               })
