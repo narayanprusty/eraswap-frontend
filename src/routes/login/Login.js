@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Login.css';
 import axios from 'axios';
-import {Spin,Card} from 'antd';
+import {Spin, Card, Icon} from 'antd';
 import queryString from 'stringquery';
 import { from } from 'zen-observable';
 
@@ -235,6 +235,7 @@ class Login extends React.Component {
             <div className={s.forgotpass}>
 
             <a href="/forgotPassword"><i className="fas fa-key" />&nbsp;Forgot Password</a>
+            <a style={{float: "right"}} href="/resendVerification"><Icon type="mail" />&nbsp;Resend Verification</a>
             </div>
             <div className={s.formGroup}>
               <button className={s.button} type="submit">
