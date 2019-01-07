@@ -431,7 +431,7 @@ class WalletManager extends React.Component{
                                         />
                                 </FormItem>
                                 <FormItem
-                                    label="Amount" >
+                                    label={"Amount ("+ this.state.name +")"} >
                                     <Input
                                         type="number"
                                         value={this.state.exchangeAmount}
