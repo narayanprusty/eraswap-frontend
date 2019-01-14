@@ -571,6 +571,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                     name="amount"
                     size={size}
                     value={state.amount}
+                    placeholder="e.g 100"
                     onChange={this.handleChanges.bind(this)}
                     style={{ width: '25%', marginRight: '3%' }}
                   />
