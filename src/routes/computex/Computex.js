@@ -42,6 +42,7 @@ class ComputeEx extends React.Component {
     this.lastFetchId = 0;
     // this.fetchCurrency = lodash.debounce(this.fetchCurrency, 800);
     this.state = {
+      feeSegment:{},
       sendTag:undefined,
       platformFee:'EST',
       exchanges: [],
@@ -97,6 +98,7 @@ class ComputeEx extends React.Component {
     this.setState({
       loader: true,
     });
+  setTimeout(()=>this.setState({loader:false}),8000);
     this.checkValue(e).then(data=>{
       if(data == true){
     this.props.form.validateFields((err, values) => {
@@ -110,6 +112,7 @@ class ComputeEx extends React.Component {
           )
           .then(data => {
             if (data && data.data) {
+              this.getFees();
               const symbol = Object.keys(data.data)[0];
               const getMinMax = this.findMinMax(data.data[symbol])[1];
               this.setState({
@@ -146,6 +149,7 @@ class ComputeEx extends React.Component {
                   },
                 },
               });
+
             }
           }).catch(error=>{
             console.log(error);
@@ -159,6 +163,21 @@ class ComputeEx extends React.Component {
   }
   });
   };
+
+  getFees = ()=>{
+    axios.get('/apis/cur/checkFee?amount='+this.state.amount+'&fromSymbol='+this.state.currency).then(data=>{
+      if(data.data){
+          this.setState({
+            feeSegment:data.data
+          });
+      }else{
+        notification.open({
+          message:"Failed to fetch!",
+          icon: <Icon type="frown-circle" style={{ color: "#FF0000", }} />,
+        })
+      }
+    });
+  }
   checkExchangeSelect = exch => {
     if (this.state.maxExchange.toLowerCase() === exch) {
 
@@ -647,6 +666,15 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               {' '}
               <blockquote>
                 {' '}
+
+                   Fees To be deducted:
+               {this.state.feeSegment && (<div>
+
+          <ButtonGroup>
+      <Button disabled>EST: {this.state.feeSegment.EST}</Button>
+      <Button disabled>{this.state.currency}:{this.state.feeSegment[this.state.currency]}</Button>
+        </ButtonGroup>
+        </div>)}
                 * Best price [in USD] selected automatically
               </blockquote>{' '}
               &nbsp; <br />
