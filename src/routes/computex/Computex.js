@@ -517,7 +517,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     const customPanelStyle = {
       background: '#f7f7f7',
       borderRadius: 4,
-      marginBottom: 24,
+      marginBottom: 0,
       border: 0,
       overflow: 'hidden',
     };
