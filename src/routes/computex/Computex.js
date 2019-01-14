@@ -465,7 +465,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
         if(data && data.data){
           const foundData= data.data;
             const currencyData = foundData[this.state.currency];
-            if(currencyData >= 20){
+            if(currencyData*this.state.amount >= 20){
               this.setState({
                 checkVal:true
               })
@@ -473,8 +473,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
             }else{
               notification.open({
                 message: "Entered Amount should be equivalent to $20 or more.",
-                description: 'Please change the amount and try again.\n Entered amout value is estimated $'+(usdPrice*this.state.amount).toFixed(4),
-                icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+                description: 'Please change the amount and try again.\n Entered amout value is estimated $'+(currencyData*this.state.amount).toFixed(4),
+                icon: <Icon type="frown-circle" style={{ color: "#FF0000", }} />,
               });
             }
         }
