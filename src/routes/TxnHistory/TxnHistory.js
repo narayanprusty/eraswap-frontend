@@ -1,10 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
-import { List,Card,Table,Badge} from 'antd';
+import { List,Table,Badge} from 'antd';
 import s from './TxnHistory.css';
-import QrCode from 'qrcode.react';
 
 class TxnHistory extends React.Component {
   constructor(props) {
