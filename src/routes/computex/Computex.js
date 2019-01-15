@@ -98,8 +98,9 @@ class ComputeEx extends React.Component {
     this.setState({
       loader: true,
     });
-  setTimeout(()=>this.setState({loader:false}),8000);
+  setTimeout(()=>this.setState({loader:false}),20000);
     this.checkValue(e).then(data=>{
+      debugger;
       if(data == true){
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -236,7 +237,9 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
   nextStep3 = () => {
     this.setState({
       loader:true
-    })
+    });
+    setTimeout(()=>this.setState({loader:false}),20000);
+
     axios
       .get(
         '/apis/cur/get_epositAddress?platform=' +
@@ -672,8 +675,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                {this.state.feeSegment && (<div>
 
           <ButtonGroup>
-      <Button disabled>EST: {this.state.feeSegment.EST}</Button>
-      <Button disabled>{this.state.currency}:{this.state.feeSegment[this.state.currency]}</Button>
+      <Button type='danger' disabled={this.state.platformFee =="EST" ? false :true}>EST: {this.state.feeSegment.EST}</Button>
+      <Button type='danger' disabled={this.state.platformFee !="EST" ? false :true}>{this.state.currency}:{this.state.feeSegment[this.state.currency]}</Button>
         </ButtonGroup>
         </div>)}
                 * Best price [in USD] selected automatically
