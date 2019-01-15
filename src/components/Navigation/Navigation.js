@@ -177,6 +177,7 @@ class Navigation extends React.Component {
             </Link>
           </Button>
         )}
+        &nbsp;
         {!this.state.loggedIn && (
           <Button type="default">
             <i className="fas fa-user-plus" />
