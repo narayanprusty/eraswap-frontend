@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import s from './p2p.css';
-import { Card, Button,Table,Modal,Row,Col, Input,Radio } from 'antd';
+import { Card, Button,Table,Modal,Row,Col, Input,Radio,Spin,Icon } from 'antd';
 
 const RadioGroup = Radio.Group;
 
@@ -62,7 +62,7 @@ class BuyListTable extends React.Component{
       record:{},
       visible: false,
       confirmLoading: false,
-      feeCoin:'EST'
+      feeCoin:'EST',
     };
   }
   handleChange = e => {
@@ -238,19 +238,27 @@ class BuyListTable extends React.Component{
       }
     });
   };
-  componentDidMount() {
+  componentDidMount = ()=> {
     this.loadMyOwnInterests();
     this.fetch({wantsToBuy:this.props.sell||false }); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
   }
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps = (nextProps)=>{
 
-    this.fetch({wantsToBuy:nextProps.sell || false});
+     this.fetch({wantsToBuy:nextProps.sell || false});
+  }
+
+  reloaddata =()=>{
+
+     this.fetch({wantsToBuy:this.props.sell||false });
   }
 
 
   render() {
     return (
       <div>
+          { this.state.loading ? <Spin /> :
+                     <div> Refresh  <Icon type="reload" onClick={this.reloaddata} style={{margin: '0.5%'}} /> </div>
+                    }
       <Table
           style={{wordWrap:'break-word'}}
         columns={this.columns}
@@ -354,6 +362,8 @@ class P2p extends React.Component {
     sell: <BuyListTable />,
     buy: <BuyListTable sell={true} />,
   };
+
+
   render() {
     return (
       <div className={s.root}>
