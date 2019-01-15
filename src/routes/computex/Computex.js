@@ -81,6 +81,9 @@ class ComputeEx extends React.Component {
       loader: false,
     };
   }
+  componentDidMount = ()=>{
+    this.fetchCurrency();
+  }
   findMinMax = arr => {
     let min = { name: arr[0].name, ask: arr[0].ask },
       max = { name: arr[0].name, ask: arr[0].ask };
@@ -342,7 +345,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     this.setState({ fetching: true });
 
     axios
-      .get('/apis/cur/get_all_supported_currency?keyWord=' + keys)
+      .get('/apis/cur/get_all_supported_currency')
       .then(data => {
         if (data && data.data) {
           this.setState({
@@ -415,7 +418,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     document.body.removeChild(dummy);
   };
   handleCurrencyChange = currency => {
-    this.fetchCurrency(currency);
+    // this.fetchCurrency(currency);
     console.log(currency);
     if (!('value' in this.props)) {
       this.setState({ checkVal:false,currency });
@@ -423,7 +426,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
   };
 }
   handletoCurrencyChange = toCurrency => {
-    this.fetchCurrency(toCurrency);
+    // this.fetchCurrency(toCurrency);
     console.log(toCurrency);
     if (!('value' in this.props)) {
       this.setState({ checkVal:false,toCurrency });
@@ -587,7 +590,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                 </FormItem>
                 <FormItem label="Convert Currency">
                   <Select
-                    mode="combobox"
+                  showSearch
+                    // mode="combobox"
                     name="currency"
                     placeholder="Select Currency"
                     value={state.currency}
@@ -613,7 +617,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                     {state.cur.map(d => <Option key={d.value}>{d.name}</Option>)}
                   </Select> */}
                   <Select
-                    mode="combobox"
+                  showSearch
+                    // mode="combobox"
                     name="toCurrency"
                     placeholder="Select Currency"
                     value={state.toCurrency}

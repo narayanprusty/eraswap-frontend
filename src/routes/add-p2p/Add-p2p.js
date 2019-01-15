@@ -181,7 +181,7 @@ class BuyComponent extends React.Component {
               rules: [{ required: true, message: 'Crypto currency is required!' }],
             })(
               <Select
-              mode="combobox"
+              showSearch
               name="cryptoCur"
               placeholder="Select Crypto Currency"
               value={this.props.cryptoCur}
@@ -226,7 +226,7 @@ class BuyComponent extends React.Component {
               ],
             })(
               <Select
-                mode="combobox"
+              showSearch
                 name="paymentMethod"
                 value={this.props.paymentMethod}
                 placeholder="Select a payment Method"
@@ -245,7 +245,7 @@ class BuyComponent extends React.Component {
               rules: [{ required: true, message: 'Please select currency!' }],
             })(
               <Select
-                mode="combobox"
+              showSearch
                 name="currency"
                 value={this.props.currency}
                 placeholder="Select a currency"
