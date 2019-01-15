@@ -139,7 +139,7 @@ class WalletManager extends React.Component{
             loader: true,
         });
 
-        let platform = this.state.useEstForFees ? 'EST' : this.state.name;
+        let platform = this.state.useEstForFees ? 'EST' : 'source';
 
         return axios.get("/apis/cur/checkVal?currency=" + this.state.name + '&amount='
         + this.state.exchangeAmount + '&platform=' + platform + '&fromWallet=true').then(data => {
