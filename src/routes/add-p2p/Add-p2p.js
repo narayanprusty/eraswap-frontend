@@ -237,7 +237,7 @@ class BuyComponent extends React.Component {
             )}
           </FormItem>
           <FormItem
-            label="currency"
+            label="Currency"
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 12 }}
           >
@@ -363,6 +363,27 @@ class BuyComponent extends React.Component {
               </RadioGroup>,
             )}
           </FormItem>
+          {this.state.atPrice === 1 && (
+            <FormItem
+              label="Margin Percent"
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 12 }}
+            >
+              {getFieldDecorator('marginPercent', {
+                rules: [
+                  { required: true, message: 'Please enter your margin  parcent!' },
+                ],
+              })(
+                <Input
+                  type="number"
+                  placeholder="Margin percentage %"
+                  onChange={this.formchange}
+                  name="marginPercent"
+                  addonAfter={this.state.currency || '%'}
+                />,
+              )}
+            </FormItem>
+          )}
           {this.state.atPrice === 2 && (
             <FormItem
               label="fixedPrice"
@@ -557,19 +578,18 @@ class MyListComponent extends React.Component{
             BTCVAl=i.fixedPrice
           }
           else if(this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]){
-            BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency];
+            BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency] + (this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency] * (i.marginPercent ? i.marginPercent/100 : 0/100 ));
           }else{
 
             let awaitData =await this.getCurrentBtcValue(i.currency,i.cryptoCur ? i.cryptoCur : 'BTC');
             BTCVAl = awaitData.data.data;
-
             this.setState({
               [`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`]:{
                 ...this.state[i.cryptoCur ? i.cryptoCur : 'BTC'],
                 [i.currency]:BTCVAl,
               }
             })
-
+            BTCVAl = awaitData.data.data + (awaitData.data.data+(i.marginPercent ? i.marginPercent/100 : 0/100 ));
           }
           i.requests = await this.conVertObjToArr(i);
           this.setState
@@ -835,7 +855,7 @@ class MyRequests extends React.Component{
             BTCVAl=i.fixedPrice
           }
           else if(this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]){
-            BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency];
+            BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency] + (this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]+(i.marginPercent ? i.marginPercent/100 : 0/100 ));
           }else{
 
             let awaitData =await this.getCurrentBtcValue(i.currency,i.cryptoCur ? i.cryptoCur : 'BTC');
@@ -847,6 +867,7 @@ class MyRequests extends React.Component{
                 [i.currency]:BTCVAl,
               }
             })
+            BTCVAl = awaitData.data.data +(awaitData.data.data * (i.marginPercent ? i.marginPercent/100 : 0/100 ));
 
           }
           i.requests = await this.conVertObjToArr(i);

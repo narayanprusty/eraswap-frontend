@@ -200,7 +200,7 @@ class BuyListTable extends React.Component{
           BTCVAl=i.fixedPrice
         }
         else if(this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]){
-          BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency];
+          BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency] + (this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]*(i.marginPercent ? i.marginPercent/100 : 0/100 ));
         }else{
 
           let awaitData =await this.getCurrentBtcValue(i.currency,i.cryptoCur ? i.cryptoCur : 'BTC');
@@ -211,7 +211,9 @@ class BuyListTable extends React.Component{
               ...this.state[i.cryptoCur ? i.cryptoCur : 'BTC'],
               [i.currency]:BTCVAl,
             }
-          })
+          });
+
+          BTCVAl = awaitData.data.data+ (awaitData.data.data *  (i.marginPercent ? i.marginPercent/100 : 0/100 ))
 
         }
         this.setState
