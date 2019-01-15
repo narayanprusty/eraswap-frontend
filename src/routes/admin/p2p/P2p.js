@@ -131,7 +131,19 @@ class P2p extends React.Component {
       }
 
     }
-  }
+  },
+  {
+    title:'Fee',
+    dataIndex:'fee',
+    render:(fieldval,record)=>{
+      if(fieldval){
+      return <div>{fieldval} / {record.feeCoin}</div>
+      }else{
+        return <Tag color="volcano">Not Paid [Attention]</Tag>
+      }
+
+    }
+  },
   ,{
     title:'Buyer Paid',
     dataIndex:"iPaidVal",
