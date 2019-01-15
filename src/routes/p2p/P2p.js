@@ -252,7 +252,7 @@ class BuyListTable extends React.Component{
     return (
       <div>
       <Table
-          style={{wordBreak:'break-word'}}
+          style={{wordWrap:'break-word'}}
         columns={this.columns}
         rowKey={record => record._id}
         dataSource={this.state.data}
