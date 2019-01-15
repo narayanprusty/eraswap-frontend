@@ -38,7 +38,8 @@ class Txns extends React.Component {
      {title:"Users Receiving/Received amount [Without Fee]",content:wholeObj.amtToSend ? wholeObj.amtToSend : 'Not yet rendered'},
      {title:`Order for Exchange placed in  ${wholeObj.exchangePlatform}`,content: wholeObj.orderId ? "YES" : 'Not yet'},
      {title:"Order Status",content:wholeObj.convertedYet?wholeObj.convertedYet:'Not placed yet'},
-     {title:"Type Of Order",content:wholeObj.side ? wholeObj.side.toUpperCase() : 'Not yet decided',
+     {title:"Type Of Order",content:wholeObj.side ? wholeObj.side.toUpperCase() : 'Not yet decided'},
+     {title: "Platform Fee", content:wholeObj.platform_fee ? (wholeObj.platform_fee +' '+wholeObj.platformFeePayOpt =='source'?wholeObj.exchFromCurrency:wholeObj.platformFeePayOpt)  : '-'
   }];
  };
 
