@@ -32,6 +32,7 @@ class BuyComponent extends React.Component {
     this.state = {
       showPaymentInputBox: false,
       atPrice: '',
+      feeCoin:'EST'
     };
   }
   componentDidMount = () => {
@@ -97,9 +98,9 @@ class BuyComponent extends React.Component {
       }
     });
   };
-  onRadioChange = value => {
+  onRadioChange = e => {
     this.setState({
-      atPrice: value.target.value,
+      [e.target.name]: e.target.value,
     });
   };
   handleSelectChange1st = value => {
@@ -139,7 +140,7 @@ class BuyComponent extends React.Component {
   };
 
   childrenCurrList = () => {
-    const c = ["AED", "USD", "INR", "LBP", "BOB", "CRC", "PHP", "PLN", "JPY", "JOD", "PAB", "GBP", "DZD", "CHF", "ARS", "SAR", "EGP", "CNY", "ZAR", "OMR", "AUD", "SGD", "NOK", "MAD", "ILS", "NIO", "HKD", "TWD", "BGN", "ISK", "UYU", "KRW", "THB", "RSD", "IDR", "CLP", "RUB", "PEN", "DOP", "UAH", "CAD", "MXN", "NZD", "RON", "MKD", "GTQ", "SEK", "MYR", "QAR", "BHD", "HNL", "HRK", "COP", "ALL", "DKK", "BRL", "EUR", "HUF", "IQD"];
+    const c = ["AED", "USD", "INR", "LBP", "BOB", "CRC", "PHP", "PLN", "JPY", "JOD", "PAB", "GBP", "DZD", "CHF", "ARS", "SAR", "EGP", "CNY", "ZAR", "OMR", "AUD", "SGD", "NOK", "MAD", "ILS", "NIO", "HKD", "TWD", "BGN", "ISK", "UYU", "KRW"];
     let children = [];
 
     for (let i of c) {
@@ -324,7 +325,26 @@ class BuyComponent extends React.Component {
               />,
             )}
           </FormItem>
+          {this.props.sell &&( <FormItem
+            label="Pay fee using"
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 12 }}
+          >
+          { getFieldDecorator('feeCoin', {
+              rules: [{ required: true, message: 'Please Choose Your Fee Coin' }],
+            })(
+              <RadioGroup
+                name='feeCoin'
+                onChange={this.onRadioChange}
+                value={this.state.feeCoin || 'EST'}
+              >
+                <Radio value={'EST'} checked={true}>EST [Default]</Radio>
+               { this.state.cryptoCur  && this.state.cryptoCur != 'EST' &&( <Radio value={this.state.cryptoCur}>{this.state.cryptoCur}</Radio>)}
+              </RadioGroup>,
+            )}
 
+          </FormItem> )
+          }
           <FormItem
             label="@ Price"
             labelCol={{ span: 5 }}
@@ -334,6 +354,7 @@ class BuyComponent extends React.Component {
               rules: [{ required: true, message: 'Please Choose Your Price' }],
             })(
               <RadioGroup
+                name='atPrice'
                 onChange={this.onRadioChange}
                 value={this.state.atPrice}
               >
@@ -469,7 +490,8 @@ class MyListComponent extends React.Component{
       sellerEmail:item.sellerEmail,
       requester:item.userId,
       amount:item.amount,
-      cryptoCurrency:record.cryptoCur
+      cryptoCurrency:record.cryptoCur,
+      feeCoin:item.sellerFeeCoin
     }
     return axios.post('/apis/p2p/makeMatch',Postdata).then(data=>{
       //make that match button and all the match button in that disabled maybe setstate and check for listingId_
@@ -758,7 +780,8 @@ class MyRequests extends React.Component{
       sellerEmail:item.sellerEmail,
       requester:item.userId,
       amount:item.amount,
-      cryptoCurrency:record.cryptoCur
+      cryptoCurrency:record.cryptoCur,
+      feeCoin:item.sellerFeeCoin
     }
     return axios.post('/apis/p2p/makeMatch',Postdata).then(data=>{
       //make that match button and all the match button in that disabled maybe setstate and check for listingId_

@@ -2,7 +2,9 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import s from './p2p.css';
-import { Card, Button,Table,Modal,Row,Col, Input } from 'antd';
+import { Card, Button,Table,Modal,Row,Col, Input,Radio } from 'antd';
+
+const RadioGroup = Radio.Group;
 
 const tabListNoTitle = [
   {
@@ -60,6 +62,7 @@ class BuyListTable extends React.Component{
       record:{},
       visible: false,
       confirmLoading: false,
+      feeCoin:'EST'
     };
   }
   handleChange = e => {
@@ -72,6 +75,7 @@ class BuyListTable extends React.Component{
     this.setState({
       visible: true,
       record:record,
+      feeCoin:record.feeCoin ? record.feeCoin  : 'EST'
     });
   }
 
@@ -85,9 +89,15 @@ class BuyListTable extends React.Component{
     console.log('Clicked cancel button');
     this.setState({
       visible: false,
+      feeCoin:'EST',
+      record:{}
     });
   }
-
+  onRadioChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
   columns = [{
     title: 'Username',
     dataIndex: 'username',
@@ -133,8 +143,8 @@ class BuyListTable extends React.Component{
     };
 
   showInterest =()=>{
-
-   return axios.post('/apis/p2p/showInterest',{...this.state.record,askAmount:this.state.askAmount,specialMessage:this.state.message}).then(data=>{
+    console.log(this.state.record.feeCoin)
+   return axios.post('/apis/p2p/showInterest',{feeCoin:this.state.feeCoin,...this.state.record,askAmount:this.state.askAmount,specialMessage:this.state.message}).then(data=>{
     this.setState({
       [this.state.record.uniqueIdentifier]:true,
       visible:false,
@@ -298,6 +308,19 @@ class BuyListTable extends React.Component{
                 addonAfter={this.state.record.cryptoCur || 'EST'}
                 name="askAmount"
                   />
+              {this.props.sell && (
+                <div>
+                  Fee Coin:
+                  <RadioGroup
+                name='feeCoin'
+                onChange={this.onRadioChange}
+                value={this.state.feeCoin || 'EST'}
+              >
+                <Radio value={'EST'} checked={true}>EST [Default]</Radio>
+               { this.state.record  && this.state.record.cryptoCur != 'EST' &&( <Radio value={this.state.record.cryptoCur}>{this.state.record.cryptoCur}</Radio>)}
+              </RadioGroup>,
+                  </div>
+              )}
           </Row>
           <Row>
             <label>Special Message to {this.state.record.username}:</label><br />
