@@ -12,7 +12,7 @@
 .root {
   padding-top: 1.3em;
   align-self: center;
-  width:94% ;
+  width:100% ;
   max-width: var(--max-content-width);
 }
 
