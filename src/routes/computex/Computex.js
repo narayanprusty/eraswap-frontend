@@ -627,7 +627,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                 <FormItem label="Pay platform fee using: [0.5% for any coin and for EST 0.25%*]">
                 <RadioGroup name="platformFee" onChange={this.handleChanges.bind(this)} value={this.state.platformFee} >
                     <Radio value="EST">EST [50% off]</Radio>
-                    <Radio value="source">{this.state.currency ? this.state.currency : "source currency"}</Radio>
+                    <Radio value="source">{this.state.currency ? this.state.currency : "Source Currency"}</Radio>
                   </RadioGroup>
                 </FormItem>
                 <FormItem>
