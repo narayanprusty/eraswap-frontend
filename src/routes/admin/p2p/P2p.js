@@ -137,7 +137,7 @@ class P2p extends React.Component {
     dataIndex:'fee',
     render:(fieldval,record)=>{
       if(fieldval){
-      return <div>{fieldval.toFixed(3)} / {record.feeCoin}</div>
+      return <div>{fieldval.toFixed(3)} / {record.feeCoin ? record.feeCoin :'-'}</div>
       }else{
         return <Tag color="volcano">Not Paid [Attention]</Tag>
       }
@@ -147,36 +147,24 @@ class P2p extends React.Component {
   ,{
     title:'Buyer Paid',
     dataIndex:"iPaidVal",
+    align:'center',
     render: (fieldval,record)=>{
       if(fieldval == true){
-      return <Tag color="green">Yes</Tag>
+      return <div><Tag color="green">Yes</Tag>&nbsp;<Button size='small' type='danger' onClick={this.backToSeller.bind(this,record)}  disabled={record.finished || record.sendToBuyer || record.backToSeller ? true :false} ghost> Send to seller</Button></div>
     }else{
-      return <Tag color="volcano">No</Tag>
+      return <div><Tag color="volcano">No</Tag>&nbsp;<Button size='small' type='danger' onClick={this.backToSeller.bind(this,record)}  disabled={record.finished || record.sendToBuyer || record.backToSeller ? true :false} ghost> Send to seller</Button></div>
     }
   }
   },{
     title:'Seller Released',
     dataIndex:"finished",
+    align:'center',
     render: (fieldval,record)=>{
       if(fieldval == true){
-      return <Tag color="green">Yes</Tag>
+      return <div> <Tag color="green">Yes</Tag>&nbsp;<Button size='small' type='danger' onClick={this.sendToBuyer.bind(this,record)}  disabled={record.finished || record.sendToBuyer || record.backToSeller || !record.iPaidVal ? true :false} ghost> Send to Buyer</Button> </div>
     }else{
-      return <Tag color="volcano">No</Tag>
+      return <div> <Tag color="volcano">No</Tag>&nbsp;<Button size='small' type='danger' onClick={this.sendToBuyer.bind(this,record)}  disabled={record.finished || record.sendToBuyer || record.backToSeller || !record.iPaidVal ? true :false} ghost> Send to Buyer</Button> </div>
     }
-  }
-  },{
-    title:'',
-    dataIndex:"none",
-    render: (fieldval,record)=>{
-      return <Button size='small' type='danger' onClick={this.backToSeller.bind(this,record)}  disabled={record.finished || record.sendToBuyer || record.backToSeller ? true :false} ghost> Send to seller</Button>
-
-  }
-  },{
-    title:'',
-    dataIndex:"none",
-    render: (fieldval,record)=>{
-      return <Button size='small' type='danger' onClick={this.sendToBuyer.bind(this,record)}  disabled={record.finished || record.sendToBuyer || record.backToSeller || !record.iPaidVal ? true :false} ghost> Send to Buyer</Button>
-
   }
   }
 ]
