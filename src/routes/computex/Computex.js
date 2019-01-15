@@ -519,7 +519,6 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
       background: '#f7f7f7',
       borderRadius: 4,
       marginBottom: 0,
-      border: 0,
       overflow: 'hidden',
     };
     const { size } = this.props;
@@ -528,7 +527,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     return (
       <div>
         {/* <Card title={this.props.title}> */}
-          <Steps>
+          
+          <Steps style={{textAlign: 'left'}}>
             <Step
               status={this.state.stepsO.firstStep.status}
               title="Conversion details"
@@ -553,43 +553,39 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
           </Steps>
           <br />
           <Collapse
-            bordered={false}
+            bordered={true}
             defaultActiveKey={['1']}
             activeKey={[this.state.key]}
             onChange={this.callback}
             accordion
           >
             <Panel
-              header={this.state.panel1Text ? this.state.panel1Text : 'Step 1'}
+              header={this.state.panel1Text ? this.state.panel1Text : React.createElement(
+                'div',
+                {
+                  style: {
+                    textAlign: "left"
+                  }
+                },
+                'Step 1'
+              )}
               key="1"
               style={customPanelStyle}
               disabled={false}
             >
-            *Please Enter the amount excluding the txn Fee
+            
               <Form onSubmit={this.handleSubmit}>
-                <FormItem label="Convert">
+                <FormItem label="Convert Amount (excluding txn fee)">
                   <Input
                     name="amount"
                     size={size}
                     value={state.amount}
                     placeholder="e.g 100"
                     onChange={this.handleChanges.bind(this)}
-                    style={{ width: '25%', marginRight: '3%' }}
+                    style={{ width: '30%'}}
                   />
-                  {/* <Select
-                    labelInValue
-                    mode="combobox"
-                    value={state.currency}
-                    name="currency"
-                    placeholder="Select Currency"
-                    notFoundContent={state.fetching ? <Spin size="small" /> : null}
-                    filterOption={false}
-                    onSearch={this.fetchCurrency}
-                    onChange={this.handletoCurrencyChange}
-                    style={{ width: '32%' }}
-                  >
-                    {state.cur.map(d => <Option key={d.value}>{d.name}</Option>)}
-                  </Select> */}
+                </FormItem>
+                <FormItem label="Convert Currency">
                   <Select
                     mode="combobox"
                     name="currency"
@@ -602,7 +598,6 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                     {this.state.cur && this.childrenCurrList()}
                   </Select>
                 </FormItem>
-
                 <FormItem label="To">
                   {/* <Select
                     labelInValue
@@ -637,8 +632,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                 </FormItem>
                 <FormItem>
                   {
-                    this.state.toCurrency == this.state.currency && (
-                      <div>* Source Currency and Destination Currency cannot be same</div>
+                    (this.state.toCurrency == this.state.currency && this.state.currency) && (
+                      <div style={{color: 'red'}}>* Source Currency and Destination Currency cannot be same</div>
                     )
                   }
                   {!this.state.loader &&
@@ -659,7 +654,15 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               </Form>
             </Panel>
             <Panel
-              header={this.state.panel2Text ? this.state.panel2Text : 'Step 2'}
+              header={this.state.panel2Text ? this.state.panel2Text : React.createElement(
+                'div',
+                {
+                  style: {
+                    textAlign: "left"
+                  }
+                },
+                'Step 2'
+              )}
               key="2"
               style={customPanelStyle}
               disabled={false}
@@ -737,7 +740,15 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               )}
             </Panel>
             <Panel
-              header={this.state.panel3Text ? this.state.panel3Text : 'Step 3'}
+              header={this.state.panel3Text ? this.state.panel3Text : React.createElement(
+                'div',
+                {
+                  style: {
+                    textAlign: "left"
+                  }
+                },
+                'Step 3'
+              )}
               key="3"
               style={customPanelStyle}
               disabled={false}

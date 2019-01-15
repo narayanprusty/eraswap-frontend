@@ -12,13 +12,12 @@
 .root {
   padding-top: 1.3em;
   align-self: center;
-  width:94% ;
+  width:100% ;
   max-width: var(--max-content-width);
 }
 
 .container {
   margin: 0 auto;
-  padding: 0 0 40px;
   margin-top: 2em;
   align-self: center;
   max-width: var(--max-content-width);
@@ -29,4 +28,8 @@ code {
     box-sizing:border-box;
     word-break:break-word;
 
+}
+
+.ant-collapse-header {
+  text-align: left !important;
 }
