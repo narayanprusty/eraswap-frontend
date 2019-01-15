@@ -90,7 +90,6 @@ class Login extends React.Component {
   }
   componentDidMount = () => {
     const queries = queryString(location.search);
-    debugger;
     if(queries.code && queries.state=="fb"){
       this.setState({
         loader:true,

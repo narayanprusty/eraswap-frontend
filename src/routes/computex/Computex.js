@@ -100,7 +100,7 @@ class ComputeEx extends React.Component {
     });
   setTimeout(()=>this.setState({loader:false}),20000);
     this.checkValue(e).then(data=>{
-      debugger;
+
       if(data == true){
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -202,7 +202,6 @@ class ComputeEx extends React.Component {
 
   handleRadioChange = e =>{
 axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='+this.state.symbol).then(data=>{
-  // debugger;
   console.log(data.data);
       this.setState({
         [e.target.name]: e.target.value,
@@ -452,7 +451,6 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     const dataObj = this.state.exchanges.find(element => {
       return element.name.toLowerCase() === exchName.toLowerCase();
     });
-    // debugger;
     if (dataObj && dataObj.ask && html) {
      let expectedAmount;
      let atAmount;
