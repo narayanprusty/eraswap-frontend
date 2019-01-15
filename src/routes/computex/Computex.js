@@ -530,7 +530,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
     return (
       <div>
         {/* <Card title={this.props.title}> */}
-          
+
           <Steps style={{textAlign: 'left'}}>
             <Step
               status={this.state.stepsO.firstStep.status}
@@ -576,7 +576,7 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
               style={customPanelStyle}
               disabled={false}
             >
-            
+
               <Form onSubmit={this.handleSubmit}>
                 <FormItem label="Convert Amount (excluding txn fee)">
                   <Input
@@ -681,8 +681,8 @@ axios.get('/apis/cur/getPrice?platform='+e.target.value.toLowerCase()+'&symbol='
                {this.state.feeSegment && (<div>
 
           <ButtonGroup>
-      <Button type='danger' disabled={this.state.platformFee =="EST" ? false :true}>EST: {this.state.feeSegment.EST}</Button>
-      <Button type='danger' disabled={this.state.platformFee !="EST" ? false :true}>{this.state.currency}:{this.state.feeSegment[this.state.currency]}</Button>
+      <Button type='success' disabled={this.state.platformFee =="EST" ? false :true}>EST: {this.state.feeSegment.EST}</Button>
+      <Button type='success' disabled={this.state.platformFee !="EST" ? false :true}>{this.state.currency}:{this.state.feeSegment[this.state.currency]}</Button>
         </ButtonGroup>
         </div>)}
                 * Best price [in USD] selected automatically
