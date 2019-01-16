@@ -2,16 +2,14 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import Link from '../../../components/Link';
-import { Card, Input,Table,List,Badge,Button } from 'antd';
+import { Card, Row, Col, Icon,Table,List,Badge } from 'antd';
 import s from './Txns.css';
-const Search = Input.Search;
+
 class Txns extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      searchExist:false
-    };
+    this.state = {};
   }
 
   handleTableChange = (pagination, filters, sorter) => {
@@ -36,12 +34,11 @@ class Txns extends React.Component {
      content: wholeObj.dipositTxnId ? wholeObj.dipositTxnStatus : 'Not Received Yet.'},
      {title:"Deposit Transaction ID" ,content: wholeObj.dipositTxnId ? wholeObj.dipositTxnId : '-'},
      {title:"Exchange From/To",content: wholeObj.exchFromCurrency +'/'+wholeObj.exchToCurrency},
-     {title:`Users ${wholeObj.exchToCurrency} Receiving Address`,content: wholeObj.eraswapSendAddress},
+     {title:`Users ${wholeObj.exchFromCurrency} Receiving Address`,content: wholeObj.eraswapSendAddress},
      {title:"Users Receiving/Received amount [Without Fee]",content:wholeObj.amtToSend ? wholeObj.amtToSend : 'Not yet rendered'},
      {title:`Order for Exchange placed in  ${wholeObj.exchangePlatform}`,content: wholeObj.orderId ? "YES" : 'Not yet'},
      {title:"Order Status",content:wholeObj.convertedYet?wholeObj.convertedYet:'Not placed yet'},
-     {title:"Type Of Order",content:wholeObj.side ? wholeObj.side.toUpperCase() : 'Not yet decided'},
-     {title: "Platform Fee", content:wholeObj.platform_fee ? (wholeObj.platform_fee +' '+wholeObj.platformFeePayOpt =='source'?wholeObj.exchFromCurrency:wholeObj.platformFeePayOpt)  : '-'
+     {title:"Type Of Order",content:wholeObj.side ? wholeObj.side.toUpperCase() : 'Not yet decided',
   }];
  };
 
@@ -88,40 +85,6 @@ class Txns extends React.Component {
     this.fetch();
   }
 
-  onSearch = (e,value)=>{
-    if(value.trim().length){
-    this.setState({
-      searchExist:true
-    })
-    console.log(value)
-    axios({
-      url: '/admins/apis/txns/search',
-      params:{
-
-          dipositTxnId:value.trim()
-
-      },
-      method: 'get',
-      type: 'json',
-    }).then(async(data) => {
-      if(data.data){
-    const pagination = { ...this.state.pagination };
-    pagination.total = 1
-    this.setState({
-      loading: false,
-      data: data.data,
-      pagination,
-    });
-  }
-  });
-  }
-}
-  onReset =()=>{
-    this.setState({searchExist:false});
-    this.fetch();
-  }
-
-
   render(){
         // {title:'Deposit Status', dataIndex:'dipositTxnStatus',key:"dipositTxnStatus",align:'center',render:(depositStat)=>{
       //   return depositStat==="ok" ? (<span><Badge status="success" />Received</span>) : (<span><Badge status="warning" />{depositStat || "Pending"}</span>)
@@ -157,20 +120,8 @@ class Txns extends React.Component {
     return (
       <div className={s.root}>
       <Card>
-      <div style={{paddingBottom:'1em'}}>
-      <Search
-      placeholder="input search text"
-      enterButton="Search"
-      size="large"
-      style={{ width: 450 }}
-      onSearch={value => this.onSearch(this,value)}
-    /> &nbsp;
-    {this.state.searchExist && (<Button type='primary' size='large' onClick={this.onReset}>
-      Reset
-    </Button>)}
-    </div>
       <Table
-         style={{wordWrap:'break-word'}}
+         style={{wordBreak:'break-word'}}
       columns={columns}
       rowKey={record => record._id}
       dataSource={this.state.data}

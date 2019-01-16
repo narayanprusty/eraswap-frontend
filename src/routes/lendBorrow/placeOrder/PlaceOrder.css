@@ -10,11 +10,10 @@
 @import '../../../components/variables.css';
 
 .root {
-  padding-top: 1.3em;
-  align-self: center;
-  width:100% ;
-  max-width: var(--max-content-width);
+  padding-left: 20px;
+  padding-right: 20px;
 }
+
 .container {
   margin: 0 auto;
   padding: 40px;

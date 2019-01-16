@@ -19,22 +19,13 @@
  * Base styles
  * ========================================================================== */
 
-
-
-.root {
-    margin: 0 auto;
-    padding: 10px 0;
-    width: 86%;
-    max-width: 2100px;
-}
-
-
 html {
   color: #222;
   font-weight: 100;
   font-size: 1em; /* ~16px; */
   font-family: var(--font-family-base);
   line-height: 1.375; /* ~22px */
+  background-image: url(./shape_two.png);
 }
 
 body {
