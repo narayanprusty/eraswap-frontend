@@ -174,7 +174,7 @@ onReset =()=>{
       <Card>
       <div style={{paddingBottom:'1em'}}>
       <Search
-      placeholder="input search text"
+      placeholder="search with username/email"
       enterButton="Search"
       size="large"
       style={{ width: 450 }}
