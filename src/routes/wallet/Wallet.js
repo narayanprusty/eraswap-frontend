@@ -139,7 +139,7 @@ class WalletManager extends React.Component{
             loader: true,
         });
 
-        let platform = this.state.useEstForFees ? 'EST' : 'source';
+        let platform = this.state.useEstForFees ? 'EST' : this.state.name;
 
         return axios.get("/apis/cur/checkVal?currency=" + this.state.name + '&amount='
         + this.state.exchangeAmount + '&platform=' + platform + '&fromWallet=true').then(data => {
@@ -351,7 +351,8 @@ class WalletManager extends React.Component{
 
         return (
         <div>
-            <Card title={this.props.header}>
+        
+            <Card title={this.props.header} style={{ width: '50.2%' ,  border : '0px solid' , borderRadius: '10px', backgroundColor:'#345c6f', zIndex :'9999', clear:'both' , display: 'inline-block', float: 'left' , top:'20px', color:'#95a2cd' }}>
                 <div style={{marginBottom: '0.5%'}}>Balance:
                     {
                         this.state.balance == "" ? "" : "  "+this.state.balance
@@ -377,7 +378,7 @@ class WalletManager extends React.Component{
                                     type="text"
                                     value={this.state.recipient}
                                     onChange={e => this.setState({recipient: e.target.value})}
-                                    style={{ maxWidth: '45.2%' }}
+                                    style={{ maxWidth: '80.2%', border : '2px solid', borderRadius: '10px'  }}
                                     size="large"
                                 />
                             </FormItem>
@@ -387,7 +388,7 @@ class WalletManager extends React.Component{
                                     type="number"
                                     value={this.state.amount}
                                     onChange={e => this.setState({amount: e.target.value})}
-                                    style={{ maxWidth: '45.2%' }}
+                                    style={{ maxWidth: '80.2%', border : '2px solid', borderRadius: '10px'  }}
                                     size="large"
                                 />
                             </FormItem>
@@ -401,7 +402,7 @@ class WalletManager extends React.Component{
                             <br />
                             <br />
                             <Input.Search
-                              style={{ maxWidth: '45.2%' }}
+                              style={{ maxWidth: '80.2%' }}
                               size="large"
                               value={this.state.userWallet}
                               enterButton={<Icon type="copy" />}
@@ -431,7 +432,7 @@ class WalletManager extends React.Component{
                                         />
                                 </FormItem>
                                 <FormItem
-                                    label={"Amount ("+ this.state.name +")"} >
+                                    label="Amount" >
                                     <Input
                                         type="number"
                                         value={this.state.exchangeAmount}
@@ -454,7 +455,7 @@ class WalletManager extends React.Component{
                             )}
                         </Panel>
                     <Panel header="History" key="2">
-                    <Table    style={{wordWrap:'break-word'}} dataSource={this.state.history}>
+                    <Table    style={{wordBreak:'break-word'}} dataSource={this.state.history}>
                         <Column
                             title="Receiver"
                             dataIndex="receiver"
@@ -478,7 +479,11 @@ class WalletManager extends React.Component{
                     </Table>
                 </Panel>
             </Collapse>
+
             </Card>
+            
+             
+             
         </div>
         );
     }

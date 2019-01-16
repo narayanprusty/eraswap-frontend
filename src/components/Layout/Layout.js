@@ -17,7 +17,7 @@ import s from './Layout.css';
 import Header from '../Header';
 // import Feedback from '../Feedback';
 import Footer from '../Footer';
-import  Layout  from 'antd/lib/layout';
+import { Layout } from 'antd';
 
 class LayoutThing extends React.Component {
   static propTypes = {
@@ -41,10 +41,10 @@ class LayoutThing extends React.Component {
   render() {
     return (
       <Layout className="layout">
+
         <Header menukey={this.props.menukey} itsHome={this.props.itsHome} />
-        <div className={s.root}>
         {this.props.children}
-        </div>
+
         <Footer />
       </Layout>
     );
