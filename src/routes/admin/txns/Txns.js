@@ -2,14 +2,16 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import Link from '../../../components/Link';
-import { Card, Row, Col, Icon,Table,List,Badge } from 'antd';
+import { Card, Input,Table,List,Badge,Button } from 'antd';
 import s from './Txns.css';
-
+const Search = Input.Search;
 class Txns extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      searchExist:false
+    };
   }
 
   handleTableChange = (pagination, filters, sorter) => {
@@ -86,6 +88,40 @@ class Txns extends React.Component {
     this.fetch();
   }
 
+  onSearch = (e,value)=>{
+    if(value.trim().length){
+    this.setState({
+      searchExist:true
+    })
+    console.log(value)
+    axios({
+      url: '/admins/apis/txns/search',
+      params:{
+
+          dipositTxnId:value.trim()
+
+      },
+      method: 'get',
+      type: 'json',
+    }).then(async(data) => {
+      if(data.data){
+    const pagination = { ...this.state.pagination };
+    pagination.total = 1
+    this.setState({
+      loading: false,
+      data: data.data,
+      pagination,
+    });
+  }
+  });
+  }
+}
+  onReset =()=>{
+    this.setState({searchExist:false});
+    this.fetch();
+  }
+
+
   render(){
         // {title:'Deposit Status', dataIndex:'dipositTxnStatus',key:"dipositTxnStatus",align:'center',render:(depositStat)=>{
       //   return depositStat==="ok" ? (<span><Badge status="success" />Received</span>) : (<span><Badge status="warning" />{depositStat || "Pending"}</span>)
@@ -121,6 +157,18 @@ class Txns extends React.Component {
     return (
       <div className={s.root}>
       <Card>
+      <div style={{paddingBottom:'1em'}}>
+      <Search
+      placeholder="input search text"
+      enterButton="Search"
+      size="large"
+      style={{ width: 450 }}
+      onSearch={value => this.onSearch(this,value)}
+    /> &nbsp;
+    {this.state.searchExist && (<Button type='primary' size='large' onClick={this.onReset}>
+      Reset
+    </Button>)}
+    </div>
       <Table
          style={{wordWrap:'break-word'}}
       columns={columns}
