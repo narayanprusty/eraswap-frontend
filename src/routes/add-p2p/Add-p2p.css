@@ -2,8 +2,10 @@
 
 .root {
   padding-top: 1.3em;
+  padding-left: 3.5em;
+  padding-right: 3.5em;
   align-self: center;
-  width:100% ;
+  width:89% ;
   max-width: var(--max-content-width);
 }
 

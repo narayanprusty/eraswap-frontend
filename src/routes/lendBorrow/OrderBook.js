@@ -33,29 +33,6 @@ class OrderBook extends React.Component {
     title: PropTypes.string.isRequired,
   };
 
-    delete = (record) => {
-        notification.open({
-            message: ("Deleting"),
-            description: ("Record Number " + record.uniqueIdentifier)
-        });
-        axios.post('/apis/lendingBorrowing/deleteOrder', {
-            orderId: record.uniqueIdentifier
-        }).then(res => {
-            if (res.data.success) {
-                notification.open({
-                    message: 'Success',
-                    description: 'Order Deleted!',
-                });
-            }
-            else {
-                notification.open({
-                    message: 'Failed',
-                    description: res.data.message,
-                });
-            }
-        });
-    }
-
     apply = (record) => {
         console.log("Applying for order ",record.uniqueIdentifier);
         notification.open({
@@ -147,7 +124,7 @@ class OrderBook extends React.Component {
         <div className={s.container}>
             <Card extra={(this.state.loadingOrders ? <Spin /> :
                         <Icon type="reload" onClick={this.getOrders.bind(this)} style={{margin: '0.5%'}} /> )}>
-                <Table    style={{wordWrap:'break-word'}} dataSource={this.state.ordersData} rowKey="uniqueIdentifier">
+                <Table    style={{wordBreak:'break-word'}} dataSource={this.state.ordersData} rowKey="uniqueIdentifier">
                     <Column
                         title="Order Type"
                         Key="orderType"
@@ -209,7 +186,7 @@ class OrderBook extends React.Component {
                         key="action"
                         render={(text, record) => (
                             <span>
-                            {record.selfOrder ? <Button type="danger" onClick={this.delete.bind(this, record)}>Delete</Button> : <Button type="primary" onClick={this.apply.bind(this, record)}>Apply</Button>}
+                            {record.selfOrder ? "" : <Button type="primary" onClick={this.apply.bind(this, record)}>Apply</Button>}
                             </span>
                         )}
                     />

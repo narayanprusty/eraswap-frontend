@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
-import { List,Table,Badge} from 'antd';
+import { List,Card,Table,Badge} from 'antd';
 import s from './TxnHistory.css';
+import QrCode from 'qrcode.react';
 
 class TxnHistory extends React.Component {
   constructor(props) {
@@ -19,7 +21,7 @@ componentDidMount =()=>{
 getData =()=>{
     axios.get('/apis/txn/getTxn').then(data=>{
         if(data && data.data){
-
+            // debugger;
             this.setState({
                 data:data.data,
                 loading:false
@@ -46,18 +48,18 @@ changePage =(a)=>{
     {title:"Your Receiving/Received amount [Without Fee]",content:wholeObj.amtToSend ? wholeObj.amtToSend : 'Not yet rendered'},
     {title:`Order for Exchange placed in  ${wholeObj.exchangePlatform}`,content: wholeObj.orderId ? "YES" : 'Not yet'},
     {title:"Order Status",content:wholeObj.convertedYet?wholeObj.convertedYet:'Not placed yet'},
-    {title:"Type Of Order",content:wholeObj.side ? wholeObj.side.toUpperCase() : 'Not yet decided'},
-    {title: "Platform Fee", content:wholeObj.platform_fee ? (wholeObj.platform_fee +' '+wholeObj.platformFeePayOpt =='source'?wholeObj.exchFromCurrency:wholeObj.platformFeePayOpt)  : '-'
+    {title:"Type Of Order",content:wholeObj.side ? wholeObj.side.toUpperCase() : 'Not yet decided',
  }];
 };
 
   render(){
     const columns = [
         {title:'Exchange Platform',dataIndex:'exchangePlatform',key:'exchangePlatform',align:"center",className:s.exchange},
-        { title: 'Conversion Of', dataIndex: 'exchFromCurrency', key: 'exchFromCurrency' ,align:'center',render:(exchFromCurrency,record)=>{return exchFromCurrency+'/'+record.exchToCurrency}},
+        { title: 'Conversion Currency', dataIndex: 'exchFromCurrency', key: 'exchFromCurrency' ,align:'center'},
         { title: 'Conversion Amount', dataIndex: 'exchFromCurrencyAmt', key: 'exchFromCurrencyAmt' ,align:'center'},
+        { title: 'Converted Currency', dataIndex: 'exchToCurrency', key: 'exchToCurrency' ,align:'center'},
         { title: 'Converted Amount', dataIndex: 'totalExchangeAmout', key: 'totalExchangeAmout' ,align:'center'},
-        { title: 'Eraswap Deposit Address', dataIndex: 'eraswapAcceptAddress', key: 'eraswapAcceptAddress',align:'center' },
+        { title: 'Eraswap Deposit Address', dataIndex: 'eraswapAcceptAddress', key: 'eraswapAcceptAddress',align:'left' },
         {title:'Deposit Status', dataIndex:'dipositTxnStatus',key:"dipositTxnStatus",align:'center',render:(depositStat)=>{
           return depositStat==="ok" ? (<span><Badge status="success" />Received</span>) : (<span><Badge status="warning" />{depositStat || "Pending"}</span>)
         }},
@@ -74,7 +76,7 @@ changePage =(a)=>{
          <div className={this.props.menukey=="1" ? null : s.root}>
         {/* <Card title={this.props.title}> */}
         <Table
-           style={{wordWrap: 'break-word'}}
+           style={{wordBreak:'break-word'}}
     columns={columns}
     expandedRowRender={record => (
       <List

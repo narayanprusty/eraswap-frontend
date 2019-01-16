@@ -2,9 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import s from './p2p.css';
-import { Card, Button,Table,Modal,Row,Col, Input,Radio,Spin,Icon } from 'antd';
-
-const RadioGroup = Radio.Group;
+import { Card, Button,Table,Modal,Row,Col, Input,InputNumber } from 'antd';
 
 const tabListNoTitle = [
   {
@@ -62,7 +60,6 @@ class BuyListTable extends React.Component{
       record:{},
       visible: false,
       confirmLoading: false,
-      feeCoin:'EST',
     };
   }
   handleChange = e => {
@@ -75,7 +72,6 @@ class BuyListTable extends React.Component{
     this.setState({
       visible: true,
       record:record,
-      feeCoin:record.feeCoin ? record.feeCoin  : 'EST'
     });
   }
 
@@ -89,15 +85,9 @@ class BuyListTable extends React.Component{
     console.log('Clicked cancel button');
     this.setState({
       visible: false,
-      feeCoin:'EST',
-      record:{}
     });
   }
-  onRadioChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
+
   columns = [{
     title: 'Username',
     dataIndex: 'username',
@@ -143,8 +133,8 @@ class BuyListTable extends React.Component{
     };
 
   showInterest =()=>{
-    console.log(this.state.record.feeCoin)
-   return axios.post('/apis/p2p/showInterest',{feeCoin:this.state.feeCoin,...this.state.record,askAmount:this.state.askAmount,specialMessage:this.state.message}).then(data=>{
+
+   return axios.post('/apis/p2p/showInterest',{...this.state.record,askAmount:this.state.askAmount,specialMessage:this.state.message}).then(data=>{
     this.setState({
       [this.state.record.uniqueIdentifier]:true,
       visible:false,
@@ -200,7 +190,7 @@ class BuyListTable extends React.Component{
           BTCVAl=i.fixedPrice
         }
         else if(this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]){
-          BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency] + (this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]*(i.marginPercent ? i.marginPercent/100 : 0/100 ));
+          BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency];
         }else{
 
           let awaitData =await this.getCurrentBtcValue(i.currency,i.cryptoCur ? i.cryptoCur : 'BTC');
@@ -211,9 +201,7 @@ class BuyListTable extends React.Component{
               ...this.state[i.cryptoCur ? i.cryptoCur : 'BTC'],
               [i.currency]:BTCVAl,
             }
-          });
-
-          BTCVAl = awaitData.data.data+ (awaitData.data.data *  (i.marginPercent ? i.marginPercent/100 : 0/100 ))
+          })
 
         }
         this.setState
@@ -240,29 +228,21 @@ class BuyListTable extends React.Component{
       }
     });
   };
-  componentDidMount = ()=> {
+  componentDidMount() {
     this.loadMyOwnInterests();
     this.fetch({wantsToBuy:this.props.sell||false }); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
   }
-  componentWillReceiveProps = (nextProps)=>{
+  componentWillReceiveProps(nextProps){
 
-     this.fetch({wantsToBuy:nextProps.sell || false});
-  }
-
-  reloaddata =()=>{
-
-     this.fetch({wantsToBuy:this.props.sell||false });
+    this.fetch({wantsToBuy:nextProps.sell || false});
   }
 
 
   render() {
     return (
       <div>
-          { this.state.loading ? <Spin /> :
-                     <div> Refresh  <Icon type="reload" onClick={this.reloaddata} style={{margin: '0.5%'}} /> </div>
-                    }
       <Table
-          style={{wordWrap:'break-word'}}
+          style={{wordBreak:'break-word'}}
         columns={this.columns}
         rowKey={record => record._id}
         dataSource={this.state.data}
@@ -318,19 +298,6 @@ class BuyListTable extends React.Component{
                 addonAfter={this.state.record.cryptoCur || 'EST'}
                 name="askAmount"
                   />
-              {this.props.sell && (
-                <div>
-                  Fee Coin:
-                  <RadioGroup
-                name='feeCoin'
-                onChange={this.onRadioChange}
-                value={this.state.feeCoin || 'EST'}
-              >
-                <Radio value={'EST'} checked={true}>EST [Default]</Radio>
-               { this.state.record  && this.state.record.cryptoCur != 'EST' &&( <Radio value={this.state.record.cryptoCur}>{this.state.record.cryptoCur}</Radio>)}
-              </RadioGroup>,
-                  </div>
-              )}
           </Row>
           <Row>
             <label>Special Message to {this.state.record.username}:</label><br />
@@ -361,11 +328,9 @@ class P2p extends React.Component {
     this.setState({ [type]: key });
   };
   contentListNoTitle = {
-    sell: <BuyListTable />,
-    buy: <BuyListTable sell={true} />,
+    buy: <BuyListTable />,
+    sell: <BuyListTable sell={true} />,
   };
-
-
   render() {
     return (
       <div className={s.root}>

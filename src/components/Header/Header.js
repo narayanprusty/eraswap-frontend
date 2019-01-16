@@ -14,6 +14,8 @@ import Link from '../Link';
 import Navigation from '../Navigation';
 import logoUrl from './era-logo.png';
 // import logoUrl2x from './logo-small@2x.png';
+import {Menu,Button} from 'antd';
+
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -68,7 +70,7 @@ class Header extends React.Component {
   <div className={s.banner}>
           {this.props.menukey == 0.002 && (
              <div>
-            <h1 className={s.bannerTitle}>Sub-Apps</h1>
+            <h1 className={s.bannerTitle}>ComputeEx</h1>
             <p className={s.bannerDesc}>Welcome to EraSwap Control Panel</p>
     </div>)}
           {this.props.menukey == 0.1 && (
@@ -84,11 +86,6 @@ class Header extends React.Component {
     {this.props.menukey == 0.3 && (
              <div>
             <h1 className={s.bannerTitle}>Forgot Password</h1>
-            {/* <p className={s.bannerDesc}>ComputeEx Dashboard</p> */}
-    </div>)}
-    {this.props.menukey == 0.4 && (
-             <div>
-            <h1 className={s.bannerTitle}>Resend Verification</h1>
             {/* <p className={s.bannerDesc}>ComputeEx Dashboard</p> */}
     </div>)}
          {this.props.menukey == 1 && (
@@ -108,22 +105,22 @@ class Header extends React.Component {
     )}
     {this.props.menukey == 5 && (
       <div>
-        <h1 className={s.bannerTitle}>Wallets</h1>
+        <h1 className={s.bannerTitle}>ComputeEx Wallets</h1>
         <p className={s.bannerDesc}>Wallet Dashboard</p></div>
     )}
     {this.props.menukey == 6 && (
       <div>
-        <h1 className={s.bannerTitle}>Lend & Borrow</h1>
+        <h1 className={s.bannerTitle}>ComputeEx Lend & Borrow</h1>
         <p className={s.bannerDesc}>Place Order</p></div>
     )}
     {this.props.menukey == 7 && (
       <div>
-        <h1 className={s.bannerTitle}>Lend & Borrow</h1>
+        <h1 className={s.bannerTitle}>ComputeEx Lend & Borrow</h1>
         <p className={s.bannerDesc}>Agreements</p></div>
     )}
     {this.props.menukey == 8 && (
       <div>
-        <h1 className={s.bannerTitle}>Lend & Borrow</h1>
+        <h1 className={s.bannerTitle}>ComputeEx Lend & Borrow</h1>
         <p className={s.bannerDesc}>Order Book</p></div>
     )}
           </div>

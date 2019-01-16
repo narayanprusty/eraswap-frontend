@@ -1,0 +1,88 @@
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
+@import '../../components/variables.css';
+
+.root {
+  padding-top: 1.3em;
+  padding-left: 3.5em;
+  padding-right: 3.5em;
+  align-self: center;
+  width:87% ;
+  max-width: var(--max-content-width);
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 0 40px;
+  margin-top: 2em;
+  align-self: center;
+  max-width: var(--max-content-width);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.newsItem {
+  margin: 0 0 2rem;
+}
+
+.newsTitle {
+  font-size: 1.5rem;
+}
+
+.newsDesc {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 1.125rem;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    font-size: 0.875rem;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
+
+.dashIcon{
+  text-align: center;
+  margin-bottom: 4em;
+  /* box-shadow: 0px 0px 10px #cccccc; */
+  border: 5px solid #ffae57;
+  border-radius: 10px;
+  padding: 50px
+}
+
+.icoStyle{
+  /* font-size: 100px;
+  color:#700; */
+  align-self: center;
+  height: 6.2em;
+}
+
+.icoBullet{
+  font-weight: bold;
+  color: #524959;
+  text-align: center;
+  font-size: 25px
+}
+
+.icoDes{
+  color: #000000;
+  text-align: center;
+}
+
+.ant-select-selection--single{
+  border:5px solid;
+}
