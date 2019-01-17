@@ -21,7 +21,8 @@ import history from './history';
 import createApolloClient from './core/createApolloClient';
 import router from './router';
 import axios from 'axios';
-import { notification ,Icon} from "antd";
+import Icon from "antd/lib/icon";
+import notification from "antd/lib/notification";
 
 // Universal HTTP client
 const fetch = createFetch(window.fetch, {

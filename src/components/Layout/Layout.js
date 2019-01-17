@@ -17,8 +17,7 @@ import s from './Layout.css';
 import Header from '../Header';
 // import Feedback from '../Feedback';
 import Footer from '../Footer';
-import { Layout } from 'antd';
-
+import  Layout  from 'antd/lib/layout';
 class LayoutThing extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired
