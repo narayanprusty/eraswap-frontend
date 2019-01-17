@@ -74,7 +74,7 @@ changePage =(a)=>{
          <div className={this.props.menukey=="1" ? null : s.root}>
         {/* <Card title={this.props.title}> */}
         <Table
-           style={{wordWrap: 'break-word'}}
+           style={{overflowX: 'scroll'}}
     columns={columns}
     expandedRowRender={record => (
       <List

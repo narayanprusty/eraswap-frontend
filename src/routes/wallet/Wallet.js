@@ -454,7 +454,7 @@ class WalletManager extends React.Component{
                             )}
                         </Panel>
                     <Panel header="History" key="2">
-                    <Table    style={{wordWrap:'break-word'}} dataSource={this.state.history}>
+                    <Table    style={{overflowX: 'scroll'}} dataSource={this.state.history}>
                         <Column
                             title="Receiver"
                             dataIndex="receiver"
