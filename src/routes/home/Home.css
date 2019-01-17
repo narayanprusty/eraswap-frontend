@@ -9,24 +9,13 @@
 
 @import '../../components/variables.css';
 
-body {
-  font-family: 'Titillium Web', sans-serif
-}
-.heading {
-  font-weight: 700;
-}
-.subheading {
-  font-weight: 300;
-}
-
 .root {
   padding-top: 1.3em;
-  padding-left: 3.5em;
-  padding-right: 3.5em;
   align-self: center;
-  width:87% ;
+  width:100% ;
   max-width: var(--max-content-width);
 }
+
 
 .container {
   margin: 0 auto;
@@ -86,37 +75,11 @@ body {
 
 .icoBullet{
   font-weight: bold;
-  color: #fff;
+  color: #000000;
   text-align: center;
-  font-size: 20px
 }
 
 .icoDes{
-  color: #fff;
+  color: #000000;
   text-align: center;
-  font-size:18px;
-}
-
-.m1{
-  margin: 6px
-}
-
-/* For desktop: */
-@media only screen and (max-width: 600px) {
-   /* For tablets: */
-   .root {
-      width: 100%;
-   }
-}
-@media only screen and (max-width: 768px) {
-   /* For mobile phones: */
-   .root {
-     width: 100%;
-     padding-left: 1.5em;
-     padding-right: 1.5em;
-   }
-   .container {
-     margin-top: 0;
-     padding-bottom: 0;
-   } 
 }

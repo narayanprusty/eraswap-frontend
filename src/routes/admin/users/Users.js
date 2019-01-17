@@ -2,14 +2,19 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import Link from '../../../components/Link';
-import { Card, Table, Icon,Tag,List,Button } from 'antd';
+import { Card, Table, Input,Tag,List,Button } from 'antd';
 import s from './Users.css';
+
+const Search = Input.Search;
 
 class Users extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      loading:false,
+      searchExist:false
+    };
   }
 
   handleTableChange = (pagination, filters, sorter) => {
@@ -129,12 +134,58 @@ class Users extends React.Component {
     }
     return b;
  };
+ onSearch = (e,value)=>{
+  this.setState({
+    loading: true,
+  });
+  if(value.trim().length){
+  this.setState({
+    searchExist:true
+  })
+  console.log(value)
+  axios({
+    url: '/admins/apis/users/searchUser',
+    params:{
+        key:value.trim()
+    },
+    method: 'get',
+    type: 'json',
+  }).then(async(data) => {
+    if(data.data){
+  const pagination = { ...this.state.pagination };
+  pagination.total = 1
+  this.setState({
+    loading: false,
+    data: data.data,
+    pagination,
+  });
+}
+});
+}
+}
+onReset =()=>{
+  this.setState({searchExist:false});
+  this.fetch();
+}
+
   render(){
     return(
       <div className={s.root}>
       <Card>
+      <div style={{paddingBottom:'1em'}}>
+      <Search
+      placeholder="search with username/email"
+      enterButton="Search"
+      size="large"
+      style={{ width: 450 }}
+      onSearch={value => this.onSearch(this,value)}
+    /> &nbsp;
+    {this.state.searchExist && (<Button type='primary' size='large' onClick={this.onReset}>
+      Reset
+    </Button>)}
+    </div>
       <Table
-         style={{wordBreak:'break-word'}}
+         style={{wordWrap:'break-word'}}
       columns={this.columns}
       rowKey={record => record._id}
       dataSource={this.state.data}

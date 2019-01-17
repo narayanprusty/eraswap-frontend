@@ -4,8 +4,9 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './AllWallets.css';
 import { Button, Slider, Row, Col, Card, Icon, Steps } from 'antd';
 import Link from '../../components/Link';
-import walletSvg from './ethereum.svg';
-import bitcoinSvg from './bitcoin.svg';
+import walletSvg from './wallet.svg';
+import ethSvg from './ETH.svg';
+import btcSvg from './BTC.svg';
 
 class AllWallets extends React.Component {
   static propTypes = {
@@ -25,56 +26,53 @@ class AllWallets extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <Card style={{ margin: '20px 0', background:'#fff'}}>
-            <Row
-              type="flex"
-              justify="space-around"
-             
-              style={{ margin: '20px 0 ' }}
-            >
-              <Col sm={6} md={6} style={{background:'#345c6f', border:'1px solid #313452', borderRadius:'20px'}}>
-                <div className={s.dashIcon} >
-                  <Link to="/wallet/BTC">
-                    {/* <Icon type="wallet" theme="twoTone" className={s.icoStyle} /> */}
-                    <img src={bitcoinSvg} className={s.icoStyle} />
-                    <br />
-                    <br />
-                    <span className={s.icoBullet}>Bitcoin</span>
-                    <br />
-                  </Link>
-                </div>
-              </Col>
-              <Col sm={6} md={6} style={{background:'#345c6f', border:'1px solid #313452', borderRadius:'20px'}}>
-                <div className={s.dashIcon}>
-                  <Link to="/wallet/ETH">
-                    {/* <Icon type="database" theme="twoTone"  className={s.icoStyle} /> */}
-                    <img src={walletSvg} className={s.icoStyle} />
-                    <br />
-                    <br />
-                    <span className={s.icoBullet}>Ethereum</span>
-                    <br />
-                  </Link>
-                </div>
-              </Col>
-              <Col sm={6} md={6} style={{background:'#345c6f', border:'1px solid #313452', borderRadius:'20px'}}>
-                <div className={s.dashIcon}>
-                  <Link to="/wallet/EST">
-                    {/* <Icon type="swap" theme="twoTone" className={s.icoStyle} /> */}
-                    <img src={walletSvg} className={s.icoStyle} />
-                    <br />
-                    <br />
-                    <span className={s.icoBullet}>EST Token</span>
-                    <br />
-                  </Link>
-                </div>
-              </Col>              
-            </Row>
+          <Card>
+              <center>
+                <Row
+                type="flex"
+                justify="space-around"
+                >
+                <Col span={8}>
+                    <div className={s.dashIcon}>
+                    <Link to="/wallet/BTC">
+                        {/* <Icon type="wallet" theme="twoTone" className={s.icoStyle} /> */}
+                        <img src={btcSvg} className={s.icoStyle} />
+                        <br />
+                        <br />
+                        <span className={s.icoBullet}>Bitcoin</span>
+                        <br />
+                    </Link>
+                    </div>
+                </Col>
+                <Col span={8}>
+                    <div className={s.dashIcon}>
+                    <Link to="/wallet/ETH">
+                        {/* <Icon type="database" theme="twoTone"  className={s.icoStyle} /> */}
+                        <img src={ethSvg} className={s.icoStyle} />
+                        <br />
+                        <br />
+                        <span className={s.icoBullet}>Ethereum</span>
+                        <br />
+                    </Link>
+                    </div>
+                </Col>
+                <Col span={8}>
+                    <div className={s.dashIcon}>
+                    <Link to="/wallet/EST">
+                        {/* <Icon type="swap" theme="twoTone" className={s.icoStyle} /> */}
+                        <img src={ethSvg} className={s.icoStyle} />
+                        <br />
+                        <br />
+                        <span className={s.icoBullet}>EST Token</span>
+                        <br />
+                    </Link>
+                    </div>
+                </Col>
+                </Row>
+              </center>
           </Card>
-
-
         </div>
       </div>
-
     );
   }
 }
