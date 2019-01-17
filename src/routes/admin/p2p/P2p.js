@@ -174,7 +174,7 @@ class P2p extends React.Component {
       <div className={s.root}>
       <Card>
       <Table
-         style={{wordWrap:'break-word'}}
+        style={{overflowX: 'scroll'}}
       columns={this.columns}
       rowKey={record => record._id}
       dataSource={this.state.data}

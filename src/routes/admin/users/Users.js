@@ -185,7 +185,7 @@ onReset =()=>{
     </Button>)}
     </div>
       <Table
-         style={{wordWrap:'break-word'}}
+         style={{overflowX: 'scroll'}}
       columns={this.columns}
       rowKey={record => record._id}
       dataSource={this.state.data}

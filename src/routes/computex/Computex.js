@@ -486,9 +486,9 @@ class ComputeEx extends React.Component {
       }
       return (
         <span>
-          {expectedAmount.toFixed(8) + ' ' + this.state.toCurrency}
+          {expectedAmount ? expectedAmount.toFixed(8): '-' + ' ' + this.state.toCurrency}
           <br />@<br />
-          {atAmount.toFixed(8)}
+          {atAmount ? atAmount.toFixed(8):'-'}
         </span>
       );
     } else if (dataObj && dataObj.ask && !html) {

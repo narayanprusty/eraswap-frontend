@@ -262,7 +262,7 @@ class BuyListTable extends React.Component{
                      <div> Refresh  <Icon type="reload" onClick={this.reloaddata} style={{margin: '0.5%'}} /> </div>
                     }
       <Table
-          style={{wordWrap:'break-word'}}
+          style={{overflowX:'scroll'}}
         columns={this.columns}
         rowKey={record => record._id}
         dataSource={this.state.data}
