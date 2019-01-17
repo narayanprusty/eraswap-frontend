@@ -36,6 +36,10 @@ const routes = {
         load: () => import(/* webpackChunkName: 'login' */ './forgotPassword'),
     },
     {
+        path: '/resendVerification',
+        load: () => import(/* webpackChunkName: 'login' */ './resendVerification'),
+    },
+    {
         path: '/reset',
         load: () => import(/* webpackChunkName: 'login' */ './resetPassword'),
     },

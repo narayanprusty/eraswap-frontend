@@ -9,23 +9,26 @@
 
 @import '../../components/variables.css';
 
+
 .root {
   padding-top: 1.3em;
-  padding-left: 3.5em;
-  padding-right: 3.5em;
   align-self: center;
-  width:87% ;
+  width: 100%;
   max-width: var(--max-content-width);
 }
 
 .container {
-  margin: 0 auto;
-  padding: 0 0 40px;
-  margin-top: 2em;
-  align-self: center;
-  max-width: var(--max-content-width);
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-}
+    margin: 0 auto;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin-top: 2em;
+    align-self: center;
+    max-width: var(--max-content-width);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
 
 .newsItem {
   margin: 0 0 2rem;
@@ -71,9 +74,8 @@
 
 .icoBullet{
   font-weight: bold;
-  color: #fff;
+  color: #000000;
   text-align: center;
-  font-size: 20px;
 }
 
 .icoDes{

@@ -40,10 +40,10 @@ class LayoutThing extends React.Component {
   render() {
     return (
       <Layout className="layout">
-
         <Header menukey={this.props.menukey} itsHome={this.props.itsHome} />
+        <div className={s.root}>
         {this.props.children}
-
+        </div>
         <Footer />
       </Layout>
     );

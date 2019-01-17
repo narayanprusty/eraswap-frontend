@@ -8,13 +8,13 @@
  */
 
  @import '../../components/variables.css';
+
  .root {
    text-align: center;
    padding-top: 1.3em;
-   padding-left: 3.5em;
-   padding-right: 3.5em;
+
    align-self: center;
-   width:94% ;
+   width:100% ;
    max-width: var(--max-content-width);
  }
 
