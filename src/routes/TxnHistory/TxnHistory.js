@@ -46,6 +46,8 @@ changePage =(a)=>{
     {title:"Your Receiving/Received amount [Without Fee]",content:wholeObj.amtToSend ? wholeObj.amtToSend : 'Not yet rendered'},
     {title:`Order for Exchange placed in  ${wholeObj.exchangePlatform}`,content: wholeObj.orderId ? "YES" : 'Not yet'},
     {title:"Order Status",content:wholeObj.convertedYet?wholeObj.convertedYet:'Not placed yet'},
+    { title: 'Eraswap Deposit Address', content: wholeObj.eraswapAcceptAddress, align:'center' },
+    { title: 'Converted Amount', content: wholeObj.totalExchangeAmout ?wholeObj.totalExchangeAmout : '-'  ,align:'center'},
     {title:"Type Of Order",content:wholeObj.side ? wholeObj.side.toUpperCase() : 'Not yet decided'},
     {title: "Platform Fee", content:wholeObj.platform_fee ? (wholeObj.platform_fee +' '+wholeObj.platformFeePayOpt =='source'?wholeObj.exchFromCurrency:wholeObj.platformFeePayOpt)  : '-'
  }];
@@ -56,8 +58,6 @@ changePage =(a)=>{
         {title:'Exchange Platform',dataIndex:'exchangePlatform',key:'exchangePlatform',align:"center",className:s.exchange},
         { title: 'Conversion Of', dataIndex: 'exchFromCurrency', key: 'exchFromCurrency' ,align:'center',render:(exchFromCurrency,record)=>{return exchFromCurrency+'/'+record.exchToCurrency}},
         { title: 'Conversion Amount', dataIndex: 'exchFromCurrencyAmt', key: 'exchFromCurrencyAmt' ,align:'center'},
-        { title: 'Converted Amount', dataIndex: 'totalExchangeAmout', key: 'totalExchangeAmout' ,align:'center'},
-        { title: 'Eraswap Deposit Address', dataIndex: 'eraswapAcceptAddress', key: 'eraswapAcceptAddress',align:'center' },
         {title:'Deposit Status', dataIndex:'dipositTxnStatus',key:"dipositTxnStatus",align:'center',render:(depositStat)=>{
           return depositStat==="ok" ? (<span><Badge status="success" />Received</span>) : (<span><Badge status="warning" />{depositStat || "Pending"}</span>)
         }},
