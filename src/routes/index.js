@@ -114,6 +114,10 @@ const routes = {
       path: '/admin/lb',
       load: ()=> import('./admin/lb'),
     },
+    {
+        path: '/admin/gasTank',
+        load: ()=> import('./admin/gasTank'),
+      }, 
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

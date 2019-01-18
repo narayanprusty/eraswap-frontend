@@ -6,40 +6,53 @@ import { Card, Row, Col, Icon } from 'antd';
 import s from './Dash.css';
 
 class Dash extends React.Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {};
-  }
-  fetchDetails = () => {
-    axios.get('/admins/apis/users/dash').then(data => {
-      if (data.data) {
-        this.setState(data.data);
-      }
-    });
-  };
-  fetchlb = () => {
-    axios.get('/admins/apis/lb/getCounts').then(data => {
-      if (data.data) {
-        this.setState(data.data);
-      }
-    });
-  };
-
-  componentDidMount() {
-    if (
-      localStorage &&
-      localStorage.user &&
-      JSON.parse(localStorage.user).admin == false
-    ) {
-      location.href = '/';
-    } else if (!localStorage.length || !localStorage.user) {
-      localStorage.clear();
-      location.href = '/login?how=force';
+        this.state = {};
     }
-    this.fetchDetails();
-    this.fetchlb();
-  }
+
+    fetchDetails = () => {
+        axios.get('/admins/apis/users/dash').then(data => {
+            if (data.data) {
+                this.setState(data.data);
+            }
+        });
+    };
+
+    fetchlb = () => {
+        axios.get('/admins/apis/lb/getCounts').then(data => {
+            if (data.data) {
+                this.setState(data.data);
+            }
+        });
+    };
+
+    fetchGasTankDetails = () => {
+        axios.get('/admins/apis/gasTank/getDetails').then(data => {
+            if (data.data) {
+                this.setState({
+                    gasTankBalance: data.data.balance
+                });
+            }
+        });
+    };
+
+    componentDidMount() {
+        if (
+            localStorage &&
+            localStorage.user &&
+            JSON.parse(localStorage.user).admin == false
+        ) {
+            location.href = '/';
+        } else if (!localStorage.length || !localStorage.user) {
+            localStorage.clear();
+            location.href = '/login?how=force';
+        }
+        this.fetchDetails();
+        this.fetchlb();
+        this.fetchGasTankDetails();
+    }
 
   render() {
     return (
@@ -174,6 +187,20 @@ class Dash extends React.Component {
                   Agreements:{' '}
                   {this.state.total_A ? this.state.total_A : 'Loading...'}{' '}
                   <br />
+                </Card>
+              </Col>
+              <Col span={6}>
+                <Card
+                  style={{ margin: '1em' }}
+                  title="Gas Tank"
+                  actions={[
+                    <Link to="/admin/gasTank">
+                      <Icon type="setting">View transactions</Icon>
+                    </Link>,
+                  ]}
+                >
+                  Balance :{' '}
+                  {this.state.gasTankBalance ? this.state.gasTankBalance : 'Loading...'}
                 </Card>
               </Col>
             </Row>
