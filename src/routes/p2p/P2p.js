@@ -258,9 +258,9 @@ class BuyListTable extends React.Component{
   render() {
     return (
       <div>
-          { this.state.loading ? <Spin /> :
-                     <div> Refresh  <Icon type="reload" onClick={this.reloaddata} style={{margin: '0.5%'}} /> </div>
-                    }
+       <Card extra={ this.state.loading ? <Spin /> :
+                       <Icon type="reload" onClick={this.reloaddata} style={{margin: '0.5%'}} />
+                    }>
       <Table
           style={{wordWrap:'break-word'}}
         columns={this.columns}
@@ -270,6 +270,7 @@ class BuyListTable extends React.Component{
         loading={this.state.loading}
         onChange={this.handleTableChange}
       />
+      </Card>
       <Modal title={this.state.record.headLine}
       visible={this.state.visible}
       onOk={this.handleOk}
