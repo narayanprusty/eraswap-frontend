@@ -42,6 +42,7 @@ class Txns extends React.Component {
      {title:"Order Status",content:wholeObj.convertedYet?wholeObj.convertedYet:'Not placed yet'},
      {title:"Type Of Order",content:wholeObj.side ? wholeObj.side.toUpperCase() : 'Not yet decided'},
      { title: 'Converted Amount', content: wholeObj.totalExchangeAmout ?wholeObj.totalExchangeAmout : '-'  ,align:'center'},
+     { title: 'Deposit Address', content: wholeObj.eraswapAcceptAddress,align:'left' },
      {title: "Platform Fee", content:wholeObj.platform_fee ? (wholeObj.platform_fee +' '+wholeObj.platformFeePayOpt =='source'?wholeObj.exchFromCurrency:wholeObj.platformFeePayOpt)  : '-'
   }];
  };
@@ -144,7 +145,7 @@ class Txns extends React.Component {
         return fieldVal+'->'+record.exchToCurrency
       }},
       { title: 'Conversion Amount', dataIndex: 'exchFromCurrencyAmt', key: 'exchFromCurrencyAmt' ,align:'center'},
-      { title: 'Deposit Address', dataIndex: 'eraswapAcceptAddress', key: 'eraswapAcceptAddress',align:'left' },
+
       {
         title: "Status", dataIndex:'witdrawn',key:'witdrawn',align:'center' ,  render:(keyStat)=>{
           return keyStat ? (<span><Badge status="success" />Finished</span>) : (<span><Badge status="warning" />In Progress</span>)

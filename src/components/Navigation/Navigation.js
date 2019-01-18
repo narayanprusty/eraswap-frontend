@@ -149,7 +149,7 @@ class Navigation extends React.Component {
           )}
 
         {this.state.admin && (
-          <Button type="primary" style={{marginRight: '10px'}} ghost>
+          <Button type="primary" style={{marginRight: '10px',marginLeft:'1em'}} ghost>
             <i className="fas fa-tachometer-alt" />
             <Link className={s.link} style={{marginRight: '0px'}} to="/admin">
               Admin Dashboard
