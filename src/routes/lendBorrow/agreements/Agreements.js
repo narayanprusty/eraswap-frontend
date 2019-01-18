@@ -112,18 +112,18 @@ class Agreements extends React.Component {
             <div className={s.container}>
                 <Card extra={(this.state.loading ? <Spin /> :
                         <Icon type="reload" onClick={this.getAgreements.bind(this)} style={{margin: '0.5%'}} /> )}>
-                    <Table    style={{wordWrap:'break-word'}} dataSource={this.state.agreementsData}
+                        <Table style={{overflowX: 'scroll'}} dataSource={this.state.agreementsData}
                         expandedRowRender=
-                        {
-                            record => {
-                            return <p style={{ margin: 0 }}>Payment Due date: {new Date(record.nextPaymentDate).toDateString()}
-                            <br />EMI: {this.convertToPlainNumber(record.nextPayment)}
-                            <br />Number of EMI Paid: {record.emiPaidCount}
-                            <br />Number of EMI Paid using Collateral: {record.emiPaidInCollateral}
-                            <br />Number of EMI Remaining: {record.months - (record.emiPaidCount + record.emiPaidInCollateral)}</p>
+                            {
+                                record => {
+                                return <p style={{ margin: 0 }}>Payment Due date: {new Date(record.nextPaymentDate).toDateString()}
+                                <br />EMI: {this.convertToPlainNumber(record.nextPayment)}
+                                <br />Number of EMI Paid: {record.emiPaidCount}
+                                <br />Number of EMI Paid using Collateral: {record.emiPaidInCollateral}
+                                <br />Number of EMI Remaining: {record.months - (record.emiPaidCount + record.emiPaidInCollateral)}</p>
+                                }
                             }
-                        }
-                    >
+                        >
                         <Column
                             title="User"
                             Key="user"

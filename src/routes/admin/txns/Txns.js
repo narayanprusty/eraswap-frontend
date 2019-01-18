@@ -170,7 +170,7 @@ class Txns extends React.Component {
     </Button>)}
     </div>
       <Table
-         style={{wordWrap:'break-word'}}
+         style={{overflowX: 'scroll'}}
       columns={columns}
       rowKey={record => record._id}
       dataSource={this.state.data}
