@@ -159,7 +159,7 @@ class Txns extends React.Component {
       <Card>
       <div style={{paddingBottom:'1em'}}>
       <Search
-      placeholder="input search text"
+      placeholder="search with deposit txn id"
       enterButton="Search"
       size="large"
       style={{ width: 450 }}
