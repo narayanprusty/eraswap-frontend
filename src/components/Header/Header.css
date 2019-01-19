@@ -38,8 +38,8 @@
 .banner {
   text-align: center;
   background-color: #700;
-  background-image: url('./om.jpg');
-  padding:20px 0px;
+  background-image: url('./banner.jpg');
+  padding:240px 0px;
 }
 
 .bannerTitle {

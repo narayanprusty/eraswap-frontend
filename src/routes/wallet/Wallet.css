@@ -25,6 +25,11 @@
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+.blue{
+    background: #cccccc !important;
+    font-color: #ffffff !important;
+}
+
 code {
   font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   box-sizing: border-box;

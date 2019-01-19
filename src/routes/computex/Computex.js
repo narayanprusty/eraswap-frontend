@@ -609,6 +609,7 @@ class ComputeEx extends React.Component {
             key="1"
             style={customPanelStyle}
             disabled={false}
+            className={s.blue}
           >
             <Form onSubmit={this.handleSubmit}>
               <FormItem label="Convert Amount (excluding txn fee)">
@@ -618,7 +619,7 @@ class ComputeEx extends React.Component {
                   value={state.amount}
                   placeholder="e.g 100"
                   onChange={this.handleChanges.bind(this)}
-                  style={{ width: '30%' }}
+                  style={{  width: '25%', marginRight: '3%', borderColor: '#ccc', borderWidth: '2px' }}
                 />
               </FormItem>
               <FormItem label="Convert Currency">
@@ -629,7 +630,7 @@ class ComputeEx extends React.Component {
                   placeholder="Select Currency"
                   value={state.currency}
                   size={size}
-                  style={{ width: '30%' }}
+                  style={{ width: '30%', borderColor: '#000', borderWidth: '2px' }}
                   onChange={this.handleCurrencyChange}
                 >
                   {this.state.cur && this.childrenCurrList()}
@@ -656,7 +657,7 @@ class ComputeEx extends React.Component {
                   placeholder="Select Currency"
                   value={state.toCurrency}
                   size={size}
-                  style={{ width: '30%' }}
+                  style={{ width: '30%', borderColor: '#000000', borderWidth: '2px' }}
                   onChange={this.handletoCurrencyChange}
                 >
                   {this.state.cur && this.childrenCurrList()}
@@ -723,6 +724,7 @@ class ComputeEx extends React.Component {
             style={customPanelStyle}
             disabled={false}
             accordion={true}
+            className={s.blue}
           >
             {' '}
             <blockquote>
