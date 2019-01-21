@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import s from './Add-p2p.css';
-import { Card, Form, Input, Button, Select, Radio,Table,List } from 'antd';
+import { Card, Form, Input, Button, Select, Radio,Table,List,InputNumber } from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -76,7 +76,7 @@ class BuyComponent extends React.Component {
         this.setState(values);
         if (this.props.sell) {
           //create sell listing here
-          axios.post('/apis/p2p/add_sell_listing', values).then(data => {
+          axios.post('/apis/p2p/add_sell_listing', {...values,marginPercent:this.state.marginPercent,fixedPrice:this.state.fixedPrice}).then(data => {
             if (data) {
               console.log(data.data);
               location.href = '/p2p';
@@ -86,7 +86,7 @@ class BuyComponent extends React.Component {
           });
         } else {
           //create buy listing here
-          axios.post('/apis/p2p/add_buy_listing', values).then(data => {
+          axios.post('/apis/p2p/add_buy_listing', {...values,marginPercent:this.state.marginPercent,fixedPrice:this.state.fixedPrice}).then(data => {
             if (data) {
               console.log(data.data);
               location.href = '/p2p';
@@ -138,6 +138,12 @@ class BuyComponent extends React.Component {
       [e.target.name]: e.target.value,
     });
   };
+  marginInputChange =(value)=>{
+    this.setState({marginPercent:value});
+  }
+  fixedAmountChange =(value)=>{
+    this.setState({fixedPrice:value})
+  }
 
   childrenCurrList = () => {
     const c = ["AED", "USD", "INR", "LBP", "BOB", "CRC", "PHP", "PLN", "JPY", "JOD", "PAB", "GBP", "DZD", "CHF", "ARS", "SAR", "EGP", "CNY", "ZAR", "OMR", "AUD", "SGD", "NOK", "MAD", "ILS", "NIO", "HKD", "TWD", "BGN", "ISK", "UYU", "KRW"];
@@ -374,10 +380,11 @@ class BuyComponent extends React.Component {
                   { required: true, message: 'Please enter your margin  parcent!' },
                 ],
               })(
-                <Input
-                  type="number"
+                <InputNumber
+                  width={100}
+                  min={0}
                   placeholder="Margin percentage %"
-                  onChange={this.formchange}
+                  onChange={this.marginInputChange}
                   name="marginPercent"
                   addonAfter={this.state.currency || '%'}
                 />,
@@ -395,10 +402,11 @@ class BuyComponent extends React.Component {
                   { required: true, message: 'Please enter your fixed Price!' },
                 ],
               })(
-                <Input
-                  type="number"
+                <InputNumber
+                  min={0}
+                  width={100}
                   placeholder="fixed Price amount"
-                  onChange={this.formchange}
+                  onChange={this.fixedAmountChange}
                   name="fixedPrice"
                   addonAfter={this.state.currency || 'USD'}
                 />,
