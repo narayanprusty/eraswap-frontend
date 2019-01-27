@@ -145,16 +145,16 @@ class Dash extends React.Component {
                   ]}
                 >
                   ETH :{' '}
-                  {this.state.escrow ? this.state.escrow.eth : 'Loading...'}{' '}
+                  {this.state.escrow ? this.state.escrow.eth.error ||  this.state.escrow.eth : 'Loading...'}{' '}
                   <br />
                   EST:{' '}
                   {this.state.escrow
-                    ? this.state.escrow.est
+                    ? this.state.escrow.est.error || this.state.escrow.est
                     : 'Loading...'}{' '}
                   <br />
                   BTC:{' '}
                   {this.state.escrow
-                    ? this.state.escrow.btc
+                    ? this.state.escrow.btc.error || this.state.escrow.btc
                     : 'Loading...'}{' '}
                   <br />
                 </Card>
