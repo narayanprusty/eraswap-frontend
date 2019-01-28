@@ -607,6 +607,9 @@ class MyListComponent extends React.Component {
     });
   };
   initMatch = (record, item) => {
+    notification.open({
+      message: 'Matching!, please wait...',
+    });
     console.log('Clicked initmatch', record, item);
     const Postdata = {
       listingId: record.uniqueIdentifier,
