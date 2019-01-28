@@ -2,7 +2,18 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
 import s from './Add-p2p.css';
-import { Card, Form, Input, Button, Select, Radio,Table,List,InputNumber } from 'antd';
+import {
+  Card,
+  Form,
+  Input,
+  Button,
+  Select,
+  Radio,
+  Table,
+  List,
+  InputNumber,
+  notification,
+} from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -20,10 +31,11 @@ const tabListNoTitle = [
   {
     key: 'myList',
     tab: 'All My Listing',
-  },{
-    key:'myRequests',
-    tab:'Sent Requests'
-  }
+  },
+  {
+    key: 'myRequests',
+    tab: 'Sent Requests',
+  },
 ];
 
 class BuyComponent extends React.Component {
@@ -32,13 +44,11 @@ class BuyComponent extends React.Component {
     this.state = {
       showPaymentInputBox: false,
       atPrice: '',
-      feeCoin:'EST'
+      feeCoin: 'EST',
     };
   }
   componentDidMount = () => {
-    axios
-    .get('/apis/ping')
-    .then(data => {
+    axios.get('/apis/ping').then(data => {
       if (data && data.data) {
         console.log('Everything is fine bro');
       }
@@ -50,7 +60,7 @@ class BuyComponent extends React.Component {
   //     this.getCurrentBtcValue(this.state.currency);
   //   }
   // }
-  getCurrentBtcValue = (CUR = 'INR',cryptoCur) => {
+  getCurrentBtcValue = (CUR = 'INR', cryptoCur) => {
     axios
       .get(`/apis/cur/current_BTC?currency=${CUR}&cryptoCur=${cryptoCur}`)
       .then(data => {
@@ -75,25 +85,43 @@ class BuyComponent extends React.Component {
         console.log('Received values of form: ', JSON.stringify(values));
         this.setState(values);
         if (this.props.sell) {
-          //create sell listing here
-          axios.post('/apis/p2p/add_sell_listing', {...values,marginPercent:this.state.marginPercent,fixedPrice:this.state.fixedPrice}).then(data => {
-            if (data) {
-              console.log(data.data);
-              location.href = '/p2p';
-            } else {
-              console.log(data);
-            }
+          notification.open({
+            message: 'listing selling request, please wait.',
           });
+          //create sell listing here
+          axios
+            .post('/apis/p2p/add_sell_listing', {
+              ...values,
+              marginPercent: this.state.marginPercent,
+              fixedPrice: this.state.fixedPrice,
+            })
+            .then(data => {
+              if (data) {
+                console.log(data.data);
+                location.href = '/p2p';
+              } else {
+                console.log(data);
+              }
+            });
         } else {
           //create buy listing here
-          axios.post('/apis/p2p/add_buy_listing', {...values,marginPercent:this.state.marginPercent,fixedPrice:this.state.fixedPrice}).then(data => {
-            if (data) {
-              console.log(data.data);
-              location.href = '/p2p';
-            } else {
-              console.log(data);
-            }
+          notification.open({
+            message: 'listing buying request, please wait.',
           });
+          axios
+            .post('/apis/p2p/add_buy_listing', {
+              ...values,
+              marginPercent: this.state.marginPercent,
+              fixedPrice: this.state.fixedPrice,
+            })
+            .then(data => {
+              if (data) {
+                console.log(data.data);
+                location.href = '/p2p';
+              } else {
+                console.log(data);
+              }
+            });
         }
       }
     });
@@ -138,15 +166,48 @@ class BuyComponent extends React.Component {
       [e.target.name]: e.target.value,
     });
   };
-  marginInputChange =(value)=>{
-    this.setState({marginPercent:value});
-  }
-  fixedAmountChange =(value)=>{
-    this.setState({fixedPrice:value})
-  }
+  marginInputChange = value => {
+    this.setState({ marginPercent: value });
+  };
+  fixedAmountChange = value => {
+    this.setState({ fixedPrice: value });
+  };
 
   childrenCurrList = () => {
-    const c = ["AED", "USD", "INR", "LBP", "BOB", "CRC", "PHP", "PLN", "JPY", "JOD", "PAB", "GBP", "DZD", "CHF", "ARS", "SAR", "EGP", "CNY", "ZAR", "OMR", "AUD", "SGD", "NOK", "MAD", "ILS", "NIO", "HKD", "TWD", "BGN", "ISK", "UYU", "KRW"];
+    const c = [
+      'AED',
+      'USD',
+      'INR',
+      'LBP',
+      'BOB',
+      'CRC',
+      'PHP',
+      'PLN',
+      'JPY',
+      'JOD',
+      'PAB',
+      'GBP',
+      'DZD',
+      'CHF',
+      'ARS',
+      'SAR',
+      'EGP',
+      'CNY',
+      'ZAR',
+      'OMR',
+      'AUD',
+      'SGD',
+      'NOK',
+      'MAD',
+      'ILS',
+      'NIO',
+      'HKD',
+      'TWD',
+      'BGN',
+      'ISK',
+      'UYU',
+      'KRW',
+    ];
     let children = [];
 
     for (let i of c) {
@@ -178,32 +239,35 @@ class BuyComponent extends React.Component {
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
-        <FormItem
+          <FormItem
             label="Select a Crypto"
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 12 }}
           >
             {getFieldDecorator('cryptoCur', {
-              rules: [{ required: true, message: 'Crypto currency is required!' }],
+              rules: [
+                { required: true, message: 'Crypto currency is required!' },
+              ],
             })(
               <Select
-              showSearch
-              name="cryptoCur"
-              placeholder="Select Crypto Currency"
-              value={this.props.cryptoCur}
-              size={size}
-              style={{ width: '30%' }}
-              onChange={this.handleSelectChange3rd}
-            >
-              <Option key='1' value='EST'>
-          EST
-        </Option><Option key='2' value='BTC'>
-          BTC
-        </Option>
-        <Option key='3' value='ETH'>
-          ETH
-        </Option>
-            </Select>,
+                showSearch
+                name="cryptoCur"
+                placeholder="Select Crypto Currency"
+                value={this.props.cryptoCur}
+                size={size}
+                style={{ width: '30%' }}
+                onChange={this.handleSelectChange3rd}
+              >
+                <Option key="1" value="EST">
+                  EST
+                </Option>
+                <Option key="2" value="BTC">
+                  BTC
+                </Option>
+                <Option key="3" value="ETH">
+                  ETH
+                </Option>
+              </Select>,
             )}
           </FormItem>
           <FormItem
@@ -232,7 +296,7 @@ class BuyComponent extends React.Component {
               ],
             })(
               <Select
-              showSearch
+                showSearch
                 name="paymentMethod"
                 value={this.props.paymentMethod}
                 placeholder="Select a payment Method"
@@ -251,7 +315,7 @@ class BuyComponent extends React.Component {
               rules: [{ required: true, message: 'Please select currency!' }],
             })(
               <Select
-              showSearch
+                showSearch
                 name="currency"
                 value={this.props.currency}
                 placeholder="Select a currency"
@@ -283,7 +347,9 @@ class BuyComponent extends React.Component {
             wrapperCol={{ span: 12 }}
           >
             {getFieldDecorator('location', {
-              rules: [{ required: true, message: 'Please Enter your location!' }],
+              rules: [
+                { required: true, message: 'Please Enter your location!' },
+              ],
             })(
               <Input
                 rows={5}
@@ -331,26 +397,35 @@ class BuyComponent extends React.Component {
               />,
             )}
           </FormItem>
-          {this.props.sell &&( <FormItem
-            label="Pay fee using"
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 12 }}
-          >
-          { getFieldDecorator('feeCoin', {
-              rules: [{ required: true, message: 'Please Choose Your Fee Coin' }],
-            })(
-              <RadioGroup
-                name='feeCoin'
-                onChange={this.onRadioChange}
-                value={this.state.feeCoin || 'EST'}
-              >
-                <Radio value={'EST'} checked={true}>EST [Default]</Radio>
-               { this.state.cryptoCur  && this.state.cryptoCur != 'EST' &&( <Radio value={this.state.cryptoCur}>{this.state.cryptoCur}</Radio>)}
-              </RadioGroup>,
-            )}
-
-          </FormItem> )
-          }
+          {this.props.sell && (
+            <FormItem
+              label="Pay fee using"
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 12 }}
+            >
+              {getFieldDecorator('feeCoin', {
+                rules: [
+                  { required: true, message: 'Please Choose Your Fee Coin' },
+                ],
+              })(
+                <RadioGroup
+                  name="feeCoin"
+                  onChange={this.onRadioChange}
+                  value={this.state.feeCoin || 'EST'}
+                >
+                  <Radio value={'EST'} checked={true}>
+                    EST [Default]
+                  </Radio>
+                  {this.state.cryptoCur &&
+                    this.state.cryptoCur != 'EST' && (
+                      <Radio value={this.state.cryptoCur}>
+                        {this.state.cryptoCur}
+                      </Radio>
+                    )}
+                </RadioGroup>,
+              )}
+            </FormItem>
+          )}
           <FormItem
             label="@ Price"
             labelCol={{ span: 5 }}
@@ -360,7 +435,7 @@ class BuyComponent extends React.Component {
               rules: [{ required: true, message: 'Please Choose Your Price' }],
             })(
               <RadioGroup
-                name='atPrice'
+                name="atPrice"
                 onChange={this.onRadioChange}
                 value={this.state.atPrice}
               >
@@ -377,7 +452,10 @@ class BuyComponent extends React.Component {
             >
               {getFieldDecorator('marginPercent', {
                 rules: [
-                  { required: true, message: 'Please enter your margin  parcent!' },
+                  {
+                    required: true,
+                    message: 'Please enter your margin  parcent!',
+                  },
                 ],
               })(
                 <InputNumber
@@ -415,10 +493,7 @@ class BuyComponent extends React.Component {
           )}
 
           <FormItem wrapperCol={{ span: 12, offset: 5 }}>
-            <Button
-              type="primary"
-              htmlType="submit"
-            >
+            <Button type="primary" htmlType="submit">
               Submit
             </Button>
           </FormItem>
@@ -428,536 +503,641 @@ class BuyComponent extends React.Component {
   }
 }
 
-
-class MyListComponent extends React.Component{
+class MyListComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      EST_VAL:{},
-      BTC_VAL:{},
-      ETH_VAL:{},
+      EST_VAL: {},
+      BTC_VAL: {},
+      ETH_VAL: {},
       data: [],
       pagination: {},
       loading: false,
     };
   }
-  columns = [{
-    title: 'Username',
-    dataIndex: 'username',
-    sorter: true,
-    // render: name => `${name.first} ${name.last}`,
-    width: '20%',
-  }, {
-    title: 'Payment Method',
-    dataIndex: 'paymentMethod',
-    width: '20%',
-  }, {
-    title: 'Price',
-    dataIndex: 'fullPrice',
-    render:(fieldVal,record)=> `${fieldVal} ${record.currency}/${record.cryptoCur}`
-  },
-  {
-    title: 'Location',
-    dataIndex: 'location',
-  },
-  {
-    title:'Currency',
-    dataIndex:'cryptoCur',
-    render:(fieldVal,record)=> `${fieldVal ? fieldVal :'BTC'}`
-  },
-  {
-    title: 'Maximum Limit',
-    dataIndex: 'maximum',
-  },
-  {
-    title: 'Minimum Limit',
-    dataIndex: 'minimum',
-  },
-  {
-    title:"Type",
-    dataIndex:"wantsToBuy",
-    render:(fieldValue)=> `${fieldValue ? 'Buy' : 'Sell'}`
-  },{
-    title:'',
-    dataIndex: 'show',
-    render:(fieldVal,record)=>{
-      return (<Button type="primary" onClick={this.updation.bind(this,record,fieldVal || this.state[record.uniqueIdentifier] || false)} >{fieldVal || this.state[record.uniqueIdentifier] ? "Inactive" :"Active"}</Button>)
-    }
-  }];
-  conVertObjToArr = async(record)=>{
-    return axios.get('/apis/p2p/getInterests?listingId='+record.uniqueIdentifier).then(data=>{
-      if(data && data.data){
-        let pushable = [];
-         for(let i of data.data.userRequests){
-           delete i._id;
-           i.username = i.userId.username;
-           i.userId = i.userId._id;
-           pushable.push(i);
-         }
-         console.log(pushable)
-         return pushable;
+  columns = [
+    {
+      title: 'Username',
+      dataIndex: 'username',
+      sorter: true,
+      // render: name => `${name.first} ${name.last}`,
+      width: '20%',
+    },
+    {
+      title: 'Payment Method',
+      dataIndex: 'paymentMethod',
+      width: '20%',
+    },
+    {
+      title: 'Price',
+      dataIndex: 'fullPrice',
+      render: (fieldVal, record) =>
+        `${fieldVal} ${record.currency}/${record.cryptoCur}`,
+    },
+    {
+      title: 'Location',
+      dataIndex: 'location',
+    },
+    {
+      title: 'Currency',
+      dataIndex: 'cryptoCur',
+      render: (fieldVal, record) => `${fieldVal ? fieldVal : 'BTC'}`,
+    },
+    {
+      title: 'Maximum Limit',
+      dataIndex: 'maximum',
+    },
+    {
+      title: 'Minimum Limit',
+      dataIndex: 'minimum',
+    },
+    {
+      title: 'Type',
+      dataIndex: 'wantsToBuy',
+      render: fieldValue => `${fieldValue ? 'Buy' : 'Sell'}`,
+    },
+    {
+      title: '',
+      dataIndex: 'show',
+      render: (fieldVal, record) => {
+        return (
+          <Button
+            type="primary"
+            onClick={this.updation.bind(
+              this,
+              record,
+              fieldVal || this.state[record.uniqueIdentifier] || false,
+            )}
+          >
+            {fieldVal || this.state[record.uniqueIdentifier]
+              ? 'Inactive'
+              : 'Active'}
+          </Button>
+        );
+      },
+    },
+  ];
+  conVertObjToArr = async record => {
+    return axios
+      .get('/apis/p2p/getInterests?listingId=' + record.uniqueIdentifier)
+      .then(data => {
+        if (data && data.data) {
+          let pushable = [];
+          for (let i of data.data.userRequests) {
+            delete i._id;
+            i.username = i.userId.username;
+            i.userId = i.userId._id;
+            pushable.push(i);
+          }
+          console.log(pushable);
+          return pushable;
+        }
+      });
+  };
+  updation = (record, fieldValue) => {
+    this.setState({
+      [record.uniqueIdentifier]: true,
+    });
+    const data = {
+      id: record.uniqueIdentifier,
+      active: fieldValue,
+    };
+    return axios.post('/apis/p2p/change_status', data).then(data => {
+      return data;
+    });
+  };
+  initMatch = (record, item) => {
+    console.log('Clicked initmatch', record, item);
+    const Postdata = {
+      listingId: record.uniqueIdentifier,
+      sellerEmail: item.sellerEmail,
+      requester: item.userId,
+      amount: item.amount,
+      cryptoCurrency: record.cryptoCur,
+      feeCoin: item.sellerFeeCoin,
+    };
+    return axios.post('/apis/p2p/makeMatch', Postdata).then(data => {
+      //make that match button and all the match button in that disabled maybe setstate and check for listingId_
+      if (data && data.data) {
+        console.log(data.data);
+        this.setState({
+          [Postdata.listingId]: {
+            [item.userId]: true,
+          },
+        });
+        notification.open({
+          message: 'Match Success!, please refresh the page',
+        });
+        return data.data;
       }
     });
   };
-  updation =(record,fieldValue)=>{
-    this.setState({
-      [record.uniqueIdentifier]:true
-    });
-    const data={
-      id:record.uniqueIdentifier,
-      active:fieldValue
-    }
-    return axios.post("/apis/p2p/change_status",data).then(data=>{
-      return data;
-    });
-  }
-  initMatch =(record,item)=>{
-    console.log("Clicked initmatch", record
-    ,item)
-    const Postdata = {
-      listingId:record.uniqueIdentifier,
-      sellerEmail:item.sellerEmail,
-      requester:item.userId,
-      amount:item.amount,
-      cryptoCurrency:record.cryptoCur,
-      feeCoin:item.sellerFeeCoin
-    }
-    return axios.post('/apis/p2p/makeMatch',Postdata).then(data=>{
-      //make that match button and all the match button in that disabled maybe setstate and check for listingId_
-     if(data && data.data){
-      console.log(data.data);
-      this.setState({
-        [Postdata.listingId]:{
-          [item.userId]:true
-        }
-      });
-     return data.data;
 
-     }
-    })
+  getCurrentBtcValue = (CUR = 'INR', cryptoCur) => {
+    return axios.get(
+      `/apis/cur/current_BTC?currency=${CUR}&cryptoCur=${cryptoCur}`,
+    );
   };
-
-  getCurrentBtcValue = (CUR = 'INR',cryptoCur) => {
-    return axios
-        .get(`/apis/cur/current_BTC?currency=${CUR}&cryptoCur=${cryptoCur}`);
-    };
-    handleTableChange = (pagination, filters, sorter) => {
-      const pager = { ...this.state.pagination };
-      pager.current = pagination.current;
-      this.setState({
-        pagination: pager,
-      });
-      this.fetch({},{
+  handleTableChange = (pagination, filters, sorter) => {
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current;
+    this.setState({
+      pagination: pager,
+    });
+    this.fetch(
+      {},
+      {
         results: pagination.pageSize,
         page: pagination.current,
         sortField: sorter.field,
         sortOrder: sorter.order,
         ...filters,
-      });
-    }
-    fetch = (query,params = {}) => {
-      console.log('params:', params);
-      this.setState({ loading: true });
+      },
+    );
+  };
+  fetch = (query, params = {}) => {
+    console.log('params:', params);
+    this.setState({ loading: true });
 
-      axios.get('/apis/p2p/my_listings_count',{
-        params:query
+    axios
+      .get('/apis/p2p/my_listings_count', {
+        params: query,
       })
-        .then(countData=>{
-      axios({
-        url: '/apis/p2p/my_listings',
-        params:{
-          results:10,
-          ...params,
-          query:query
-        },
-        method: 'get',
-        type: 'json',
-      }).then(async(data) => {
-        const pagination = { ...this.state.pagination };
-        // Read total count from server
-        // pagination.total = data.totalCount;
+      .then(countData => {
+        axios({
+          url: '/apis/p2p/my_listings',
+          params: {
+            results: 10,
+            ...params,
+            query: query,
+          },
+          method: 'get',
+          type: 'json',
+        }).then(async data => {
+          const pagination = { ...this.state.pagination };
+          // Read total count from server
+          // pagination.total = data.totalCount;
 
-        pagination.total = countData.data;
-        let allData=[];
+          pagination.total = countData.data;
+          let allData = [];
 
-        for(let i of data.data){
-          let BTCVAl ;
-          if(i.fixedPrice){
-            BTCVAl=i.fixedPrice
+          for (let i of data.data) {
+            let BTCVAl;
+            if (i.fixedPrice) {
+              BTCVAl = i.fixedPrice;
+            } else if (
+              this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]
+            ) {
+              BTCVAl =
+                this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][
+                  i.currency
+                ] +
+                this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][
+                  i.currency
+                ] *
+                  (i.marginPercent ? i.marginPercent / 100 : 0 / 100);
+            } else {
+              let awaitData = await this.getCurrentBtcValue(
+                i.currency,
+                i.cryptoCur ? i.cryptoCur : 'BTC',
+              );
+              BTCVAl = awaitData.data.data;
+              this.setState({
+                [`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`]: {
+                  ...this.state[i.cryptoCur ? i.cryptoCur : 'BTC'],
+                  [i.currency]: BTCVAl,
+                },
+              });
+              BTCVAl =
+                awaitData.data.data +
+                (awaitData.data.data +
+                  (i.marginPercent ? i.marginPercent / 100 : 0 / 100));
+            }
+            i.requests = await this.conVertObjToArr(i);
+            this.setState;
+            i.fullPrice = BTCVAl;
+            allData.push(i);
           }
-          else if(this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]){
-            BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency] + (this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency] * (i.marginPercent ? i.marginPercent/100 : 0/100 ));
-          }else{
-
-            let awaitData =await this.getCurrentBtcValue(i.currency,i.cryptoCur ? i.cryptoCur : 'BTC');
-            BTCVAl = awaitData.data.data;
-            this.setState({
-              [`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`]:{
-                ...this.state[i.cryptoCur ? i.cryptoCur : 'BTC'],
-                [i.currency]:BTCVAl,
-              }
-            })
-            BTCVAl = awaitData.data.data + (awaitData.data.data+(i.marginPercent ? i.marginPercent/100 : 0/100 ));
-          }
-          i.requests = await this.conVertObjToArr(i);
-          this.setState
-            i.fullPrice=BTCVAl;
-            allData.push(i)
-        }
-        this.setState({
-          loading: false,
-          data: allData,
-          pagination,
+          this.setState({
+            loading: false,
+            data: allData,
+            pagination,
+          });
         });
       });
-    });
-    }
-    finishDeal =async(record,item)=>{
-      var id = this.state[`${record.uniqueIdentifier}_id`];
-      const data={
-        id:id,
-        record:record,
-        item:item
-      }
-      return axios.post('/apis/p2p/finishDeal',data).then(data=>{
-        return data;
-      })
+  };
+  finishDeal = async (record, item) => {
+    var id = this.state[`${record.uniqueIdentifier}_id`];
+    const data = {
+      id: id,
+      record: record,
+      item: item,
     };
+    return axios.post('/apis/p2p/finishDeal', data).then(data => {
+      return data;
+    });
+  };
 
-
-    myListMatches = ()=>{
-      return axios.get('/apis/p2p/myListMatches').then(data=>{
-          if(data.data){
-            console.log(data.data);
-            for(let i of data.data){
-              if(i.iPaidVal && !i.finished){
-                this.setState({
-                  [`${i.listingId}_matched`]:{
-                    [i.requester]:true
-                  },
-                  [`${i.listingId}_id`]:i.uniqueIdentifier
-
-                })
-              }else if(i.finished){
-                this.setState({
-                  [`${i.listingId}_finished`]:{
-                    [i.requester]:true
-                  },
-                })
-              }
+  myListMatches = () => {
+    return axios.get('/apis/p2p/myListMatches').then(data => {
+      if (data.data) {
+        console.log(data.data);
+        for (let i of data.data) {
+          if (i.iPaidVal && !i.finished) {
             this.setState({
-              [`${i.listingId}_match`]:{
-                [i.requester]:true
+              [`${i.listingId}_matched`]: {
+                [i.requester]: true,
               },
-              [`${i.listingId}_match_fee`]:i.fee
-            })
+              [`${i.listingId}_id`]: i.uniqueIdentifier,
+            });
+          } else if (i.finished) {
+            this.setState({
+              [`${i.listingId}_finished`]: {
+                [i.requester]: true,
+              },
+            });
           }
-            return data.data;
-          }
-      })
-    }
-
-    componentDidMount() {
-      axios
-      .get('/apis/ping')
-      .then(data => {
-        if (data && data.data) {
-          console.log('Everything is fine bro');
+          this.setState({
+            [`${i.listingId}_match`]: {
+              [i.requester]: true,
+            },
+            [`${i.listingId}_match_fee`]: i.fee,
+          });
         }
-      });
-      this.myListMatches();
-      this.fetch(); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
-    }
-    render() {
-      return (
-        <Table
-          style={{wordWrap:'break-word'}}
-          columns={this.columns}
-          rowKey={record => record._id}
-          dataSource={this.state.data}
-          expandedRowRender={record => (
-            <List
+        return data.data;
+      }
+    });
+  };
+
+  componentDidMount() {
+    axios.get('/apis/ping').then(data => {
+      if (data && data.data) {
+        console.log('Everything is fine bro');
+      }
+    });
+    this.myListMatches();
+    this.fetch(); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
+  }
+  render() {
+    return (
+      <Table
+        style={{ wordWrap: 'break-word' }}
+        columns={this.columns}
+        rowKey={record => record._id}
+        dataSource={this.state.data}
+        expandedRowRender={record => (
+          <List
             // grid={{ gutter: 16, column: 4 }}
             itemLayout="horizontal"
-            dataSource={ record.requests}
+            dataSource={record.requests}
             renderItem={item => (
-              <List.Item actions={[  <Button
-                type="primary"
-                onClick={ this.initMatch.bind(this,record,item)}
-                disabled={this.state[`${record.uniqueIdentifier}_match`] ? true : false }
+              <List.Item
+                actions={[
+                  <Button
+                    type="primary"
+                    onClick={this.initMatch.bind(this, record, item)}
+                    disabled={
+                      this.state[`${record.uniqueIdentifier}_match`]
+                        ? true
+                        : false
+                    }
+                  >
+                    {this.state[`${record.uniqueIdentifier}_match`] &&
+                    this.state[`${record.uniqueIdentifier}_match`][item.userId]
+                      ? 'Matched'
+                      : 'Match'}
+                  </Button>,
+                  <Button
+                    type="primary"
+                    onClick={this.finishDeal.bind(this, record, item)}
+                    disabled={
+                      this.state[`${record.uniqueIdentifier}_matched`] &&
+                      this.state[`${record.uniqueIdentifier}_matched`][
+                        item.userId
+                      ]
+                        ? false
+                        : true
+                    }
+                  >
+                    {this.state[`${record.uniqueIdentifier}_matched`] &&
+                    this.state[`${record.uniqueIdentifier}_matched`][
+                      item.userId
+                    ]
+                      ? 'Finish Deal'
+                      : this.state[`${record.uniqueIdentifier}_finished`] &&
+                        this.state[`${record.uniqueIdentifier}_finished`][
+                          item.userId
+                        ]
+                        ? 'Deal closed'
+                        : 'No Deal'}
+                  </Button>,
+                  this.state[`${record.uniqueIdentifier}_match_fee`] && (
+                    <span>
+                      Seller Fee:{' '}
+                      {this.state[`${record.uniqueIdentifier}_match_fee`]}
+                    </span>
+                  ),
+                ]}
               >
-                {this.state[`${record.uniqueIdentifier}_match`] && this.state[`${record.uniqueIdentifier}_match`][item.userId] ? 'Matched' :  'Match'}
-              </Button>, <Button
-              type='primary'
-              onClick={this.finishDeal.bind(this,record,item)}
-                disabled={this.state[`${record.uniqueIdentifier}_matched`] && this.state[`${record.uniqueIdentifier}_matched`][item.userId]  ? false : true }
-              >
-                {this.state[`${record.uniqueIdentifier}_matched`] && this.state[`${record.uniqueIdentifier}_matched`][item.userId] ? 'Finish Deal' : ( this.state[`${record.uniqueIdentifier}_finished`] && this.state[`${record.uniqueIdentifier}_finished`][item.userId] ? 'Deal closed' : 'No Deal')}
-              </Button>,this.state[`${record.uniqueIdentifier}_match_fee`] && <span>Seller Fee: {this.state[`${record.uniqueIdentifier}_match_fee`]}</span>]}>
-
                 <List.Item.Meta
-                title={item.username}
-                description={"message: "+item.message}
-                 />
-               {item.amount} &nbsp;
-
+                  title={item.username}
+                  description={'message: ' + item.message}
+                />
+                {item.amount} &nbsp;
               </List.Item>
             )}
           />
-          )}
-          pagination={this.state.pagination}
-          loading={this.state.loading}
-          onChange={this.handleTableChange}
-        />
-      );
-    }
-
+        )}
+        pagination={this.state.pagination}
+        loading={this.state.loading}
+        onChange={this.handleTableChange}
+      />
+    );
+  }
 }
 
-
-class MyRequests extends React.Component{
+class MyRequests extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      EST_VAL:{},
-      BTC_VAL:{},
-      ETH_VAL:{},
+      EST_VAL: {},
+      BTC_VAL: {},
+      ETH_VAL: {},
       data: [],
       pagination: {},
       loading: false,
     };
   }
-  columns = [{
-    title: 'Username',
-    dataIndex: 'username',
-    sorter: true,
-    // render: name => `${name.first} ${name.last}`,
-    width: '20%',
-  }, {
-    title: 'Payment Method',
-    dataIndex: 'paymentMethod',
-    width: '20%',
-  }, {
-    title: 'Price',
-    dataIndex: 'fullPrice',
-    render:(fieldVal,record)=> `${fieldVal} ${record.currency}/${record.cryptoCur}`
-  },
-  {
-    title: 'Location',
-    dataIndex: 'location',
-  },
-  {
-    title:'Currency',
-    dataIndex:'cryptoCur',
-    render:(fieldVal,record)=> `${fieldVal ? fieldVal :'BTC'}`
-  },
-  {
-    title: 'Maximum Limit',
-    dataIndex: 'maximum',
-  },
-  {
-    title: 'Minimum Limit',
-    dataIndex: 'minimum',
-  },
-  {
-    title:"Type",
-    dataIndex:"wantsToBuy",
-    render:(fieldValue)=> `${fieldValue ? 'Buy' : 'Sell'}`
-  },{
-    title:'',
-    dataIndex:'notNeeded',
-    render:(fieldVal,record)=>{
-      return (<Button type="primary"
-      onClick={this.updation.bind(this,record)}
-      disabled={this.state[record.uniqueIdentifier] ? false :true}
-      >
-      {this.state[record.uniqueIdentifier] ? "I Have Paid" : (`${this.state[record.uniqueIdentifier]}_finished` ? "Paid" : "Not Matched") }
-      </Button>)
-    }
-  }];
-  conVertObjToArr = async(record)=>{
-    return axios.get('/apis/p2p/getInterests?listingId='+record.uniqueIdentifier).then(data=>{
-      if(data && data.data){
-        let pushable = [];
-         for(let i of data.data.userRequests){
-           delete i._id;
-           i.username = i.userId.username;
-           i.userId = i.userId._id;
-           pushable.push(i);
-         }
-         console.log(pushable)
-         return pushable;
+  columns = [
+    {
+      title: 'Username',
+      dataIndex: 'username',
+      sorter: true,
+      // render: name => `${name.first} ${name.last}`,
+      width: '20%',
+    },
+    {
+      title: 'Payment Method',
+      dataIndex: 'paymentMethod',
+      width: '20%',
+    },
+    {
+      title: 'Price',
+      dataIndex: 'fullPrice',
+      render: (fieldVal, record) =>
+        `${fieldVal} ${record.currency}/${record.cryptoCur}`,
+    },
+    {
+      title: 'Location',
+      dataIndex: 'location',
+    },
+    {
+      title: 'Currency',
+      dataIndex: 'cryptoCur',
+      render: (fieldVal, record) => `${fieldVal ? fieldVal : 'BTC'}`,
+    },
+    {
+      title: 'Maximum Limit',
+      dataIndex: 'maximum',
+    },
+    {
+      title: 'Minimum Limit',
+      dataIndex: 'minimum',
+    },
+    {
+      title: 'Type',
+      dataIndex: 'wantsToBuy',
+      render: fieldValue => `${fieldValue ? 'Buy' : 'Sell'}`,
+    },
+    {
+      title: '',
+      dataIndex: 'notNeeded',
+      render: (fieldVal, record) => {
+        return (
+          <Button
+            type="primary"
+            onClick={this.updation.bind(this, record)}
+            disabled={this.state[record.uniqueIdentifier] ? false : true}
+          >
+            {this.state[record.uniqueIdentifier]
+              ? 'I Have Paid'
+              : `${this.state[record.uniqueIdentifier]}_finished`
+                ? 'Paid'
+                : 'Not Matched'}
+          </Button>
+        );
+      },
+    },
+  ];
+  conVertObjToArr = async record => {
+    return axios
+      .get('/apis/p2p/getInterests?listingId=' + record.uniqueIdentifier)
+      .then(data => {
+        if (data && data.data) {
+          let pushable = [];
+          for (let i of data.data.userRequests) {
+            delete i._id;
+            i.username = i.userId.username;
+            i.userId = i.userId._id;
+            pushable.push(i);
+          }
+          console.log(pushable);
+          return pushable;
+        }
+      });
+  };
+  updation = record => {
+    notification.open({
+      message: 'sending your response!, please wait.',
+    });
+    delete this.state[record.uniqueIdentifier];
+    var id = this.state[`${record.uniqueIdentifier}_id`];
+    const data = {
+      id: id,
+    };
+    return axios.post('/apis/p2p/change_status_paid', data).then(data => {
+      if (data.data) {
+        notification.open({
+          message: 'your response sent, please refresh the page.',
+        });
+        return data;
+      } else {
+        notification.open({
+          message: 'Unknown error occurred!',
+        });
       }
     });
   };
-  updation =(record)=>{
-    delete this.state[record.uniqueIdentifier];
-    var id = this.state[`${record.uniqueIdentifier}_id`];
-    const data={
-      id:id
-    }
-    return axios.post("/apis/p2p/change_status_paid",data).then(data=>{
-      return data;
+  initMatch = (record, item) => {
+    notification.open({
+      message: 'Matching, please wait...',
     });
-  }
-  initMatch =(record,item)=>{
-    console.log("Clicked initmatch", record
-    ,item)
+    console.log('Clicked initmatch', record, item);
     const Postdata = {
-      listingId:record.uniqueIdentifier,
-      sellerEmail:item.sellerEmail,
-      requester:item.userId,
-      amount:item.amount,
-      cryptoCurrency:record.cryptoCur,
-      feeCoin:item.sellerFeeCoin
-    }
-    return axios.post('/apis/p2p/makeMatch',Postdata).then(data=>{
+      listingId: record.uniqueIdentifier,
+      sellerEmail: item.sellerEmail,
+      requester: item.userId,
+      amount: item.amount,
+      cryptoCurrency: record.cryptoCur,
+      feeCoin: item.sellerFeeCoin,
+    };
+    return axios.post('/apis/p2p/makeMatch', Postdata).then(data => {
       //make that match button and all the match button in that disabled maybe setstate and check for listingId_
-     if(data && data.data){
-      console.log(data.data);
-      this.setState({
-        [record.uniqueIdentifier]:{
-          [item.userId]:true
-        }
-      });
-     return data.data;
-
-     }
-    })
+      if (data && data.data) {
+        console.log(data.data);
+        this.setState({
+          [record.uniqueIdentifier]: {
+            [item.userId]: true,
+          },
+        });
+        return data.data;
+      }
+    });
   };
 
-  getCurrentBtcValue = (CUR = 'INR',cryptoCur) => {
-    return axios
-        .get(`/apis/cur/current_BTC?currency=${CUR}&cryptoCur=${cryptoCur}`);
-    };
-    handleTableChange = (pagination, filters, sorter) => {
-      const pager = { ...this.state.pagination };
-      pager.current = pagination.current;
-      this.setState({
-        pagination: pager,
-      });
-      this.fetch({},{
+  getCurrentBtcValue = (CUR = 'INR', cryptoCur) => {
+    return axios.get(
+      `/apis/cur/current_BTC?currency=${CUR}&cryptoCur=${cryptoCur}`,
+    );
+  };
+  handleTableChange = (pagination, filters, sorter) => {
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current;
+    this.setState({
+      pagination: pager,
+    });
+    this.fetch(
+      {},
+      {
         results: pagination.pageSize,
         page: pagination.current,
         sortField: sorter.field,
         sortOrder: sorter.order,
         ...filters,
-      });
-    }
-    fetch = (query,params = {}) => {
-      console.log('params:', params);
-      this.setState({ loading: true });
+      },
+    );
+  };
+  fetch = (query, params = {}) => {
+    console.log('params:', params);
+    this.setState({ loading: true });
 
-      axios({
-        url: '/apis/p2p/getMyrequests',
-        method: 'get',
-        type: 'json',
-      }).then(async(data) => {
-        // Read total count from server
-        // pagination.total = data.totalCount;
-        let allData=[];
+    axios({
+      url: '/apis/p2p/getMyrequests',
+      method: 'get',
+      type: 'json',
+    }).then(async data => {
+      // Read total count from server
+      // pagination.total = data.totalCount;
+      let allData = [];
 
-        for(let i of data.data){
-          let BTCVAl ;
-          if(i.fixedPrice){
-            BTCVAl=i.fixedPrice
-          }
-          else if(this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]){
-            BTCVAl = this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency] + (this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]+(i.marginPercent ? i.marginPercent/100 : 0/100 ));
-          }else{
+      for (let i of data.data) {
+        let BTCVAl;
+        if (i.fixedPrice) {
+          BTCVAl = i.fixedPrice;
+        } else if (
+          this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency]
+        ) {
+          BTCVAl =
+            this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][i.currency] +
+            (this.state[`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`][
+              i.currency
+            ] +
+              (i.marginPercent ? i.marginPercent / 100 : 0 / 100));
+        } else {
+          let awaitData = await this.getCurrentBtcValue(
+            i.currency,
+            i.cryptoCur ? i.cryptoCur : 'BTC',
+          );
+          BTCVAl = awaitData.data.data;
 
-            let awaitData =await this.getCurrentBtcValue(i.currency,i.cryptoCur ? i.cryptoCur : 'BTC');
-            BTCVAl = awaitData.data.data;
-
-            this.setState({
-              [`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`]:{
-                ...this.state[i.cryptoCur ? i.cryptoCur : 'BTC'],
-                [i.currency]:BTCVAl,
-              }
-            })
-            BTCVAl = awaitData.data.data +(awaitData.data.data * (i.marginPercent ? i.marginPercent/100 : 0/100 ));
-
-          }
-          i.requests = await this.conVertObjToArr(i);
-          this.setState
-            i.fullPrice=BTCVAl;
-            allData.push(i)
+          this.setState({
+            [`${i.cryptoCur ? i.cryptoCur : 'BTC'}_VAL`]: {
+              ...this.state[i.cryptoCur ? i.cryptoCur : 'BTC'],
+              [i.currency]: BTCVAl,
+            },
+          });
+          BTCVAl =
+            awaitData.data.data +
+            awaitData.data.data *
+              (i.marginPercent ? i.marginPercent / 100 : 0 / 100);
         }
-        this.setState({
-          loading: false,
-          data: allData,
-        });
+        i.requests = await this.conVertObjToArr(i);
+        this.setState;
+        i.fullPrice = BTCVAl;
+        allData.push(i);
+      }
+      this.setState({
+        loading: false,
+        data: allData,
+      });
     });
-    }
-    myListMatches = ()=>{
-      return axios.get('/apis/p2p/requesterListMatches').then(data=>{
-          if(data.data){
-            console.log(data.data);
-            for(let i of data.data){
-              if(i.showIpaid && !i.finished){
+  };
+  myListMatches = () => {
+    return axios.get('/apis/p2p/requesterListMatches').then(data => {
+      if (data.data) {
+        console.log(data.data);
+        for (let i of data.data) {
+          if (i.showIpaid && !i.finished) {
             this.setState({
-              [`${i.listingId}`]:true,
-              [`${i.listingId}_id`]:i.uniqueIdentifier
-            })
-          }else if(i.finished){
+              [`${i.listingId}`]: true,
+              [`${i.listingId}_id`]: i.uniqueIdentifier,
+            });
+          } else if (i.finished) {
             this.setState({
-              [`${i.listingId}_finished`]:true
-            })
+              [`${i.listingId}_finished`]: true,
+            });
           }
-          }
-            return data.data;
-          }
-      })
-    }
-
-    componentDidMount() {
-      axios
-      .get('/apis/ping')
-      .then(data => {
-        if (data && data.data) {
-          console.log('Everything is fine bro');
         }
-      });
-      this.myListMatches();
-      this.fetch(); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
-    }
-    render() {
-      return (
-        <Table
-        style={{wordWrap:'break-word'}}
-          columns={this.columns}
-          rowKey={record => record.uniqueIdentifier}
-          dataSource={this.state.data}
-          // expandedRowRender={record => (
-          //   <List
-          //   // grid={{ gutter: 16, column: 4 }}
-          //   itemLayout="horizontal"
-          //   dataSource={ record.requests}
-          //   renderItem={item => (
-          //     <List.Item actions={[  <Button
-          //       type="primary"
-          //       onClick={ this.initMatch.bind(this,record,item)}
-          //       disabled={this.state[`${record.uniqueIdentifier}_match`] ? true : false }
-          //     >
-          //       {this.state[`${record.uniqueIdentifier}_match`] && this.state[`${record.uniqueIdentifier}_match`][item.userId] ? 'Matched' :  'Match'}
-          //     </Button>]}>
-          //       <List.Item.Meta
-          //       title={item.username}
-          //       description={"message: "+item.message}
-          //        />
-          //      {item.amount} &nbsp;
+        return data.data;
+      }
+    });
+  };
 
-          //     </List.Item>
-          //   )}
-          // />
-          // )}
-          // pagination={this.state.pagination}
-          loading={this.state.loading}
-          onChange={this.handleTableChange}
-        />
-      );
-    }
+  componentDidMount() {
+    axios.get('/apis/ping').then(data => {
+      if (data && data.data) {
+        console.log('Everything is fine bro');
+      }
+    });
+    this.myListMatches();
+    this.fetch(); //if visiting sell tab, show the buy listings, because they want to sell who want to buy.
+  }
+  render() {
+    return (
+      <Table
+        style={{ wordWrap: 'break-word' }}
+        columns={this.columns}
+        rowKey={record => record.uniqueIdentifier}
+        dataSource={this.state.data}
+        // expandedRowRender={record => (
+        //   <List
+        //   // grid={{ gutter: 16, column: 4 }}
+        //   itemLayout="horizontal"
+        //   dataSource={ record.requests}
+        //   renderItem={item => (
+        //     <List.Item actions={[  <Button
+        //       type="primary"
+        //       onClick={ this.initMatch.bind(this,record,item)}
+        //       disabled={this.state[`${record.uniqueIdentifier}_match`] ? true : false }
+        //     >
+        //       {this.state[`${record.uniqueIdentifier}_match`] && this.state[`${record.uniqueIdentifier}_match`][item.userId] ? 'Matched' :  'Match'}
+        //     </Button>]}>
+        //       <List.Item.Meta
+        //       title={item.username}
+        //       description={"message: "+item.message}
+        //        />
+        //      {item.amount} &nbsp;
 
+        //     </List.Item>
+        //   )}
+        // />
+        // )}
+        // pagination={this.state.pagination}
+        loading={this.state.loading}
+        onChange={this.handleTableChange}
+      />
+    );
+  }
 }
 /**
  *  Main Component
@@ -970,11 +1150,11 @@ class Addp2p extends React.Component {
       noTitleKey: 'buy',
     };
   }
-  componentDidMount = ()=>{
-    if(!localStorage.user){
-      location.href = '/login?how=force'
+  componentDidMount = () => {
+    if (!localStorage.user) {
+      location.href = '/login?how=force';
     }
-  }
+  };
 
   onTabChange = (key, type) => {
     console.log(key, type);
@@ -986,7 +1166,7 @@ class Addp2p extends React.Component {
     buy: <BuyComponent form={this.props.form} />,
     sell: <BuyComponent form={this.props.form} sell={true} />,
     myList: <MyListComponent />,
-    myRequests:<MyRequests />
+    myRequests: <MyRequests />,
   };
   render() {
     return (
