@@ -174,13 +174,13 @@ class ComputeEx extends React.Component {
           this.state.currency,
       )
       .then(data => {
-        if (data.data) {
+        if (data && data.data) {
           this.setState({
             feeSegment: data.data,
           });
         } else {
           notification.open({
-            message: 'Failed to fetch!',
+            message: 'Failed to fetch fees!',
             icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
           });
         }
@@ -486,9 +486,16 @@ class ComputeEx extends React.Component {
       }
       return (
         <span>
-          {expectedAmount ? expectedAmount.toFixed(8): '-' + ' ' + this.state.toCurrency}
+          {'You get: ~' +
+            (expectedAmount ? expectedAmount.toFixed(7) : '-') +
+            ' ' +
+            this.state.toCurrency}
           <br />@<br />
-          {atAmount ? atAmount.toFixed(8):'-'}
+          {'At rate: ' +
+            (atAmount ? atAmount.toFixed(7) : '-') +
+            this.state.toCurrency +
+            '/' +
+            this.state.currency}
         </span>
       );
     } else if (dataObj && dataObj.ask && !html) {
@@ -611,16 +618,6 @@ class ComputeEx extends React.Component {
             disabled={false}
           >
             <Form onSubmit={this.handleSubmit}>
-              <FormItem label="Convert Amount (excluding txn fee)">
-                <Input
-                  name="amount"
-                  size={size}
-                  value={state.amount}
-                  placeholder="e.g 100"
-                  onChange={this.handleChanges.bind(this)}
-                  style={{ width: '30%' }}
-                />
-              </FormItem>
               <FormItem label="Convert Currency">
                 <Select
                   showSearch
@@ -634,6 +631,16 @@ class ComputeEx extends React.Component {
                 >
                   {this.state.cur && this.childrenCurrList()}
                 </Select>
+              </FormItem>
+              <FormItem label="Convert Amount (excluding txn fee)">
+                <Input
+                  name="amount"
+                  size={size}
+                  value={state.amount}
+                  placeholder="e.g 100"
+                  onChange={this.handleChanges.bind(this)}
+                  style={{ width: '30%' }}
+                />
               </FormItem>
               <FormItem label="To">
                 {/* <Select
