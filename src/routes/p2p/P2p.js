@@ -90,14 +90,18 @@ class BuyListTable extends React.Component {
   };
 
   handleOk = () => {
-    if (this.state.record.minimum > 0 && this.state.record.maximum > 0) {
+    if (
+      this.state.record.minimum > 0 &&
+      this.state.record.maximum > 0 &&
+      this.state.record.minimum < this.state.record.maximum
+    ) {
       this.setState({
         confirmLoading: true,
       });
       this.showInterest();
     } else {
       notification.open({
-        message: 'Minimum and Maximum amount should be grater than 0',
+        message: 'Please enter proper maximum and minimum limit',
       });
       return;
     }
