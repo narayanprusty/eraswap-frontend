@@ -220,7 +220,17 @@ class BuyComponent extends React.Component {
     return children;
   };
   childrenPayList = () => {
-    let c = ['paytm', 'Online Transfer', 'Phone Pe', 'Google Pay', 'other'];
+    let c = [
+      'Bank Transfer',
+      'Crypto',
+      'Cash',
+      'Paypal',
+      'Paytm',
+      'Online Transfer',
+      'Phone Pe',
+      'Google Pay',
+      'other',
+    ];
 
     let children = [];
 
