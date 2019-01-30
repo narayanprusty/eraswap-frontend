@@ -376,7 +376,8 @@ class BuyComponent extends React.Component {
           >
             {getFieldDecorator('maximum', {
               rules: [
-                { required: true, message: 'Please enter mmaximum limit!' },
+                { required: true, message: 'Please enter maximum limit!' },
+                { min: 0, message: 'number should be positive' },
               ],
             })(
               <Input
@@ -396,6 +397,7 @@ class BuyComponent extends React.Component {
             {getFieldDecorator('minimum', {
               rules: [
                 { required: true, message: 'Please enter minimum limit!' },
+                { min: 0, message: 'number should be positive' },
               ],
             })(
               <Input
@@ -508,7 +510,13 @@ class BuyComponent extends React.Component {
             )}
 
           <FormItem wrapperCol={{ span: 12, offset: 5 }}>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={
+                this.state.maxAmt > 0 && this.state.minAmt >= 0 ? false : true
+              }
+            >
               Submit
             </Button>
           </FormItem>
