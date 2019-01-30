@@ -174,6 +174,12 @@ class OrderBook extends React.Component {
                           onFilter= {(value, record) => record.collateral.indexOf(value) === 0}
                     />
                     <Column
+                        title="Collateral Amount"
+                        Key="collateral"
+                        dataIndex="collateralAmount"
+                        sorter= {(a, b) => a.collateralAmount - b.collateralAmount}
+                    />
+                    <Column
                         title="Interest"
                         Key="interest"
                         dataIndex="interest"
