@@ -471,6 +471,11 @@ class WalletManager extends React.Component{
                             key="status"
                         />
                         <Column
+                                title="Date"
+                                dataIndex="timeStamp"
+                                key="timeStamp"
+                        />
+                        <Column
                             title="Transaction Hash"
                             dataIndex="txnHash"
                             key="txnHash"
