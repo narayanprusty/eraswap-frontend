@@ -419,12 +419,12 @@ class BuyComponent extends React.Component {
                 ],
               })(
                 <RadioGroup
-                  name="feeCoin"
+                  name="feeCoin [0.25% of the selected coin]"
                   onChange={this.onRadioChange}
                   value={this.state.feeCoin || 'EST'}
                 >
                   <Radio value={'EST'} checked={true}>
-                    EST [Default]
+                    EST [Default] [50% off]
                   </Radio>
                   {this.state.cryptoCur &&
                     this.state.cryptoCur != 'EST' && (
@@ -481,7 +481,9 @@ class BuyComponent extends React.Component {
           )}
           {this.state.atPrice === 2 && (
             <FormItem
-              label="fixedPrice"
+              label={
+                'fixedPrice [for 1 ' + thisthis.setState.state.cryptoCur + ']'
+              }
               labelCol={{ span: 5 }}
               wrapperCol={{ span: 12 }}
             >
