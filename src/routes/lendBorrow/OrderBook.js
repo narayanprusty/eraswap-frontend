@@ -3,30 +3,17 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './OrderBook.css';
 import axios from 'axios';
-import orders from './orders';
 import {
     Card,
     Form,
-    Input,
-    Select,
     Button,
-    Collapse,
-    Radio,
     Icon,
-    Steps,
     Spin,
     Table,
-    Badge,
-    notification,
-    Dropdown,
-    Menu,
-    AutoComplete,
-    Checkbox
+    notification
   } from 'antd';
 
 const { Column } = Table;
-
-const FormItem = Form.Item;
 
 class OrderBook extends React.Component {
   static propTypes = {

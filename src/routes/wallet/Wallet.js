@@ -5,7 +5,6 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import axios from 'axios';
-import lodash from 'lodash';
 import {
   Card,
   Form,
@@ -18,10 +17,7 @@ import {
   Steps,
   Spin,
   Table,
-  Badge,
   notification,
-  Dropdown,
-  Menu,
   AutoComplete,
   Checkbox
 } from 'antd';

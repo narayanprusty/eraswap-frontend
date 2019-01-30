@@ -11,10 +11,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Register.css';
-import { Form, Input, Button,Card, notification } from 'antd';
+import { Form, Button, notification } from 'antd';
 import axios from 'axios';
-
-const FormItem = Form.Item;
 
 
 const SOCIAL ={

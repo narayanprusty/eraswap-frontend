@@ -14,7 +14,6 @@ import s from './Login.css';
 import axios from 'axios';
 import {Spin, Card, Icon} from 'antd';
 import queryString from 'stringquery';
-import { from } from 'zen-observable';
 
 const SOCIAL ={
   GOOGLE:{

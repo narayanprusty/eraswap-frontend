@@ -12,10 +12,8 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './ForgotPassword.css';
 import axios from 'axios';
-import {Spin,Card, Button, Form, Input, notification, Icon} from 'antd';
+import {Button, Form, Input, notification, Icon} from 'antd';
 const FormItem = Form.Item;
-import queryString from 'stringquery';
-import { from } from 'zen-observable';
 
 class ForgotPassword extends React.Component {
   constructor(props) {

@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './AllWallets.css';
-import { Button, Slider, Row, Col, Card, Icon, Steps } from 'antd';
+import { Row, Col, Card } from 'antd';
 import Link from '../../components/Link';
-import walletSvg from './wallet.svg';
 import ethSvg from './ETH.svg';
 import btcSvg from './BTC.svg';
 

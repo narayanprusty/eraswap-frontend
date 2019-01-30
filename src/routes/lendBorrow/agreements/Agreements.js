@@ -2,29 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Agreements.css';
-import agreementsData from './agreementsData';
 import axios from 'axios';
 import {
     Card,
     Form,
-    Input,
-    Select,
-    Button,
-    Collapse,
-    Radio,
     Icon,
-    Steps,
     Spin,
     Table,
-    Badge,
-    notification,
-    Dropdown,
-    Menu,
-    AutoComplete,
-    Checkbox
 } from 'antd';
 
-const FormItem = Form.Item;
 const { Column } = Table;
 
 class Agreements extends React.Component {

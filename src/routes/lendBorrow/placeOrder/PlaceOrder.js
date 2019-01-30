@@ -7,20 +7,10 @@ import {
     Card,
     Form,
     Input,
-    Select,
     Button,
-    Collapse,
-    Radio,
     Icon,
-    Steps,
-    Spin,
-    Table,
-    Badge,
     notification,
-    Dropdown,
-    Menu,
-    AutoComplete, 
-    Checkbox
+    AutoComplete
   } from 'antd';
 
   const FormItem = Form.Item;
