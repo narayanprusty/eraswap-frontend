@@ -734,7 +734,7 @@ class ComputeEx extends React.Component {
             {' '}
             <blockquote>
               {' '}
-              Fees To be deducted: <blockquote> </blockquote>
+              ComputeEx Service Fees to be Deducted: <blockquote> </blockquote>
               {this.state.feeSegment && (
                 <div>
                   <ButtonGroup>
