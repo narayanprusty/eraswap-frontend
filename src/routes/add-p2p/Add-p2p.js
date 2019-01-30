@@ -220,7 +220,17 @@ class BuyComponent extends React.Component {
     return children;
   };
   childrenPayList = () => {
-    let c = ['paytm', 'Online Transfer', 'Phone Pe', 'Google Pay', 'other'];
+    let c = [
+      'Bank Transfer',
+      'Crypto',
+      'Cash',
+      'Paypal',
+      'Paytm',
+      'Online Transfer',
+      'Phone Pe',
+      'Google Pay',
+      'other',
+    ];
 
     let children = [];
 
@@ -353,7 +363,7 @@ class BuyComponent extends React.Component {
             })(
               <Input
                 rows={5}
-                placeholder="ENter Your location"
+                placeholder="Enter Your location"
                 onChange={this.formchange}
                 name="location"
               />,
@@ -414,7 +424,7 @@ class BuyComponent extends React.Component {
                   value={this.state.feeCoin || 'EST'}
                 >
                   <Radio value={'EST'} checked={true}>
-                    EST [Default]
+                    EST [Default] [50% off]
                   </Radio>
                   {this.state.cryptoCur &&
                     this.state.cryptoCur != 'EST' && (
@@ -424,6 +434,7 @@ class BuyComponent extends React.Component {
                     )}
                 </RadioGroup>,
               )}
+              *Note: 0.25% of the selected coin
             </FormItem>
           )}
           <FormItem
@@ -469,28 +480,32 @@ class BuyComponent extends React.Component {
               )}
             </FormItem>
           )}
-          {this.state.atPrice === 2 && (
-            <FormItem
-              label="fixedPrice"
-              labelCol={{ span: 5 }}
-              wrapperCol={{ span: 12 }}
-            >
-              {getFieldDecorator('fixedPrice', {
-                rules: [
-                  { required: true, message: 'Please enter your fixed Price!' },
-                ],
-              })(
-                <InputNumber
-                  min={0}
-                  width={100}
-                  placeholder="fixed Price amount"
-                  onChange={this.fixedAmountChange}
-                  name="fixedPrice"
-                  addonAfter={this.state.currency || 'USD'}
-                />,
-              )}
-            </FormItem>
-          )}
+          {this.state.atPrice === 2 &&
+            this.state.cryptoCur && (
+              <FormItem
+                label={'fixedPrice [for 1 ' + this.state.cryptoCur + ']'}
+                labelCol={{ span: 5 }}
+                wrapperCol={{ span: 12 }}
+              >
+                {getFieldDecorator('fixedPrice', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please enter your fixed Price!',
+                    },
+                  ],
+                })(
+                  <InputNumber
+                    min={0}
+                    width={100}
+                    placeholder="fixed Price amount"
+                    onChange={this.fixedAmountChange}
+                    name="fixedPrice"
+                    addonAfter={this.state.currency || 'USD'}
+                  />,
+                )}
+              </FormItem>
+            )}
 
           <FormItem wrapperCol={{ span: 12, offset: 5 }}>
             <Button type="primary" htmlType="submit">
