@@ -347,7 +347,7 @@ class WalletManager extends React.Component{
 
         return (
         <div>
-            <Card title={this.props.header}>
+            <Card title={this.props.header} style={{ width: '50.2%' ,  border : '0px solid' , borderRadius: '10px', backgroundColor:'#345c6f', zIndex :'9999', clear:'both' , display: 'inline-block', float: 'left' , top:'20px', color:'#95a2cd' }}>
                 <div style={{marginBottom: '0.5%'}}>Balance:
                     {
                         this.state.balance == "" ? "" : "  "+this.state.balance
@@ -373,7 +373,7 @@ class WalletManager extends React.Component{
                                     type="text"
                                     value={this.state.recipient}
                                     onChange={e => this.setState({recipient: e.target.value})}
-                                    style={{ maxWidth: '45.2%' }}
+                                    style={{ maxWidth: '80.2%', border : '2px solid', borderRadius: '10px' }}
                                     size="large"
                                 />
                             </FormItem>
@@ -383,7 +383,7 @@ class WalletManager extends React.Component{
                                     type="number"
                                     value={this.state.amount}
                                     onChange={e => this.setState({amount: e.target.value})}
-                                    style={{ maxWidth: '45.2%' }}
+                                    style={{ maxWidth: '80.2%', border : '2px solid', borderRadius: '10px'   }}
                                     size="large"
                                 />
                             </FormItem>
@@ -397,7 +397,7 @@ class WalletManager extends React.Component{
                             <br />
                             <br />
                             <Input.Search
-                              style={{ maxWidth: '45.2%' }}
+                              style={{ maxWidth: '80.2%' }}
                               size="large"
                               value={this.state.userWallet}
                               enterButton={<Icon type="copy" />}
@@ -413,7 +413,7 @@ class WalletManager extends React.Component{
                      onClick={this.downloadPrivateKey}>Download Private Key</Button>
                 </Card>
                 <Collapse accordion>
-                    <Panel header="Exchange" key="1">
+                    <Panel header="Exchange" key="1" className={s.blue}>
                             <Form layout="inline" onSubmit={this.checkValue}>
                                 <FormItem
                                     label="Convert to" >
@@ -449,7 +449,7 @@ class WalletManager extends React.Component{
                                 <span>No exchange found for this conversion</span>
                             )}
                         </Panel>
-                    <Panel header="History" key="2">
+                    <Panel header="History" key="2" className={s.blue}>
                     <Table    style={{overflowX: 'scroll'}} dataSource={this.state.history}>
                         <Column
                             title="Receiver"

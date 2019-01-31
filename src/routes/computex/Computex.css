@@ -23,6 +23,12 @@
   max-width: var(--max-content-width);
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
+
+.blue{
+    background: #cccccc !important;
+    font-color: #ffffff !important;
+}
+
 code {
     font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
     box-sizing:border-box;
@@ -32,4 +38,12 @@ code {
 
 .ant-collapse-header {
   text-align: left !important;
+}
+
+
+.icoBullet{
+  font-weight: normal;
+  color: #000;
+  text-align: center;
+  font-size: 20px
 }

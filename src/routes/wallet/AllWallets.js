@@ -4,8 +4,11 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './AllWallets.css';
 import { Row, Col, Card } from 'antd';
 import Link from '../../components/Link';
-import ethSvg from './ETH.svg';
-import btcSvg from './BTC.svg';
+
+import walletSvg from './wallet.svg';
+import ethSvg from './ethereum.svg';
+import btcSvg from './bitcoin.svg';
+
 
 class AllWallets extends React.Component {
   static propTypes = {
@@ -25,13 +28,14 @@ class AllWallets extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <Card>
+          <Card style={{ margin: '20px 0', background:'#fff'}} >
               <center>
                 <Row
                 type="flex"
                 justify="space-around"
+                style={{ margin: '20px 0 ' }}
                 >
-                <Col span={8}>
+                <Col sm={6} md={6} style={{background:'#345c6f', border:'1px solid #313452', borderRadius:'20px'}}>
                     <div className={s.dashIcon}>
                     <Link to="/wallet/BTC">
                         {/* <Icon type="wallet" theme="twoTone" className={s.icoStyle} /> */}
@@ -43,7 +47,7 @@ class AllWallets extends React.Component {
                     </Link>
                     </div>
                 </Col>
-                <Col span={8}>
+                <Col sm={6} md={6} style={{background:'#345c6f', border:'1px solid #313452', borderRadius:'20px'}}>
                     <div className={s.dashIcon}>
                     <Link to="/wallet/ETH">
                         {/* <Icon type="database" theme="twoTone"  className={s.icoStyle} /> */}
@@ -55,7 +59,7 @@ class AllWallets extends React.Component {
                     </Link>
                     </div>
                 </Col>
-                <Col span={8}>
+                <Col sm={6} md={6} style={{background:'#345c6f', border:'1px solid #313452', borderRadius:'20px'}}>
                     <div className={s.dashIcon}>
                     <Link to="/wallet/EST">
                         {/* <Icon type="swap" theme="twoTone" className={s.icoStyle} /> */}
