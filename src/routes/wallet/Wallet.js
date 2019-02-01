@@ -452,9 +452,14 @@ class WalletManager extends React.Component{
                     <Panel header="History" key="2" className={s.blue}>
                     <Table    style={{overflowX: 'scroll'}} dataSource={this.state.history}>
                         <Column
-                            title="Receiver"
-                            dataIndex="receiver"
-                            key="receiver"
+                            title="Type"
+                            dataIndex="type"
+                            key="type"
+                        />
+                        <Column
+                            title="Address"
+                            dataIndex="address"
+                            key="address"
                         />
                         <Column
                             title="Amount"
