@@ -619,18 +619,6 @@ class ComputeEx extends React.Component {
             className={s.blue}
           >
             <Form onSubmit={this.handleSubmit}>
-
-              <FormItem label="Convert Amount (excluding txn fee)">
-                <Input
-                  name="amount"
-                  size={size}
-                  value={state.amount}
-                  placeholder="e.g 100"
-                  onChange={this.handleChanges.bind(this)}
-                  style={{  width: '25%', marginRight: '3%', borderColor: '#ccc', borderWidth: '2px' }}
-                />
-              </FormItem>
-
               <FormItem label="Convert Currency">
                 <Select
                   showSearch
@@ -639,7 +627,11 @@ class ComputeEx extends React.Component {
                   placeholder="Select Currency"
                   value={state.currency}
                   size={size}
-                  style={{ width: '30%', borderColor: '#000', borderWidth: '2px' }}
+                  style={{
+                    width: '30%',
+                    borderColor: '#000',
+                    borderWidth: '2px',
+                  }}
                   onChange={this.handleCurrencyChange}
                 >
                   {this.state.cur && this.childrenCurrList()}
@@ -676,7 +668,11 @@ class ComputeEx extends React.Component {
                   placeholder="Select Currency"
                   value={state.toCurrency}
                   size={size}
-                  style={{ width: '30%', borderColor: '#000000', borderWidth: '2px' }}
+                  style={{
+                    width: '30%',
+                    borderColor: '#000000',
+                    borderWidth: '2px',
+                  }}
                   onChange={this.handletoCurrencyChange}
                 >
                   {this.state.cur && this.childrenCurrList()}
