@@ -550,11 +550,11 @@ class BuyComponent extends React.Component {
               type="primary"
               htmlType="submit"
               disabled={
-                this.state.maxAmt > 0 ||
-                this.state.minAmt >= 0 ||
-                this.state.maxAmt >= this.state.minAmt
-                  ? false
-                  : true
+                !(
+                  Number(this.state.maxAmt) > 0 &&
+                  Number(this.state.minAmt) >= 0 &&
+                  Number(this.state.maxAmt) >= Number(this.state.minAmt)
+                )
               }
             >
               Submit
