@@ -863,30 +863,39 @@ class MyListComponent extends React.Component {
                       ? 'Matched'
                       : 'Match'}
                   </Button>,
-                  <Button
-                    type="primary"
-                    onClick={this.finishDeal.bind(this, record, item)}
-                    disabled={
-                      this.state[`${record.uniqueIdentifier}_matched`] &&
+                  ((this.state[`${record.uniqueIdentifier}_matched`] &&
+                    this.state[`${record.uniqueIdentifier}_matched`][
+                      item.userId
+                    ]) ||
+                    (this.state[`${record.uniqueIdentifier}_finished`] &&
+                      this.state[`${record.uniqueIdentifier}_finished`][
+                        item.userId
+                      ])) && (
+                    <Button
+                      type="primary"
+                      onClick={this.finishDeal.bind(this, record, item)}
+                      disabled={
+                        this.state[`${record.uniqueIdentifier}_matched`] &&
+                        this.state[`${record.uniqueIdentifier}_matched`][
+                          item.userId
+                        ]
+                          ? false
+                          : true
+                      }
+                    >
+                      {this.state[`${record.uniqueIdentifier}_matched`] &&
                       this.state[`${record.uniqueIdentifier}_matched`][
                         item.userId
                       ]
-                        ? false
-                        : true
-                    }
-                  >
-                    {this.state[`${record.uniqueIdentifier}_matched`] &&
-                    this.state[`${record.uniqueIdentifier}_matched`][
-                      item.userId
-                    ]
-                      ? 'Finish Deal'
-                      : this.state[`${record.uniqueIdentifier}_finished`] &&
-                        this.state[`${record.uniqueIdentifier}_finished`][
-                          item.userId
-                        ]
-                        ? 'Deal closed'
-                        : 'No Deal'}
-                  </Button>,
+                        ? 'Finish Deal'
+                        : this.state[`${record.uniqueIdentifier}_finished`] &&
+                          this.state[`${record.uniqueIdentifier}_finished`][
+                            item.userId
+                          ]
+                          ? 'Deal closed'
+                          : null}
+                    </Button>
+                  ),
                   this.state[`${record.uniqueIdentifier}_match_fee`] && (
                     <span>
                       Seller Fee:{' '}
