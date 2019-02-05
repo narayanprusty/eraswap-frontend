@@ -51,6 +51,7 @@ class BuyComponent extends React.Component {
     axios.get('/apis/ping').then(data => {
       if (data && data.data) {
         console.log('Everything is fine bro');
+        this.fetchFeeParams();
       }
     });
     // this.getCurrentBtcValue();
@@ -60,6 +61,19 @@ class BuyComponent extends React.Component {
   //     this.getCurrentBtcValue(this.state.currency);
   //   }
   // }
+
+  fetchFeeParams = () => {
+    axios.get('/apis/p2p/feeParams').then(data => {
+      if (data && data.data) {
+        this.setState({
+          BTC_USD: data.data.BTC,
+          ETH_USD: data.data.ETH,
+          EST_USD: data.data.EST,
+        });
+        console.log(data);
+      }
+    });
+  };
   getCurrentBtcValue = (CUR = 'INR', cryptoCur) => {
     axios
       .get(`/apis/cur/current_BTC?currency=${CUR}&cryptoCur=${cryptoCur}`)
@@ -428,6 +442,8 @@ class BuyComponent extends React.Component {
                   <Radio value={'EST'} checked={true}>
                     {this.state.maxAmt || this.state.minAmt
                       ? (this.state.maxAmt || this.state.minAmt) *
+                        this.state[`${this.state.cryptoCur}_USD`] /
+                        this.state.EST_USD *
                         (P2P_FEE / 2) /
                         100
                       : '-'}{' '}
