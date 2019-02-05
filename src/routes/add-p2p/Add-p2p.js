@@ -506,6 +506,15 @@ class BuyComponent extends React.Component {
                   addonAfter={this.state.currency || '%'}
                 />,
               )}
+              <br />
+              [i.e.{' '}
+              {this.state.marginPercent && this.state.currency
+                ? this.state[this.state.cryptoCur + '_USD'] *
+                    this.state.marginPercent /
+                    100 +
+                  this.state[this.state.cryptoCur + '_USD']
+                : this.state[this.state.cryptoCur + '_USD']}{' '}
+              equivalent amount in {this.state.currency}]
             </FormItem>
           )}
           {this.state.atPrice === 2 &&
