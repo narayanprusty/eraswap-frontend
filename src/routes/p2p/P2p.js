@@ -91,9 +91,9 @@ class BuyListTable extends React.Component {
 
   handleOk = () => {
     if (
-      this.state.record.minimum > 0 &&
-      this.state.record.maximum > 0 &&
-      this.state.record.minimum < this.state.record.maximum
+      this.state.askAmount > 0 &&
+      this.state.record.minimum <= this.state.askAmount &&
+      this.state.askAmount <= this.state.record.maximum
     ) {
       this.setState({
         confirmLoading: true,
@@ -101,7 +101,8 @@ class BuyListTable extends React.Component {
       this.showInterest();
     } else {
       notification.open({
-        message: 'Please enter proper maximum and minimum limit',
+        message:
+          'Please enter an amount in between maximum-minimum amount asked.',
       });
       return;
     }
