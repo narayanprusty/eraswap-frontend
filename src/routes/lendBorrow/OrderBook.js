@@ -79,6 +79,13 @@ class OrderBook extends React.Component {
 
     componentDidMount() {
         this.getOrders();
+        var ordersInterval = setInterval(this.getOrders, 5000);
+        this.setState({ordersInterval: ordersInterval});
+    }
+
+    componentWillUnmount(){
+        console.log("Stopping interval");
+        clearInterval(this.state.ordersInterval);
     }
 
     getOrders = async () => {
