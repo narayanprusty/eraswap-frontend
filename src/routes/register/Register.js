@@ -13,18 +13,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Register.css';
 import { Form, Button, notification } from 'antd';
 import axios from 'axios';
-
-
-const SOCIAL ={
-  GOOGLE:{
-      CLIENT_ID:'524726124380-u1nngf3k396jhtgrbmnqc6gchvsr6s3k.apps.googleusercontent.com',
-      REDIRECT_URI:'http://ec2-18-220-230-245.us-east-2.compute.amazonaws.com:3000/login'
-  },
-  FB:{
-      CLIENT_ID:"570289253420635",
-      REDIRECT_URI:'https://7d9a37c6.ngrok.io/login'  //FB needs HTTPS only
-  }
-}
+import config from '../../Social';
 
 class Register extends React.Component {
   constructor(props) {
@@ -122,7 +111,7 @@ class Register extends React.Component {
         <div className={s.container}>
           {/* <h1>{this.props.title}</h1> */}
           <div className={s.formGroup} style={{paddingTop:"3em"}}>
-            <a className={s.facebook} href={`https://www.facebook.com/v3.2/dialog/oauth?client_id=${SOCIAL.FB.CLIENT_ID}&redirect_uri=${SOCIAL.FB.REDIRECT_URI}&state=fb&scope=email`}>
+            <a className={s.facebook} href={`https://www.facebook.com/v3.2/dialog/oauth?client_id=${config.SOCIAL.FB.CLIENT_ID}&redirect_uri=${config.SOCIAL.FB.REDIRECT_URI}&state=fb&scope=email`}>
               <svg
                 className={s.icon}
                 width="30"
@@ -136,7 +125,7 @@ class Register extends React.Component {
             </a>
           </div>
           <div className={s.formGroup}>
-            <a className={s.google} href={`https://accounts.google.com/o/oauth2/auth?client_id=${SOCIAL.GOOGLE.CLIENT_ID}&redirect_uri=${SOCIAL.GOOGLE.REDIRECT_URI}&scope=email&response_type=code&state=google`}>
+            <a className={s.google} href={`https://accounts.google.com/o/oauth2/auth?client_id=${config.SOCIAL.GOOGLE.CLIENT_ID}&redirect_uri=${config.SOCIAL.GOOGLE.REDIRECT_URI}&scope=email&response_type=code&state=google`}>
               <svg
                 className={s.icon}
                 width="30"
