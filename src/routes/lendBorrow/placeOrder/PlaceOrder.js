@@ -95,10 +95,35 @@ class PlaceOrder extends React.Component {
                 months: "",
                 amount: "",
                 collateralCoinsOption: [],
+                fees: "0",
             });
             this.getCoinsOptions();
         }
     };
+
+    onCollateralChanged = async (text) => {
+        this.setState({collateralCoin: text});
+        let amount = this.state.amount == "" ? 0 : isNaN(parseFloat(this.state.amount)) ? 0 : parseFloat(this.state.amount);
+        axios.get('/apis/lendingBorrowing/getFees?amount=' + amount + '&collateralCoin=' + text).then(res => {
+            console.log(res.data);
+            if (res.fee)
+                this.setState({ fees: res.data.fee});
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    onAmountChanged = async (e) => {
+        this.setState({amount: e.target.value});
+        let amount = this.state.amount == "" ? 0 : isNaN(parseFloat(this.state.amount)) ? 0 : parseFloat(this.state.amount);
+        axios.get('/apis/lendingBorrowing/getFees?amount=' + amount + '&collateralCoin=' + this.state.collateralCoin).then(res => {
+            console.log(res);
+            if (res.data.fee)
+                this.setState({ fees: res.data.fee});
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
     placeLendingOrder = async (e) => {
         console.log("lending order", (this.state.lendingCoin != this.state.collateralCoin && this.state.months > 0 && this.state.amount > 0));
@@ -296,7 +321,7 @@ class PlaceOrder extends React.Component {
                                             style={{ maxWidth: '40%' }}
                                             dataSource={this.state.collateralCoinsOption}
                                             value={this.state.collateralCoin}
-                                            onChange={text => this.setState({collateralCoin: text})}
+                                            onChange={this.onCollateralChanged}
                                             placeholder="Select Collateral Coin"
                                             filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                                     />
@@ -328,12 +353,18 @@ class PlaceOrder extends React.Component {
                                     <Input 
                                         type="number"
                                         value={this.state.amount}
-                                        onChange={e => this.setState({amount: e.target.value})}
+                                        onChange={this.onAmountChanged}
                                         style={{ maxWidth: '40%' }}
                                         size="default"
                                         placeholder="Enter amount"
                                     />
                                 </FormItem>
+                                <p>Fees: {
+                                      this.state.fees
+                                    } {
+                                      this.state.borrowingCoin == "" ? "" : "(" + this.state.borrowingCoin + ")"
+                                    }
+                                </p>
                                 <Button type="primary" htmlType="submit" loading={this.state.placingOrder}>
                                         Place Order
                                 </Button>
