@@ -526,6 +526,7 @@ class WalletManager extends React.Component {
                   type="primary"
                   htmlType="submit"
                   loading={this.state.loader}
+                  onClick={this.checkValue}
                 >
                   Convert
                 </Button>
