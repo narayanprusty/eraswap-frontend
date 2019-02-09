@@ -98,13 +98,25 @@ class WalletManager extends React.Component {
   }
 
   findMinMax = arr => {
-    let min = { name: arr[0].name, ask: arr[0].ask },
-      max = { name: arr[0].name, ask: arr[0].ask };
+    let min = {
+        name: arr[0].name,
+        ask: arr[0].ask
+      },
+      max = {
+        name: arr[0].name,
+        ask: arr[0].ask
+      };
 
     for (let i = 1, len = arr.length; i < len; i++) {
       let v = arr[i].ask;
-      min = v < min.ask ? { name: arr[i].name, ask: v } : min;
-      max = v > max.ask ? { name: arr[i].name, ask: v } : max;
+      min = v < min.ask ? {
+        name: arr[i].name,
+        ask: v
+      } : min;
+      max = v > max.ask ? {
+        name: arr[i].name,
+        ask: v
+      } : max;
     }
 
     return [min, max];
@@ -125,7 +137,9 @@ class WalletManager extends React.Component {
         types.push(tabListNoTitle[i].key);
       }
     }
-    this.setState({ conversionTypes: types });
+    this.setState({
+      conversionTypes: types
+    });
   }
 
   checkValue = e => {
@@ -139,12 +153,12 @@ class WalletManager extends React.Component {
     return axios
       .get(
         '/apis/cur/checkVal?currency=' +
-          this.state.name +
-          '&amount=' +
-          this.state.exchangeAmount +
-          '&platform=' +
-          platform +
-          '&fromWallet=true',
+        this.state.name +
+        '&amount=' +
+        this.state.exchangeAmount +
+        '&platform=' +
+        platform +
+        '&fromWallet=true',
       )
       .then(data => {
         if (data && data.data) {
@@ -171,8 +185,7 @@ class WalletManager extends React.Component {
                     exchanges: data.data[symbol],
                     maxExchange: getMinMax.ask !== 0 ? getMinMax.name : '',
                     exchangeRate: getMinMax.ask !== 0 ? getMinMax.ask : 0,
-                    ['totalExchangeAmout']:
-                      getMinMax.ask * this.state.exchangeAmount,
+                    ['totalExchangeAmout']: getMinMax.ask * this.state.exchangeAmount,
                     checkExchanges: true,
                   });
 
@@ -200,40 +213,89 @@ class WalletManager extends React.Component {
                         axios
                           .get(
                             '/apis/wallet/getAddress?crypto=' +
-                              this.state.toCurrency,
+                            this.state.toCurrency,
                           )
                           .then(res => {
                             console.log(res.data.address);
                             this.setState({
                               exchangeToWallet: res.data.address,
                             });
-
-                            const dataPushable = {
-                              symbol: this.state.symbol,
-                              tiMeFrom: this.state.tiMeFrom,
-                              exchFromCurrency: this.state.name,
-                              exchFromCurrencyAmt: this.state.exchangeAmount,
-                              exchToCurrency: this.state.toCurrency,
-                              exchToCurrencyRate: this.state.exchangeRate,
-                              eraswapAcceptAddress: this.state.userWallet,
-                              eraswapSendAddress: this.state.exchangeToWallet,
-                              exchangePlatform: this.state.maxExchange,
-                              totalExchangeAmout: this.state.totalExchangeAmout,
-                              lctxid: this.state.lctxid,
-                              platformFeePayOpt: platform,
-                              fromWallet: true,
-                            };
+                            
                             axios
-                              .post('/apis/txn/verifyAndSave', dataPushable)
-                              .then(data => {
-                                if (data && data.data) {
-                                  location.href = '/txnhistory';
+                              .post('/apis/wallet/send', {
+                                crypto: this.state.name,
+                                receiver: res.data.address,
+                                amount: this.state.exchangeAmount,
+                              })
+                              .then(res => {
+                                if (res.data.success) {
+                                  notification.open({
+                                    message: 'Success',
+                                    description: 'Transaction sent!',
+                                  });
+
+                                  console.log(res);
+                                  this.setState({
+                                    sending: false,
+                                    recipient: '',
+                                    amount: '',
+                                    exchangeAmount: res.data.dbObject.txn.amountReceived,
+                                  });
+                                  axios
+                                    .post('/apis/txn/updateTxnAmount', {
+                                      lctxid: this.state.lctxid,
+                                      receivedAmount: res.data.dbObject.txn.amountReceived
+                                    }).then(updatedTxn => {
+                                      const dataPushable = {
+                                        symbol: this.state.symbol,
+                                        tiMeFrom: this.state.tiMeFrom,
+                                        exchFromCurrency: this.state.name,
+                                        exchFromCurrencyAmt: this.state.exchangeAmount,
+                                        exchToCurrency: this.state.toCurrency,
+                                        exchToCurrencyRate: this.state.exchangeRate,
+                                        eraswapAcceptAddress: this.state.userWallet,
+                                        eraswapSendAddress: this.state.exchangeToWallet,
+                                        exchangePlatform: this.state.maxExchange,
+                                        totalExchangeAmout: this.state.totalExchangeAmout,
+                                        lctxid: this.state.lctxid,
+                                        platformFeePayOpt: platform,
+                                        fromWallet: true,
+                                      };
+                                      axios
+                                        .post('/apis/txn/verifyAndSave', dataPushable)
+                                        .then(data => {
+                                          if (data && data.data) {
+                                            location.href = '/txnhistory';
+                                          }
+                                          this.setState({
+                                            loader: false
+                                          });
+                                        })
+                                        .catch(error => {
+                                          console.log(error);
+                                          this.setState({
+                                            loader: false
+                                          });
+
+                                        });
+                                    }).catch(error => {
+                                        console.log(error);
+                                        this.setState({
+                                          loader: false
+                                        });
+                                    });
                                 }
-                                this.setState({ loader: false });
+                                else{
+                                    throw res.data.message;
+                                }
                               })
                               .catch(error => {
+                                this.setState({
+                                  sending: false,
+                                  recipient: '',
+                                  amount: ''
+                                });
                                 console.log(error);
-                                this.setState({ loader: false });
                               });
                           })
                           .catch(error => {
@@ -243,41 +305,60 @@ class WalletManager extends React.Component {
                     })
                     .catch(error => {
                       console.log(error);
-                      this.setState({ loader: false });
+                      this.setState({
+                        loader: false
+                      });
                     });
                 } else {
-                  this.setState({ loader: false });
+                  this.setState({
+                    loader: false
+                  });
                 }
               })
               .catch(error => {
-                this.setState({ loader: false });
+                this.setState({
+                  loader: false
+                });
                 console.log(error);
               });
           } else {
             notification.open({
               message: 'Entered Amount should be equivalent to $20 or more.',
-              description:
-                'Please change the amount and try again.\n Entered amout value is estimated $' +
+              description: 'Please change the amount and try again.\n Entered amout value is estimated $' +
                 (usdPrice * this.state.exchangeAmount).toFixed(4),
-              icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+              icon: < Icon type = "frown-circle"
+              style = {
+                {
+                  color: '#FF0000'
+                }
+              }
+              />,
             });
-            this.setState({ loader: false });
+            this.setState({
+              loader: false
+            });
           }
         }
       })
       .catch(error => {
-        this.setState({ loader: false });
+        this.setState({
+          loader: false
+        });
         console.log(error);
       });
   };
 
   onTabChange = key => {
     console.log(key);
-    this.setState({ noTitleKey: key });
+    this.setState({
+      noTitleKey: key
+    });
   };
 
   send = () => {
-    this.setState({ sending: true });
+    this.setState({
+      sending: true
+    });
     var data = {
       crypto: this.state.name,
       receiver: this.state.recipient,
@@ -294,24 +375,39 @@ class WalletManager extends React.Component {
           });
         }
         console.log(res);
-        this.setState({ sending: false, recipient: '', amount: '' });
+        this.setState({
+          sending: false,
+          recipient: '',
+          amount: ''
+        });
       })
       .catch(error => {
-        this.setState({ sending: false, recipient: '', amount: '' });
+        this.setState({
+          sending: false,
+          recipient: '',
+          amount: ''
+        });
         console.log(error);
       });
   };
 
   getBalance = () => {
-    this.setState({ loadingBalance: true });
+    this.setState({
+      loadingBalance: true
+    });
     axios
       .get('/apis/wallet/getBalance?crypto=' + this.state.name)
       .then(res => {
         console.log(res.data.balance);
-        this.setState({ balance: res.data.balance, loadingBalance: false });
+        this.setState({
+          balance: res.data.balance,
+          loadingBalance: false
+        });
       })
       .catch(error => {
-        this.setState({ loadingBalance: false });
+        this.setState({
+          loadingBalance: false
+        });
         console.log(error);
       });
   };
@@ -321,7 +417,9 @@ class WalletManager extends React.Component {
       .get('/apis/wallet/getAddress?crypto=' + this.state.name)
       .then(res => {
         console.log(res.data.address);
-        this.setState({ userWallet: res.data.address });
+        this.setState({
+          userWallet: res.data.address
+        });
       })
       .catch(error => {
         console.log(error);
@@ -333,7 +431,9 @@ class WalletManager extends React.Component {
       .get('/apis/wallet/getHistory?crypto=' + this.state.name)
       .then(res => {
         console.log(res.data.history);
-        this.setState({ history: res.data.history });
+        this.setState({
+          history: res.data.history
+        });
       })
       .catch(error => {
         console.log(error);
@@ -341,13 +441,17 @@ class WalletManager extends React.Component {
   };
 
   downloadPrivateKey = () => {
-    this.setState({ gettingPK: true });
+    this.setState({
+      gettingPK: true
+    });
     axios
       .get('/apis/wallet/getPrivateKey?crypto=' + this.state.name)
       .then(res => {
         console.log(res.data.address);
         if (res.data.address) {
-          this.setState({ privateKey: res.data.address });
+          this.setState({
+            privateKey: res.data.address
+          });
           var element = document.createElement('a');
           element.href =
             'data:application/octet-stream;base64,' + res.data.address;
@@ -355,10 +459,14 @@ class WalletManager extends React.Component {
           element.click();
           document.body.removeChild(element);
         }
-        this.setState({ gettingPK: false });
+        this.setState({
+          gettingPK: false
+        });
       })
       .catch(error => {
-        this.setState({ gettingPK: false });
+        this.setState({
+          gettingPK: false
+        });
         console.log(error);
       });
   };
