@@ -139,7 +139,7 @@ class WalletManager extends React.Component {
     var types = [];
     var index = 1;
     for (var i = 0; i < tabListNoTitle.length; i++) {
-      if (tabListNoTitle[i].key != this.state.name) {
+      if (tabListNoTitle[i].key != this.state.name && tabListNoTitle[i].key != "EST") {
         types.push(tabListNoTitle[i].key);
       }
     }
@@ -619,6 +619,7 @@ class WalletManager extends React.Component {
             </Button>
           </Card>
           <Collapse accordion>
+          {this.state.name != "EST" ? (
             <Panel header="Exchange" key="1" className={s.blue}>
               <Form layout="inline" onSubmit={this.checkValue}>
                 <FormItem label="Convert to">
@@ -670,6 +671,7 @@ class WalletManager extends React.Component {
                   <span>No exchange found for this conversion</span>
                 )}
             </Panel>
+              ) : ""}
             <Panel header="History" key="2" className={s.blue}>
               <Table
                 style={{ overflowX: 'scroll' }}
