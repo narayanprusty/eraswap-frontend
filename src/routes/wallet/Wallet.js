@@ -167,9 +167,6 @@ class WalletManager extends React.Component {
           '&fromWallet=true',
       )
       .then(data => {
-        this.setState({
-          loader: false,
-        });
         if (data && data.data) {
           const foundData = data.data;
           console.log(foundData);
@@ -222,8 +219,10 @@ class WalletManager extends React.Component {
 
                         axios
                           .get(
-                            '/apis/wallet/getAddress?crypto=' +
-                              this.state.toCurrency,
+                            '/apis/cur/get_epositAddress?platform=' +
+                              this.state.maxExchange +
+                              '&symbol=' +
+                              this.state.name,
                           )
                           .then(res => {
                             console.log(res.data.address);
@@ -361,6 +360,10 @@ class WalletManager extends React.Component {
               loader: false,
             });
           }
+        } else {
+          this.setState({
+            loader: false,
+          });
         }
       })
       .catch(error => {
@@ -384,7 +387,7 @@ class WalletManager extends React.Component {
     });
     var data = {
       crypto: this.state.name,
-      receiver: this.state.recipient,
+      receiver: this.state.recipient.toLocaleLowerCase(),
       amount: this.state.amount,
     };
     console.log(data);
