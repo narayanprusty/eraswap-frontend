@@ -171,10 +171,10 @@ class WalletManager extends React.Component {
           loader: false,
         });
         if (data && data.data) {
-          const foundData = JSON.parse(data.data);
+          const foundData = data.data;
           console.log(foundData);
-          const currencyData = foundData.data[this.state.name];
-          const usdPrice = currencyData.quote.USD.price;
+          const currencyData = foundData[this.state.name];
+          const usdPrice = currencyData;
           console.log('USD Price', usdPrice);
           if (usdPrice * this.state.exchangeAmount >= 20) {
             axios
