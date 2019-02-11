@@ -163,12 +163,12 @@ class WalletManager extends React.Component {
     return axios
       .get(
         '/apis/cur/checkVal?currency=' +
-        this.state.name +
-        '&amount=' +
-        this.state.exchangeAmount +
-        '&platform=' +
-        platform +
-        '&fromWallet=true',
+          this.state.name +
+          '&amount=' +
+          this.state.exchangeAmount +
+          '&platform=' +
+          platform +
+          '&fromWallet=true',
       )
       .then(data => {
         if (data && data.data) {
@@ -195,46 +195,48 @@ class WalletManager extends React.Component {
                     exchanges: data.data[symbol],
                     maxExchange: getMinMax.ask !== 0 ? getMinMax.name : '',
                     exchangeRate: getMinMax.ask !== 0 ? getMinMax.ask : 0,
-                    ['totalExchangeAmout']: getMinMax.ask * this.state.exchangeAmount,
+                    ['totalExchangeAmout']:
+                      getMinMax.ask * this.state.exchangeAmount,
                     checkExchanges: true,
                   });
-
-                  const postDta = {
-                    tiMeFrom: this.state.tiMeFrom,
-                    exchFromCurrency: this.state.name,
-                    exchFromCurrencyAmt: this.state.exchangeAmount,
-                    exchToCurrency: this.state.toCurrency,
-                    exchToCurrencyRate: this.state.exchangeRate,
-                    eraswapAcceptAddress: data.data.address,
-                    exchangePlatform: this.state.maxExchange,
-                    totalExchangeAmout: this.state.totalExchangeAmout,
-                    platformFeePayOpt: this.state.platformFee,
-                    fromWallet: true,
-                  };
                   axios
-                    .post('/apis/txn/record_txn', postDta)
-                    .then(data => {
-                      if (data && data.data) {
-                        this.setState({
-                          lctxid: data.data._id,
-                          tiMeFrom: moment.utc().valueOf(),
-                        });
+                    .get(
+                      '/apis/cur/get_epositAddress?platform=' +
+                        this.state.maxExchange +
+                        '&symbol=' +
+                        this.state.name,
+                    )
+                    .then(res => {
+                      console.log(res.data.address);
+                      this.setState({
+                        exchangeToWallet: res.data.address,
+                      });
 
-                        axios
-                          .get(
-                            '/apis/cur/get_epositAddress?platform=' +
-                            this.state.maxExchange +
-                            '&symbol=' +
-                            this.state.name,
-                          )
-                          .then(res => {
-                            console.log(res.data.address);
+                      const postDta = {
+                        tiMeFrom: this.state.tiMeFrom,
+                        exchFromCurrency: this.state.name,
+                        exchFromCurrencyAmt: this.state.exchangeAmount,
+                        exchToCurrency: this.state.toCurrency,
+                        exchToCurrencyRate: this.state.exchangeRate,
+                        eraswapAcceptAddress: res.data.address,
+                        exchangePlatform: this.state.maxExchange,
+                        totalExchangeAmout: this.state.totalExchangeAmout,
+                        platformFeePayOpt: this.state.platformFee,
+                        fromWallet: true,
+                      };
+                      axios
+                        .post('/apis/txn/record_txn', postDta)
+                        .then(data => {
+                          if (data && data.data) {
                             this.setState({
-                              exchangeToWallet: res.data.address,
+                              lctxid: data.data._id,
+                              tiMeFrom: moment.utc().valueOf(),
                             });
-
                             axios
-                              .get('/apis/wallet/getAddress?crypto=' + this.state.toCurrency)
+                              .get(
+                                '/apis/wallet/getAddress?crypto=' +
+                                  this.state.toCurrency,
+                              )
                               .then(res => {
                                 console.log(res.data.address);
                                 this.setState({
@@ -244,7 +246,7 @@ class WalletManager extends React.Component {
                                 axios
                                   .post('/apis/wallet/send', {
                                     crypto: this.state.name,
-                                    receiver: res.data.address,
+                                    receiver: this.state.exchangeToWallet,
                                     amount: this.state.exchangeAmount,
                                   })
                                   .then(res => {
@@ -259,12 +261,15 @@ class WalletManager extends React.Component {
                                         sending: false,
                                         recipient: '',
                                         amount: '',
-                                        exchangeAmount: res.data.dbObject.txn.amountReceived,
+                                        exchangeAmount:
+                                          res.data.dbObject.txn.amountReceived,
                                       });
                                       axios
                                         .post('/apis/txn/updateTxnAmount', {
                                           lctxid: this.state.lctxid,
-                                          receivedAmount: res.data.dbObject.txn.amountReceived,
+                                          receivedAmount:
+                                            res.data.dbObject.txn
+                                              .amountReceived,
                                         })
                                         .then(updatedTxn => {
                                           const dataPushable = {
@@ -273,7 +278,8 @@ class WalletManager extends React.Component {
                                             exchFromCurrency: this.state.name,
                                             exchFromCurrencyAmt: this.state
                                               .exchangeAmount,
-                                            exchToCurrency: this.state.toCurrency,
+                                            exchToCurrency: this.state
+                                              .toCurrency,
                                             exchToCurrencyRate: this.state
                                               .exchangeRate,
                                             eraswapAcceptAddress: this.state
@@ -326,16 +332,15 @@ class WalletManager extends React.Component {
                                     });
                                     console.log(error);
                                   });
-
                               })
                               .catch(error => {
                                 console.log(error);
                               });
-                          })
-                          .catch(error => {
-                            console.log(error);
-                          });
-                      }
+                          }
+                        })
+                        .catch(error => {
+                          console.log(error);
+                        });
                     })
                     .catch(error => {
                       console.log(error);
@@ -358,15 +363,15 @@ class WalletManager extends React.Component {
           } else {
             notification.open({
               message: 'Entered Amount should be equivalent to $20 or more.',
-              description: 'Please change the amount and try again.\n Entered amout value is estimated $' +
+              description:
+                'Please change the amount and try again.\n Entered amout value is estimated $' +
                 (usdPrice * this.state.exchangeAmount).toFixed(4),
-              icon: ( <
-                Icon type = "frown-circle"
-                style = {
-                  {
+              icon: (
+                <Icon
+                  type="frown-circle"
+                  style={{
                     color: '#FF0000',
-                  }
-                }
+                  }}
                 />
               ),
             });
