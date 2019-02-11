@@ -94,6 +94,7 @@ class WalletManager extends React.Component {
       lctxid: '',
       tiMeFrom: 0,
       cur: [],
+      userToWallet: '',
     };
   }
 
@@ -162,12 +163,12 @@ class WalletManager extends React.Component {
     return axios
       .get(
         '/apis/cur/checkVal?currency=' +
-          this.state.name +
-          '&amount=' +
-          this.state.exchangeAmount +
-          '&platform=' +
-          platform +
-          '&fromWallet=true',
+        this.state.name +
+        '&amount=' +
+        this.state.exchangeAmount +
+        '&platform=' +
+        platform +
+        '&fromWallet=true',
       )
       .then(data => {
         if (data && data.data) {
@@ -194,8 +195,7 @@ class WalletManager extends React.Component {
                     exchanges: data.data[symbol],
                     maxExchange: getMinMax.ask !== 0 ? getMinMax.name : '',
                     exchangeRate: getMinMax.ask !== 0 ? getMinMax.ask : 0,
-                    ['totalExchangeAmout']:
-                      getMinMax.ask * this.state.exchangeAmount,
+                    ['totalExchangeAmout']: getMinMax.ask * this.state.exchangeAmount,
                     checkExchanges: true,
                   });
 
@@ -223,9 +223,9 @@ class WalletManager extends React.Component {
                         axios
                           .get(
                             '/apis/cur/get_epositAddress?platform=' +
-                              this.state.maxExchange +
-                              '&symbol=' +
-                              this.state.name,
+                            this.state.maxExchange +
+                            '&symbol=' +
+                            this.state.name,
                           )
                           .then(res => {
                             console.log(res.data.address);
@@ -234,66 +234,79 @@ class WalletManager extends React.Component {
                             });
 
                             axios
-                              .post('/apis/wallet/send', {
-                                crypto: this.state.name,
-                                receiver: res.data.address,
-                                amount: this.state.exchangeAmount,
-                              })
+                              .get('/apis/wallet/getAddress?crypto=' + this.state.toCurrency)
                               .then(res => {
-                                if (res.data.success) {
-                                  notification.open({
-                                    message: 'Success',
-                                    description: 'Transaction sent!',
-                                  });
+                                console.log(res.data.address);
+                                this.setState({
+                                  userToWallet: res.data.address,
+                                });
 
-                                  console.log(res);
-                                  this.setState({
-                                    sending: false,
-                                    recipient: '',
-                                    amount: '',
-                                    exchangeAmount:
-                                      res.data.dbObject.txn.amountReceived,
-                                  });
-                                  axios
-                                    .post('/apis/txn/updateTxnAmount', {
-                                      lctxid: this.state.lctxid,
-                                      receivedAmount:
-                                        res.data.dbObject.txn.amountReceived,
-                                    })
-                                    .then(updatedTxn => {
-                                      const dataPushable = {
-                                        symbol: this.state.symbol,
-                                        tiMeFrom: this.state.tiMeFrom,
-                                        exchFromCurrency: this.state.name,
-                                        exchFromCurrencyAmt: this.state
-                                          .exchangeAmount,
-                                        exchToCurrency: this.state.toCurrency,
-                                        exchToCurrencyRate: this.state
-                                          .exchangeRate,
-                                        eraswapAcceptAddress: this.state
-                                          .exchangeToWallet, //this is where you will be sending, exch deposit address
-                                        eraswapSendAddress: this.state
-                                          .userWallet, //this is where after convert exchng will send
-                                        exchangePlatform: this.state
-                                          .maxExchange,
-                                        totalExchangeAmout: this.state
-                                          .totalExchangeAmout,
-                                        lctxid: this.state.lctxid,
-                                        platformFeePayOpt: platform,
-                                        fromWallet: true,
-                                      };
+                                axios
+                                  .post('/apis/wallet/send', {
+                                    crypto: this.state.name,
+                                    receiver: res.data.address,
+                                    amount: this.state.exchangeAmount,
+                                  })
+                                  .then(res => {
+                                    if (res.data.success) {
+                                      notification.open({
+                                        message: 'Success',
+                                        description: 'Transaction sent!',
+                                      });
+
+                                      console.log(res);
+                                      this.setState({
+                                        sending: false,
+                                        recipient: '',
+                                        amount: '',
+                                        exchangeAmount: res.data.dbObject.txn.amountReceived,
+                                      });
                                       axios
-                                        .post(
-                                          '/apis/txn/verifyAndSave',
-                                          dataPushable,
-                                        )
-                                        .then(data => {
-                                          if (data && data.data) {
-                                            location.href = '/txnhistory';
-                                          }
-                                          this.setState({
-                                            loader: false,
-                                          });
+                                        .post('/apis/txn/updateTxnAmount', {
+                                          lctxid: this.state.lctxid,
+                                          receivedAmount: res.data.dbObject.txn.amountReceived,
+                                        })
+                                        .then(updatedTxn => {
+                                          const dataPushable = {
+                                            symbol: this.state.symbol,
+                                            tiMeFrom: this.state.tiMeFrom,
+                                            exchFromCurrency: this.state.name,
+                                            exchFromCurrencyAmt: this.state
+                                              .exchangeAmount,
+                                            exchToCurrency: this.state.toCurrency,
+                                            exchToCurrencyRate: this.state
+                                              .exchangeRate,
+                                            eraswapAcceptAddress: this.state
+                                              .exchangeToWallet, //this is where you will be sending, exch deposit address
+                                            eraswapSendAddress: this.state
+                                              .userToWallet, //this is where after convert exchng will send
+                                            exchangePlatform: this.state
+                                              .maxExchange,
+                                            totalExchangeAmout: this.state
+                                              .totalExchangeAmout,
+                                            lctxid: this.state.lctxid,
+                                            platformFeePayOpt: platform,
+                                            fromWallet: true,
+                                          };
+                                          axios
+                                            .post(
+                                              '/apis/txn/verifyAndSave',
+                                              dataPushable,
+                                            )
+                                            .then(data => {
+                                              if (data && data.data) {
+                                                location.href = '/txnhistory';
+                                              }
+                                              this.setState({
+                                                loader: false,
+                                              });
+                                            })
+                                            .catch(error => {
+                                              console.log(error);
+                                              this.setState({
+                                                loader: false,
+                                              });
+                                            });
                                         })
                                         .catch(error => {
                                           console.log(error);
@@ -301,23 +314,21 @@ class WalletManager extends React.Component {
                                             loader: false,
                                           });
                                         });
-                                    })
-                                    .catch(error => {
-                                      console.log(error);
-                                      this.setState({
-                                        loader: false,
-                                      });
+                                    } else {
+                                      throw res.data.message;
+                                    }
+                                  })
+                                  .catch(error => {
+                                    this.setState({
+                                      sending: false,
+                                      recipient: '',
+                                      amount: '',
                                     });
-                                } else {
-                                  throw res.data.message;
-                                }
+                                    console.log(error);
+                                  });
+
                               })
                               .catch(error => {
-                                this.setState({
-                                  sending: false,
-                                  recipient: '',
-                                  amount: '',
-                                });
                                 console.log(error);
                               });
                           })
@@ -347,15 +358,15 @@ class WalletManager extends React.Component {
           } else {
             notification.open({
               message: 'Entered Amount should be equivalent to $20 or more.',
-              description:
-                'Please change the amount and try again.\n Entered amout value is estimated $' +
+              description: 'Please change the amount and try again.\n Entered amout value is estimated $' +
                 (usdPrice * this.state.exchangeAmount).toFixed(4),
-              icon: (
-                <Icon
-                  type="frown-circle"
-                  style={{
+              icon: ( <
+                Icon type = "frown-circle"
+                style = {
+                  {
                     color: '#FF0000',
-                  }}
+                  }
+                }
                 />
               ),
             });
