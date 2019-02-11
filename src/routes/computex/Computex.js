@@ -261,6 +261,16 @@ class ComputeEx extends React.Component {
       )
       .then(data => {
         if (data && data.data) {
+          this.setState(
+            {
+              depositTag: data.data.tag ? data.data.tag : 'Not Available',
+              ourWallet: data.data.address,
+            },
+            () => {
+              console.log('done change');
+              console.log(this.state.ourWallet);
+            },
+          );
           if (!this.state.lctxid) {
             const postDta = {
               tiMeFrom: this.state.tiMeFrom,
@@ -283,9 +293,8 @@ class ComputeEx extends React.Component {
             });
           }
           this.setState({
-            depositTag: data.data.tag ? data.data.tag : 'Not Available',
             loader: false,
-            ourWallet: data.data.address,
+
             key: '3',
             tiMeFrom: moment.utc().valueOf(),
             panel2Text: `Best value is from ${this.state.maxExchange} : for 1 ${
@@ -840,8 +849,7 @@ class ComputeEx extends React.Component {
               <br />
               <Input.Search
                 style={{ maxWidth: '45.2%' }}
-                defaultValue={this.state.ourWallet}
-                defaultValue={this.state.ourWallet}
+                value={this.state.ourWallet}
                 enterButton={<Icon type="copy" />}
                 size="large"
                 onSearch={value => {
@@ -856,7 +864,7 @@ class ComputeEx extends React.Component {
                 this.state.depositTag != this.state.ourWallet && (
                   <Input.Search
                     style={{ maxWidth: '45.2%' }}
-                    defaultValue={this.state.depositTag}
+                    value={this.state.depositTag}
                     enterButton={<Icon type="copy" />}
                     size="large"
                     onSearch={value => {
