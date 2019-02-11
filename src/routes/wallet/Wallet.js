@@ -139,7 +139,10 @@ class WalletManager extends React.Component {
     var types = [];
     var index = 1;
     for (var i = 0; i < tabListNoTitle.length; i++) {
-      if (tabListNoTitle[i].key != this.state.name && tabListNoTitle[i].key != "EST") {
+      if (
+        tabListNoTitle[i].key != this.state.name &&
+        tabListNoTitle[i].key != 'EST'
+      ) {
         types.push(tabListNoTitle[i].key);
       }
     }
@@ -268,9 +271,9 @@ class WalletManager extends React.Component {
                                         exchToCurrencyRate: this.state
                                           .exchangeRate,
                                         eraswapAcceptAddress: this.state
-                                          .userWallet,
+                                          .exchangeToWallet, //this is where you will be sending, exch deposit address
                                         eraswapSendAddress: this.state
-                                          .exchangeToWallet,
+                                          .userWallet, //this is where after convert exchng will send
                                         exchangePlatform: this.state
                                           .maxExchange,
                                         totalExchangeAmout: this.state
@@ -619,59 +622,61 @@ class WalletManager extends React.Component {
             </Button>
           </Card>
           <Collapse accordion>
-          {this.state.name != "EST" ? (
-            <Panel header="Exchange" key="1" className={s.blue}>
-              <Form layout="inline" onSubmit={this.checkValue}>
-                <FormItem label="Convert to">
-                  <AutoComplete
-                    style={{ maxWidth: '50%' }}
-                    dataSource={this.state.conversionTypes}
-                    value={this.state.toCurrency}
-                    onChange={text => this.setState({ toCurrency: text })}
-                    placeholder=""
-                    filterOption={(inputValue, option) =>
-                      option.props.children
-                        .toUpperCase()
-                        .indexOf(inputValue.toUpperCase()) !== -1
-                    }
-                  />
-                </FormItem>
-                <FormItem label={'Amount (' + this.state.name + ')'}>
-                  <Input
-                    type="number"
-                    value={this.state.exchangeAmount}
-                    onChange={e =>
-                      this.setState({ exchangeAmount: e.target.value })
-                    }
-                    style={{ maxWidth: '50%' }}
-                    size="default"
-                  />
-                </FormItem>
-                <FormItem label="Fees">
-                  <Checkbox
-                    value={this.state.useEstForFees}
-                    onChange={e =>
-                      this.setState({ useEstForFees: e.target.checked })
-                    }
+            {this.state.name != 'EST' ? (
+              <Panel header="Exchange" key="1" className={s.blue}>
+                <Form layout="inline" onSubmit={this.checkValue}>
+                  <FormItem label="Convert to">
+                    <AutoComplete
+                      style={{ maxWidth: '50%' }}
+                      dataSource={this.state.conversionTypes}
+                      value={this.state.toCurrency}
+                      onChange={text => this.setState({ toCurrency: text })}
+                      placeholder=""
+                      filterOption={(inputValue, option) =>
+                        option.props.children
+                          .toUpperCase()
+                          .indexOf(inputValue.toUpperCase()) !== -1
+                      }
+                    />
+                  </FormItem>
+                  <FormItem label={'Amount (' + this.state.name + ')'}>
+                    <Input
+                      type="number"
+                      value={this.state.exchangeAmount}
+                      onChange={e =>
+                        this.setState({ exchangeAmount: e.target.value })
+                      }
+                      style={{ maxWidth: '50%' }}
+                      size="default"
+                    />
+                  </FormItem>
+                  <FormItem label="Fees">
+                    <Checkbox
+                      value={this.state.useEstForFees}
+                      onChange={e =>
+                        this.setState({ useEstForFees: e.target.checked })
+                      }
+                    >
+                      EST [50% off]
+                    </Checkbox>
+                  </FormItem>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={this.state.loader}
+                    onClick={this.checkValue}
                   >
-                    EST [50% off]
-                  </Checkbox>
-                </FormItem>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  loading={this.state.loader}
-                  onClick={this.checkValue}
-                >
-                  Convert
-                </Button>
-              </Form>
-              {this.state.maxExchange === '' &&
-                this.state.checkExchanges && (
-                  <span>No exchange found for this conversion</span>
-                )}
-            </Panel>
-              ) : ""}
+                    Convert
+                  </Button>
+                </Form>
+                {this.state.maxExchange === '' &&
+                  this.state.checkExchanges && (
+                    <span>No exchange found for this conversion</span>
+                  )}
+              </Panel>
+            ) : (
+              ''
+            )}
             <Panel header="History" key="2" className={s.blue}>
               <Table
                 style={{ overflowX: 'scroll' }}
