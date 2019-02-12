@@ -406,7 +406,7 @@ class WalletManager extends React.Component {
     });
     var data = {
       crypto: this.state.name,
-      receiver: this.state.recipient.toLocaleLowerCase(),
+      receiver: this.state.recipient,
       amount: this.state.amount,
     };
     console.log(data);
