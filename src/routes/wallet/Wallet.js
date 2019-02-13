@@ -21,7 +21,6 @@ import {
   AutoComplete,
   Checkbox,
 } from 'antd';
-
 const { Column } = Table;
 
 import s from './Wallet.css';
@@ -157,7 +156,10 @@ class WalletManager extends React.Component {
     this.setState({
       loader: true,
     });
-
+    notification.open({
+      message:
+        'Please wait! dont close the browser until the process completes.',
+    });
     let platform = this.state.useEstForFees ? 'EST' : 'source';
 
     return axios
