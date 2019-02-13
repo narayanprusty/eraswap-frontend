@@ -221,7 +221,7 @@ class WalletManager extends React.Component {
                         eraswapAcceptAddress: res.data.address,
                         exchangePlatform: this.state.maxExchange,
                         totalExchangeAmout: this.state.totalExchangeAmout,
-                        platformFeePayOpt: this.state.platformFee,
+                        platformFeePayOpt: platform,
                         fromWallet: true,
                       };
                       axios
