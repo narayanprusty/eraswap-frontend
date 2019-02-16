@@ -658,6 +658,7 @@ class MyListComponent extends React.Component {
       });
   };
   updation = (record, fieldValue) => {
+    notification.open({ message: 'Making your listing inactive' });
     this.setState({
       [record.uniqueIdentifier]: true,
     });
@@ -666,6 +667,7 @@ class MyListComponent extends React.Component {
       active: fieldValue,
     };
     return axios.post('/apis/p2p/change_status', data).then(data => {
+      notification.open({ message: 'Listing Inactive successfull!' });
       return data;
     });
   };
