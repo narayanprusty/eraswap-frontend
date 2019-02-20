@@ -795,6 +795,10 @@ class MyListComponent extends React.Component {
       });
   };
   finishDeal = async (record, item) => {
+    notification.open({
+      message:
+        'Please wait while we process the deal.\n please dont close the browser.',
+    });
     var id = this.state[`${record.uniqueIdentifier}_id`];
     const data = {
       id: id,
@@ -802,6 +806,15 @@ class MyListComponent extends React.Component {
       item: item,
     };
     return axios.post('/apis/p2p/finishDeal', data).then(data => {
+      notification.open({
+        message: 'Deal Successfully closed!',
+      });
+      this.setState({
+        [`${record.uniqueIdentifier}_matched`]: {
+          [item.userId]: true,
+        },
+      });
+
       return data;
     });
   };
