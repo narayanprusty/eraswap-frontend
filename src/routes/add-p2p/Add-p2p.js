@@ -648,7 +648,9 @@ class MyListComponent extends React.Component {
           let pushable = [];
           for (let i of data.data.userRequests) {
             delete i._id;
-            i.username = i.userId.username;
+            i.username = i.userId.username
+              ? i.userId.username
+              : 'User not found';
             i.userId = i.userId._id;
             pushable.push(i);
           }
