@@ -1034,6 +1034,7 @@ class MyRequests extends React.Component {
     };
     return axios.post('/apis/p2p/change_status_paid', data).then(data => {
       if (data.data) {
+        this.setState({ [record.uniqueIdentifier]: true });
         notification.open({
           message: 'your response sent, please refresh the page.',
         });
