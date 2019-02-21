@@ -42,7 +42,7 @@ class TxnHistory extends React.Component {
         title: 'ComputeEx Order Status',
         content: wholeObj.witdrawn
           ? 'Completed'
-          : wholeObj.cancelled ? 'Deposit Not found' : 'Pending',
+          : wholeObj.cancelled ? 'Deposit not found' : 'Pending',
       },
       {
         title: 'Deposit Status',
@@ -134,10 +134,14 @@ class TxnHistory extends React.Component {
         dataIndex: 'dipositTxnStatus',
         key: 'dipositTxnStatus',
         align: 'center',
-        render: depositStat => {
+        render: (depositStat, record) => {
           return depositStat === 'ok' ? (
             <span>
               <Badge status="success" />Received
+            </span>
+          ) : record.cancelled ? (
+            <span>
+              <Badge status="error" />Deposit not found
             </span>
           ) : (
             <span>
@@ -152,10 +156,14 @@ class TxnHistory extends React.Component {
         dataIndex: 'witdrawn',
         key: 'witdrawn',
         align: 'center',
-        render: keyStat => {
+        render: (keyStat, record) => {
           return keyStat ? (
             <span>
               <Badge status="success" />Finished
+            </span>
+          ) : record.cancelled ? (
+            <span>
+              <Badge status="error" />Deposit not found
             </span>
           ) : (
             <span>
