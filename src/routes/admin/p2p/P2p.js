@@ -162,7 +162,7 @@ class P2p extends React.Component {
         if (fieldval) {
           return (
             <div>
-              {fieldval.toFixed(3)} / {record.feeCoin ? record.feeCoin : '-'}
+              {fieldval} / {record.feeCoin ? record.feeCoin : '-'}
             </div>
           );
         } else {
