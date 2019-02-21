@@ -115,7 +115,7 @@ class PlaceOrder extends React.Component {
 
     onAmountChanged = async (e) => {
         this.setState({amount: e.target.value});
-        let amount = this.state.amount == "" ? 0 : isNaN(parseFloat(this.state.amount)) ? 0 : parseFloat(this.state.amount);
+        let amount = e.target.value == "" ? 0 : isNaN(parseFloat(e.target.value)) ? 0 : parseFloat(e.target.value);
         axios.get('/apis/lendingBorrowing/getFees?amount=' + amount + '&collateralCoin=' + this.state.collateralCoin).then(res => {
             console.log(res);
             if (res.data.fee)
