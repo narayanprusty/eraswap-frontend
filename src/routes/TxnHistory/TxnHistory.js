@@ -40,7 +40,9 @@ class TxnHistory extends React.Component {
     return [
       {
         title: 'ComputeEx Order Status',
-        content: wholeObj.witdrawn ? 'Completed' : 'Pending',
+        content: wholeObj.witdrawn
+          ? 'Completed'
+          : wholeObj.cancelled ? 'Deposit Not found' : 'Pending',
       },
       {
         title: 'Deposit Status',

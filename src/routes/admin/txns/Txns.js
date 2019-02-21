@@ -223,10 +223,14 @@ class Txns extends React.Component {
         dataIndex: 'witdrawn',
         key: 'witdrawn',
         align: 'center',
-        render: keyStat => {
+        render: (keyStat, record) => {
           return keyStat ? (
             <span>
               <Badge status="success" />Finished
+            </span>
+          ) : record.cancelled ? (
+            <span>
+              <Badge status="error" />Deposit Not Found
             </span>
           ) : (
             <span>
