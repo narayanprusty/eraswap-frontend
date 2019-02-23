@@ -92,7 +92,10 @@ class Escrow extends React.Component {
           </code>
           <br />
           Balance:{' '}
-          <code> {this.state.balance ? this.state.balance : 'Loading...'}</code>
+          <code>
+            {' '}
+            {this.state.balance.toString() ? this.state.balance : 'Loading...'}
+          </code>
           <Divider>Withdrawal</Divider>
           <Input
             name="amount"
