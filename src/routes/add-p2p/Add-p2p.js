@@ -807,14 +807,15 @@ class MyListComponent extends React.Component {
     };
     return axios.post('/apis/p2p/finishDeal', data).then(data => {
       notification.open({
-        message: 'Deal Successfully closed!',
+        message: 'Deal Successfully closed! please wait refreshing the page.',
       });
+
       this.setState({
         [`${record.uniqueIdentifier}_matched`]: {
           [item.userId]: true,
         },
       });
-
+      location.reload();
       return data;
     });
   };
