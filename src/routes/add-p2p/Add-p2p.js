@@ -824,7 +824,7 @@ class MyListComponent extends React.Component {
       if (data.data) {
         console.log(data.data);
         for (let i of data.data) {
-          if (i.iPaidVal && !i.finished) {
+          if (i.iPaidVal && i.txnConfirmed && !i.finished) {
             this.setState({
               [`${i.listingId}_matched`]: {
                 [i.requester]: true,
