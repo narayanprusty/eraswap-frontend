@@ -812,29 +812,52 @@ class MyListComponent extends React.Component {
       });
   };
   finishDeal = async (record, item) => {
+    this.setState({
+      [`${record.uniqueIdentifier}_loading`]: {
+        [item.userId]: true,
+      },
+    });
     notification.open({
       message:
         'Please wait while we process the deal.\n please dont close the browser.',
     });
+
     var id = this.state[`${record.uniqueIdentifier}_id`];
     const data = {
       id: id,
       record: record,
       item: item,
     };
-    return axios.post('/apis/p2p/finishDeal', data).then(data => {
-      notification.open({
-        message: 'Deal Successfully closed! please wait refreshing the page.',
-      });
+    return axios
+      .post('/apis/p2p/finishDeal', data)
+      .then(data => {
+        notification.open({
+          message: 'Deal Successfully closed! please wait refreshing the page.',
+        });
 
-      this.setState({
-        [`${record.uniqueIdentifier}_matched`]: {
-          [item.userId]: true,
-        },
+        this.setState({
+          [`${record.uniqueIdentifier}_loading`]: {
+            [item.userId]: false,
+          },
+          [`${record.uniqueIdentifier}_matched`]: {
+            [item.userId]: true,
+          },
+        });
+        location.reload();
+        return data;
+      })
+      .catch(error => {
+        notification.open({
+          message: error.response.data.message,
+          // description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+          icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+        });
+        this.setState({
+          [`${record.uniqueIdentifier}_loading`]: {
+            [item.userId]: false,
+          },
+        });
       });
-      location.reload();
-      return data;
-    });
   };
 
   myListMatches = () => {
@@ -922,6 +945,12 @@ class MyListComponent extends React.Component {
                       ])) && (
                     <Button
                       type="primary"
+                      loading={
+                        this.state[`${record.uniqueIdentifier}_loading`] &&
+                        this.state[`${record.uniqueIdentifier}_loading`][
+                          item.userId
+                        ]
+                      }
                       onClick={this.finishDeal.bind(this, record, item)}
                       disabled={
                         this.state[`${record.uniqueIdentifier}_matched`] &&
