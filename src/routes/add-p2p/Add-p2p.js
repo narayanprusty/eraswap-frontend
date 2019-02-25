@@ -813,7 +813,7 @@ class MyListComponent extends React.Component {
   };
   finishDeal = async (record, item) => {
     this.setState({
-      [`${record.uniqueIdentifier}_loading`]: {
+      [`${record.uniqueIdentifier}_loaderFinish`]: {
         [item.userId]: true,
       },
     });
@@ -836,7 +836,7 @@ class MyListComponent extends React.Component {
         });
 
         this.setState({
-          [`${record.uniqueIdentifier}_loading`]: {
+          [`${record.uniqueIdentifier}_loaderFinish`]: {
             [item.userId]: false,
           },
           [`${record.uniqueIdentifier}_matched`]: {
@@ -853,7 +853,7 @@ class MyListComponent extends React.Component {
           icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
         });
         this.setState({
-          [`${record.uniqueIdentifier}_loading`]: {
+          [`${record.uniqueIdentifier}_loaderFinish`]: {
             [item.userId]: false,
           },
         });
@@ -946,8 +946,8 @@ class MyListComponent extends React.Component {
                     <Button
                       type="primary"
                       loading={
-                        this.state[`${record.uniqueIdentifier}_loading`] &&
-                        this.state[`${record.uniqueIdentifier}_loading`][
+                        this.state[`${record.uniqueIdentifier}_loaderFinish`] &&
+                        this.state[`${record.uniqueIdentifier}_loaderFinish`][
                           item.userId
                         ]
                       }
@@ -1059,6 +1059,7 @@ class MyRequests extends React.Component {
         return (
           <Button
             type="primary"
+            loading={this.state[record.uniqueIdentifier + '_loading']}
             onClick={this.updation.bind(this, record)}
             disabled={this.state[record.uniqueIdentifier] ? false : true}
           >
@@ -1090,6 +1091,9 @@ class MyRequests extends React.Component {
       });
   };
   updation = record => {
+    this.setState({
+      [record.uniqueIdentifier + '_loading']: true,
+    });
     notification.open({
       message: 'sending your response!, please wait.',
     });
@@ -1100,12 +1104,18 @@ class MyRequests extends React.Component {
     };
     return axios.post('/apis/p2p/change_status_paid', data).then(data => {
       if (data.data) {
-        this.setState({ [record.uniqueIdentifier]: true });
+        this.setState({
+          [record.uniqueIdentifier + '_loading']: false,
+          [record.uniqueIdentifier]: true,
+        });
         notification.open({
           message: 'your response sent, please refresh the page.',
         });
         return data;
       } else {
+        this.setState({
+          [record.uniqueIdentifier + '_loading']: false,
+        });
         notification.open({
           message: 'Unknown error occurred!',
         });
