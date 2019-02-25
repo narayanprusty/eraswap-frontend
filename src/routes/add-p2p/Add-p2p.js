@@ -682,6 +682,11 @@ class MyListComponent extends React.Component {
     notification.open({
       message: 'Matching!, please wait...',
     });
+    this.setState({
+      [`${record.uniqueIdentifier}_loader`]: {
+        [item.userId]: true,
+      },
+    });
     console.log('Clicked initmatch', record, item);
     const Postdata = {
       listingId: record.uniqueIdentifier,
@@ -692,6 +697,11 @@ class MyListComponent extends React.Component {
       feeCoin: item.sellerFeeCoin,
     };
     return axios.post('/apis/p2p/makeMatch', Postdata).then(data => {
+      this.setState({
+        [`${record.uniqueIdentifier}_loader`]: {
+          [item.userId]: false,
+        },
+      });
       //make that match button and all the match button in that disabled maybe setstate and check for listingId_
       if (data && data.data) {
         console.log(data.data);
@@ -884,6 +894,12 @@ class MyListComponent extends React.Component {
                 actions={[
                   <Button
                     type="primary"
+                    loading={
+                      this.state[`${record.uniqueIdentifier}_loader`] &&
+                      this.state[`${record.uniqueIdentifier}_loader`][
+                        item.userId
+                      ]
+                    }
                     onClick={this.initMatch.bind(this, record, item)}
                     disabled={
                       this.state[`${record.uniqueIdentifier}_match`]
