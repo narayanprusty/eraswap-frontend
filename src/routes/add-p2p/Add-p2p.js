@@ -93,6 +93,7 @@ class BuyComponent extends React.Component {
   };
   handleSubmit = e => {
     e.preventDefault();
+    this.setState({ s_loader: true });
     //cryptoCur is the crypto attribute
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -110,6 +111,8 @@ class BuyComponent extends React.Component {
               fixedPrice: this.state.fixedPrice,
             })
             .then(data => {
+              this.setState({ s_loader: false });
+
               if (data) {
                 console.log(data.data);
                 location.href = '/p2p';
@@ -129,6 +132,7 @@ class BuyComponent extends React.Component {
               fixedPrice: this.state.fixedPrice,
             })
             .then(data => {
+              this.setState({ s_loader: false });
               if (data) {
                 console.log(data.data);
                 location.href = '/p2p';
@@ -137,6 +141,8 @@ class BuyComponent extends React.Component {
               }
             });
         }
+      } else {
+        this.setState({ s_loader: false });
       }
     });
   };
@@ -548,6 +554,7 @@ class BuyComponent extends React.Component {
           <FormItem wrapperCol={{ span: 12, offset: 5 }}>
             <Button
               type="primary"
+              loading={this.state.s_loader}
               htmlType="submit"
               disabled={
                 !(
@@ -689,7 +696,7 @@ class MyListComponent extends React.Component {
       if (data && data.data) {
         console.log(data.data);
         this.setState({
-          [Postdata.listingId]: {
+          [record.uniqueIdentifier + '_match']: {
             [item.userId]: true,
           },
         });
