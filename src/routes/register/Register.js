@@ -30,51 +30,59 @@ class Register extends React.Component {
     });
   };
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        if (!this.state.email || !this.state.password || !this.state.username) {
-            notification.open({
-                message: 'Error',
-                description: (!this.state.email ? "Email address" : (!this.state.password ? "Password" : (!this.state.username ? "Username" : ""))) + ' is missing!'
-            });
-            return;
-        }
-        const values = {
-            username: this.state.username,
-            email: this.state.email,
-            password: this.state.password,
-            host: location.protocol + "//" + location.host
-        };
-        this.setState({
-            loading: true
-        });
-
-    axios.post('/auth/signup', values).then(response => {
-      const key = `open${Date.now()}`;
-      //   const btn = (
-      //     <Button type="primary" size="small" onClick={() => location.href='/login'}>
-      //       login
-      //     </Button>
-      //   );
-      if (response.status == 200) {
-        notification.open({
-          message: 'Success',
-          description: 'Account Has been created, please check your email and click on the Activation Link.',
-          // btn,
-          key
-        });
-      }
-      this.setState({
-        loading: false
+  handleSubmit = e => {
+    e.preventDefault();
+    if (!this.state.email || !this.state.password || !this.state.username) {
+      notification.open({
+        message: 'Error',
+        description:
+          (!this.state.email
+            ? 'Email address'
+            : !this.state.password
+              ? 'Password'
+              : !this.state.username ? 'Username' : '') + ' is missing!',
       });
-    }).catch(error => {
-      console.log(error);
-      this.setState({
-        loading: false
-      });
+      return;
+    }
+    const values = {
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password,
+      host: location.protocol + '//' + location.host,
+    };
+    this.setState({
+      loading: true,
     });
 
-  }
+    axios
+      .post('/auth/signup', values)
+      .then(response => {
+        const key = `open${Date.now()}`;
+        //   const btn = (
+        //     <Button type="primary" size="small" onClick={() => location.href='/login'}>
+        //       login
+        //     </Button>
+        //   );
+        if (response.status == 200) {
+          notification.open({
+            message: 'Success',
+            description:
+              'Account Has been created, please check your email and click on the Activation Link.',
+            // btn,
+            key,
+          });
+        }
+        this.setState({
+          loading: false,
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({
+          loading: false,
+        });
+      });
+  };
 
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
@@ -83,7 +91,7 @@ class Register extends React.Component {
     } else {
       callback();
     }
-  }
+  };
 
   validateToNextPassword = (rule, value, callback) => {
     const form = this.props.form;
@@ -91,8 +99,7 @@ class Register extends React.Component {
       form.validateFields(['confirm'], { force: true });
     }
     callback();
-  }
-
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -122,8 +129,15 @@ class Register extends React.Component {
       <div className={s.root}>
         <div className={s.container}>
           {/* <h1>{this.props.title}</h1> */}
-          <div className={s.formGroup} style={{paddingTop:"3em"}}>
-            <a className={s.facebook} href={`https://www.facebook.com/v3.2/dialog/oauth?client_id=${config.SOCIAL.FB.CLIENT_ID}&redirect_uri=${config.SOCIAL.FB.REDIRECT_URI}&state=fb&scope=email`}>
+          <div className={s.formGroup} style={{ paddingTop: '3em' }}>
+            <a
+              className={s.facebook}
+              href={`https://www.facebook.com/v3.2/dialog/oauth?client_id=${
+                config.SOCIAL.FB.CLIENT_ID
+              }&redirect_uri=${
+                config.SOCIAL.FB.REDIRECT_URI
+              }&state=fb&scope=email`}
+            >
               <svg
                 className={s.icon}
                 width="30"
@@ -137,7 +151,14 @@ class Register extends React.Component {
             </a>
           </div>
           <div className={s.formGroup}>
-            <a className={s.google} href={`https://accounts.google.com/o/oauth2/auth?client_id=${config.SOCIAL.GOOGLE.CLIENT_ID}&redirect_uri=${config.SOCIAL.GOOGLE.REDIRECT_URI}&scope=email&response_type=code&state=google`}>
+            <a
+              className={s.google}
+              href={`https://accounts.google.com/o/oauth2/auth?client_id=${
+                config.SOCIAL.GOOGLE.CLIENT_ID
+              }&redirect_uri=${
+                config.SOCIAL.GOOGLE.REDIRECT_URI
+              }&scope=email&response_type=code&state=google`}
+            >
               <svg
                 className={s.icon}
                 width="30"
@@ -163,11 +184,11 @@ class Register extends React.Component {
           </div>
 
           <strong className={s.lineThrough}>OR</strong>
-          <p className={s.lead} style={{textAlign:"center"}}>
-           Register with us
+          <p className={s.lead} style={{ textAlign: 'center' }}>
+            Register with us
           </p>
           <form onSubmit={this.handleSubmit}>
-          <div className={s.formGroup}>
+            <div className={s.formGroup}>
               <label className={s.label} htmlFor="username">
                 Username :
                 <input
@@ -201,19 +222,24 @@ class Register extends React.Component {
                   id="password"
                   type="password"
                   name="password"
+                  autoComplete={false}
                   onChange={this.handleChanges}
                 />
               </label>
             </div>
 
             <div className={s.formGroup}>
-              <button loading={this.state.loading} className={s.button} type="submit">
-               Register
+              <button
+                loading={this.state.loading}
+                className={s.button}
+                type="submit"
+              >
+                Register
               </button>
             </div>
           </form>
         </div>
-        </div>
+      </div>
     );
   }
 }
