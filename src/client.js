@@ -170,6 +170,12 @@ axios.interceptors.response.use(
     if (error && error.response) {
       if (error.response.status === 401) {
         window.location.href = '/login?how=force';
+      } else if (error.response.status === 500) {
+        notification.open({
+          message: 'Internal server error',
+          // description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+          icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+        });
       } else if (error.response.data.message) {
         notification.open({
           message: error.response.data.message,
