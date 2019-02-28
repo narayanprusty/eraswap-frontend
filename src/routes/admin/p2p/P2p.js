@@ -213,9 +213,14 @@ class P2p extends React.Component {
               <Tag color="green">Yes</Tag>&nbsp;<Button
                 size="small"
                 type="danger"
+                loading={this.state[`${record}_loading`]}
                 onClick={this.backToSeller.bind(this, record)}
                 disabled={
-                  record.finished || record.sendToBuyer || record.backToSeller
+                  this.state[record] ||
+                  record.finished ||
+                  record.sendToBuyer ||
+                  record.backToSeller ||
+                  (!record.iPaidVal && !record.txnConfirmed)
                     ? true
                     : false
                 }
@@ -232,9 +237,14 @@ class P2p extends React.Component {
               <Tag color="volcano">No</Tag>&nbsp;<Button
                 size="small"
                 type="danger"
+                loading={this.state[`${record}_loading`]}
                 onClick={this.backToSeller.bind(this, record)}
                 disabled={
-                  record.finished || record.sendToBuyer || record.backToSeller
+                  this.state[record] ||
+                  record.finished ||
+                  record.sendToBuyer ||
+                  record.backToSeller ||
+                  (!record.iPaidVal && !record.txnConfirmed)
                     ? true
                     : false
                 }
