@@ -192,6 +192,9 @@ class BuyListTable extends React.Component {
       })
       .then(data => {
         if (data && data.data) {
+          notification.open({
+            message: 'Your interest has been recorded',
+          });
           this.setState({
             [this.state.record.uniqueIdentifier]: true,
             visible: false,
