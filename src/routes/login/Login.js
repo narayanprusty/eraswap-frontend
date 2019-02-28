@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Login.css';
 import axios from 'axios';
-import {Spin, Card, Icon} from 'antd';
+import {Spin, Card, Icon, notification} from 'antd';
 import queryString from 'stringquery';
 import config from '../../Social';
 
@@ -30,10 +30,10 @@ class Login extends React.Component {
   };
 
 
-  fbLogin =(queries)=>{
+  fbLogin = (queries) => {
     const data = {
-     state:queries.state,
-     code:queries.code
+      state: queries.state,
+      code: queries.code
     };
     axios
       .post('/auth/login/fb', data)
@@ -46,54 +46,58 @@ class Login extends React.Component {
           }
           window.location.href = '/';
         }
-      }).catch(error=>{
+      }).catch(error => {
         this.setState({
-          loader:false
+          loader: false
         })
         console.log(error);
       })
 
   }
-  googleLogin =(queries)=>{
+  googleLogin = (queries) => {
     const data = {
-      state:queries.state,
-      code:queries.code
-     };
-     axios
-       .post('/auth/login/google', data)
-       .then(response => {
-         if (response.data) {
-           console.log(response.data);
+      state: queries.state,
+      code: queries.code
+    };
+    axios
+      .post('/auth/login/google', data)
+      .then(response => {
+        if (response.data) {
+          console.log(response.data);
 
-           for (const i in response.data) {
-             localStorage.setItem(i, JSON.stringify(response.data[i]));
-           }
-           window.location.href = '/';
-         }
-       }).catch(error=>{
+          for (const i in response.data) {
+            localStorage.setItem(i, JSON.stringify(response.data[i]));
+          }
+          window.location.href = '/';
+        }
+      }).catch(error => {
         this.setState({
-          loader:false
+          loader: false
         })
         console.log(error);
-       })
+      })
 
   }
   componentDidMount = () => {
     const queries = queryString(location.search);
-    if(queries.code && queries.state=="fb"){
+    if (queries.code && queries.state == "fb") {
       this.setState({
-        loader:true,
+        loader: true,
         type: 'Facebook'
       });
       this.fbLogin(queries);
-    }else if(queries.code && queries.state=="google"){
+    } else if (queries.code && queries.state == "google") {
       this.setState({
-        loader:true,
-        type:'Google'
+        loader: true,
+        type: 'Google'
       });
       this.googleLogin(queries);
-    }
-    else if (queries.how != 'force') {
+    } else if (queries.how == 'loggedOut') {
+      notification.open({
+        message: 'Success',
+        description: 'Logged out successfully',
+      });
+    } else if (queries.how != 'force') {
       axios
         .get('/apis/ping')
         .then(data => {
