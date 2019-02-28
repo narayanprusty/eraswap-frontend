@@ -251,6 +251,17 @@ class PlaceOrder extends React.Component {
                                     />
                                 </FormItem>
                                 <FormItem
+                                    label="Amount" >
+                                    <Input 
+                                        type="number"
+                                        value={this.state.amount}
+                                        onChange={e => this.setState({amount: e.target.value})}
+                                        style={{ maxWidth: '40%' }}
+                                        size="default"
+                                        placeholder="Enter amount"
+                                    />
+                                </FormItem>
+                                <FormItem
                                     label="Collateral Coin" >
                                     <AutoComplete
                                             style={{ maxWidth: '40%' }}
@@ -283,17 +294,6 @@ class PlaceOrder extends React.Component {
                                         placeholder="Enter duration"
                                     />
                                 </FormItem>
-                                <FormItem
-                                    label="Amount" >
-                                    <Input 
-                                        type="number"
-                                        value={this.state.amount}
-                                        onChange={e => this.setState({amount: e.target.value})}
-                                        style={{ maxWidth: '40%' }}
-                                        size="default"
-                                        placeholder="Enter amount"
-                                    />
-                                </FormItem>
                                 <Button type="primary" htmlType="submit" loading={this.state.placingOrder}>
                                         Place Order
                                 </Button>
@@ -313,6 +313,17 @@ class PlaceOrder extends React.Component {
                                             onChange={this.onBorrowingCoinSelection}
                                             placeholder="Select Borrowing Coin"
                                             filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                                    />
+                                </FormItem>
+                                <FormItem
+                                    label="Amount" >
+                                    <Input 
+                                        type="number"
+                                        value={this.state.amount}
+                                        onChange={this.onAmountChanged}
+                                        style={{ maxWidth: '40%' }}
+                                        size="default"
+                                        placeholder="Enter amount"
                                     />
                                 </FormItem>
                                 <FormItem
@@ -346,17 +357,6 @@ class PlaceOrder extends React.Component {
                                         style={{ maxWidth: '40%' }}
                                         size="default"
                                         placeholder="Enter duration"
-                                    />
-                                </FormItem>
-                                <FormItem
-                                    label="Amount" >
-                                    <Input 
-                                        type="number"
-                                        value={this.state.amount}
-                                        onChange={this.onAmountChanged}
-                                        style={{ maxWidth: '40%' }}
-                                        size="default"
-                                        placeholder="Enter amount"
                                     />
                                 </FormItem>
                                 <p>Fees: {
