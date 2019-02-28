@@ -884,6 +884,7 @@ class MyListComponent extends React.Component {
               [i.requester]: true,
             },
             [`${i.listingId}_match_fee`]: i.fee,
+            [`${i.listingId}_match_feeCoin`]: i.feeCoin,
           });
         }
         return data.data;
@@ -977,7 +978,7 @@ class MyListComponent extends React.Component {
                   this.state[`${record.uniqueIdentifier}_match_fee`] && (
                     <span>
                       Seller Fee:{' '}
-                      {this.state[`${record.uniqueIdentifier}_match_fee`]}
+                      {this.state[`${record.uniqueIdentifier}_match_fee`]+' '+this.state[`${record.uniqueIdentifier}_match_feeCoin`]}
                     </span>
                   ),
                 ]}
