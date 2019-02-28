@@ -164,6 +164,21 @@ axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
   ? JSON.parse(localStorage.getItem('token'))
   : '-';
 
+axios.interceptors.request.use(config => {
+  if (navigator.onLine) {
+    return config;
+  } else {
+    notification.open({
+      message: 'Internet not available.',
+    });
+    return {
+      headers: {},
+      method: config.method,
+      url: '',
+    };
+  }
+});
+
 axios.interceptors.response.use(
   response => response,
   error => {
