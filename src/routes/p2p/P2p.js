@@ -191,12 +191,18 @@ class BuyListTable extends React.Component {
         specialMessage: this.state.message,
       })
       .then(data => {
-        this.setState({
-          [this.state.record.uniqueIdentifier]: true,
-          visible: false,
-          confirmLoading: false,
-        });
-        return true;
+        if (data && data.data) {
+          this.setState({
+            [this.state.record.uniqueIdentifier]: true,
+            visible: false,
+            confirmLoading: false,
+          });
+          return true;
+        } else {
+          this.setState({
+            confirmLoading: false,
+          });
+        }
       });
   };
   handleTableChange = (pagination, filters, sorter) => {

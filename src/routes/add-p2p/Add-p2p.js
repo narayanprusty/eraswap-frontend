@@ -111,12 +111,14 @@ class BuyComponent extends React.Component {
               fixedPrice: this.state.fixedPrice,
             })
             .then(data => {
-              this.setState({ s_loader: false });
-
               if (data) {
                 console.log(data.data);
-                location.href = '/p2p';
+                this.setState({ s_loader: false });
+                notification.open({
+                  message: 'Please go to All My Listing tab to view.',
+                });
               } else {
+                this.setState({ s_loader: false });
                 console.log(data);
               }
             });
@@ -132,11 +134,14 @@ class BuyComponent extends React.Component {
               fixedPrice: this.state.fixedPrice,
             })
             .then(data => {
-              this.setState({ s_loader: false });
               if (data) {
-                console.log(data.data);
-                location.href = '/p2p';
+                this.setState({ s_loader: false });
+                notification.open({
+                  message: 'Please go to My Listing tab to view.',
+                });
               } else {
+                this.setState({ s_loader: false });
+
                 console.log(data);
               }
             });
@@ -1079,8 +1084,8 @@ class MyRequests extends React.Component {
       title: '',
       dataIndex: 'notNeeded1',
       render: (fieldVal, record) => {
-        if (record.fee && record.wantsToBuy) {
-          return <span>Seller Fee: {record.fee}</span>;
+        if (record.requests[0] && record.wantsToBuy) {
+          return <span>Fee: {record.requests[0].fee}</span>;
         } else {
           return '-';
         }
@@ -1121,7 +1126,7 @@ class MyRequests extends React.Component {
       if (data.data) {
         this.setState({
           [record.uniqueIdentifier + '_loading']: false,
-          [record.uniqueIdentifier]: true,
+          [record.uniqueIdentifier]: false,
         });
         notification.open({
           message: 'your response sent, please refresh the page.',
