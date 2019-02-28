@@ -577,7 +577,7 @@ class ComputeEx extends React.Component {
       <div>
         {/* <Card title={this.props.title}> */}
 
-        {/* <Steps style={{ textAlign: 'left' }}>
+        <Steps style={{ textAlign: 'left' }}>
           <Step
             status={this.state.stepsO.firstStep.status}
             title="Conversion details"
@@ -598,7 +598,7 @@ class ComputeEx extends React.Component {
             title="Verification"
             icon={<Icon type={this.state.stepsO.fourthStep.icon} />}
           />
-        </Steps> */}
+        </Steps>
         <br />
         <Collapse
           bordered={true}
