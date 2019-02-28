@@ -31,6 +31,9 @@ class P2p extends React.Component {
   };
 
   backToSeller = record => {
+    this.setState({
+      [record._id + '_loading']: true,
+    });
     notification.open({
       message: 'Raising request please wait!',
     });
@@ -46,6 +49,10 @@ class P2p extends React.Component {
     axios
       .post('/admins/apis/p2p/dispute/send_back_to_seller', data)
       .then(data => {
+        this.setState({
+          [record._id + '_loading']: false,
+          [record._id]: true,
+        });
         notification.open({
           message: 'Refunded back to seller!',
         });
@@ -55,7 +62,7 @@ class P2p extends React.Component {
 
   sendToBuyer = record => {
     this.setState({
-      [record + '_loading']: true,
+      [record._id + '_loading']: true,
     });
     notification.open({
       message: 'Raising request please wait!',
@@ -72,11 +79,11 @@ class P2p extends React.Component {
       .post('/admins/apis/p2p/dispute/send_to_buyer', data)
       .then(data => {
         notification.open({
-          message: 'Refunded back to buyer!',
+          message: 'Sent to buyer!',
         });
         this.setState({
-          [record + 'loading']: false,
-          [record]: true,
+          [record._id + '_loading']: false,
+          [record._id]: true,
         });
         return data;
       })
@@ -213,10 +220,10 @@ class P2p extends React.Component {
               <Tag color="green">Yes</Tag>&nbsp;<Button
                 size="small"
                 type="danger"
-                loading={this.state[`${record}_loading`]}
+                loading={this.state[`${record._id}_loading`]}
                 onClick={this.backToSeller.bind(this, record)}
                 disabled={
-                  this.state[record] ||
+                  this.state[record._id] ||
                   record.finished ||
                   record.sendToBuyer ||
                   record.backToSeller ||
@@ -237,10 +244,10 @@ class P2p extends React.Component {
               <Tag color="volcano">No</Tag>&nbsp;<Button
                 size="small"
                 type="danger"
-                loading={this.state[`${record}_loading`]}
+                loading={this.state[`${record._id}_loading`]}
                 onClick={this.backToSeller.bind(this, record)}
                 disabled={
-                  this.state[record] ||
+                  this.state[record._id] ||
                   record.finished ||
                   record.sendToBuyer ||
                   record.backToSeller ||
@@ -270,10 +277,10 @@ class P2p extends React.Component {
               <Tag color="green">Yes</Tag>&nbsp;<Button
                 size="small"
                 type="danger"
-                loading={this.state[`${record}_loading`]}
+                loading={this.state[`${record._id}_loading`]}
                 onClick={this.sendToBuyer.bind(this, record)}
                 disabled={
-                  this.state[record] ||
+                  this.state[record._id] ||
                   record.finished ||
                   record.sendToBuyer ||
                   record.backToSeller ||
@@ -295,10 +302,10 @@ class P2p extends React.Component {
               <Tag color="volcano">No</Tag>&nbsp;<Button
                 size="small"
                 type="danger"
-                loading={this.state[`${record}_loading`]}
+                loading={this.state[`${record._id}_loading`]}
                 onClick={this.sendToBuyer.bind(this, record)}
                 disabled={
-                  this.state[record] ||
+                  this.state[record._id] ||
                   record.finished ||
                   record.sendToBuyer ||
                   record.backToSeller ||
