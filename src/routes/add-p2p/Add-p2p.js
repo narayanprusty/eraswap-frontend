@@ -978,7 +978,9 @@ class MyListComponent extends React.Component {
                   this.state[`${record.uniqueIdentifier}_match_fee`] && (
                     <span>
                       Seller Fee:{' '}
-                      {this.state[`${record.uniqueIdentifier}_match_fee`]+' '+this.state[`${record.uniqueIdentifier}_match_feeCoin`]}
+                      {this.state[`${record.uniqueIdentifier}_match_fee`] +
+                        ' ' +
+                        this.state[`${record.uniqueIdentifier}_match_feeCoin`]}
                     </span>
                   ),
                 ]}
@@ -1073,6 +1075,17 @@ class MyRequests extends React.Component {
         );
       },
     },
+    {
+      title: '',
+      dataIndex: 'notNeeded1',
+      render: (fieldVal, record) => {
+        if (record.fee && record.wantsToBuy) {
+          return <span>Seller Fee: {record.fee}</span>;
+        } else {
+          return '-';
+        }
+      },
+    },
   ];
   conVertObjToArr = async record => {
     return axios
@@ -1084,6 +1097,7 @@ class MyRequests extends React.Component {
             delete i._id;
             i.username = i.userId.username;
             i.userId = i.userId._id;
+            i.fee = i.fee;
             pushable.push(i);
           }
           console.log(pushable);
