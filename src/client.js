@@ -21,8 +21,8 @@ import history from './history';
 import createApolloClient from './core/createApolloClient';
 import router from './router';
 import axios from 'axios';
-import Icon from "antd/lib/icon";
-import notification from "antd/lib/notification";
+import Icon from 'antd/lib/icon';
+import notification from 'antd/lib/notification';
 // Universal HTTP client
 const fetch = createFetch(window.fetch, {
   baseUrl: window.App.apiUrl,
@@ -158,27 +158,34 @@ async function onLocationChange(location, action) {
     }
   }
 }
-axios.defaults.baseURL = "http://localhost:80";
+axios.defaults.baseURL = 'http://localhost:80';
 // axios.defaults.baseURL = 'https://eraswapfront.herokuapp.com'; //for local 'http://localhost:5000';
-axios.defaults.headers.common["authorization"]= localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : '-';
+axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
+  ? JSON.parse(localStorage.getItem('token'))
+  : '-';
 
 axios.interceptors.response.use(
   response => response,
   error => {
-    if(error && error.response){
-    if (error.response.status === 401) {
-      window.location.href = '/login?how=force';
-    }else{
-      notification.open({
-        message: error.response.data.message,
-        // description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-        icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
-      });
+    if (error && error.response) {
+      if (error.response.status === 401) {
+        window.location.href = '/login?how=force';
+      } else if (error.response.data.message) {
+        notification.open({
+          message: error.response.data.message,
+          // description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+          icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+        });
+      } else {
+        notification.open({
+          message: 'Internal server error',
+          // description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+          icon: <Icon type="frown-circle" style={{ color: '#FF0000' }} />,
+        });
+      }
     }
-  }
   },
 );
-
 
 // Handle client-side navigation by using HTML5 History API
 // For more information visit https://github.com/mjackson/history#readme
