@@ -188,7 +188,7 @@ class Navigation extends React.Component {
         )}
         {this.state.loggedIn && (
           <Link className={s.link} style={{marginRight: '0px'}} onClick={this.logout} to="/login?how=force">
-            <Icon type="logout" />&nbsp;
+            Logout <Icon type="logout" />
           </Link>
         )}
       </div>
