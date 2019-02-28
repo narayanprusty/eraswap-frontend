@@ -11,8 +11,8 @@ import React from 'react';
 import Layout from '../../../components/Layout';
 import Escrow from './Escrow';
 
-const title = 'All Transactions';
-const menuKey =20.2;
+const title = 'Escrow';
+const menuKey = 90.5;
 
 function action() {
   return {

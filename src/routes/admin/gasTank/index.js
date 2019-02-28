@@ -11,8 +11,8 @@ import React from 'react';
 import Layout from '../../../components/Layout';
 import GasTank from './GasTank';
 
-const title = 'All Transactions';
-const menuKey =20.6;
+const title = 'Gas tank';
+const menuKey = 90.6;
 
 function action() {
   return {
