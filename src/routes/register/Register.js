@@ -30,17 +30,24 @@ class Register extends React.Component {
     });
   };
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const values = {
-      username: this.state.username,
-      email: this.state.email,
-      password: this.state.password,
-      host: location.protocol + "//" + location.host
-    };
-    this.setState({
-      loading: true
-    });
+    handleSubmit = (e) => {
+        e.preventDefault();
+        if (!this.state.email || !this.state.password || !this.state.username) {
+            notification.open({
+                message: 'Error',
+                description: (!this.state.email ? "Email address" : (!this.state.password ? "Password" : (!this.state.username ? "Username" : ""))) + ' is missing!'
+            });
+            return;
+        }
+        const values = {
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password,
+            host: location.protocol + "//" + location.host
+        };
+        this.setState({
+            loading: true
+        });
 
     axios.post('/auth/signup', values).then(response => {
       const key = `open${Date.now()}`;
@@ -62,10 +69,6 @@ class Register extends React.Component {
       });
     }).catch(error => {
       console.log(error);
-      notification.open({
-        message: 'Error',
-        description: 'Unable to create Please try again.'
-      });
       this.setState({
         loading: false
       });
@@ -204,7 +207,7 @@ class Register extends React.Component {
             </div>
 
             <div className={s.formGroup}>
-              <button loading={this.state.loading} className={s.button} type="submit" disabled={this.state.email && this.state.password && this.state.username ? false :true}>
+              <button loading={this.state.loading} className={s.button} type="submit">
                Register
               </button>
             </div>
