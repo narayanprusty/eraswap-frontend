@@ -54,6 +54,9 @@ class P2p extends React.Component {
   };
 
   sendToBuyer = record => {
+    this.setState({
+      [record + '_loading']: true,
+    });
     notification.open({
       message: 'Raising request please wait!',
     });
@@ -65,12 +68,26 @@ class P2p extends React.Component {
       amount: record.amount,
       cryptoCurrency: record.cryptoCurrency,
     };
-    axios.post('/admins/apis/p2p/dispute/send_to_buyer', data).then(data => {
-      notification.open({
-        message: 'Refunded back to buyer!',
+    axios
+      .post('/admins/apis/p2p/dispute/send_to_buyer', data)
+      .then(data => {
+        notification.open({
+          message: 'Refunded back to buyer!',
+        });
+        this.setState({
+          [record + 'loading']: false,
+          [record]: true,
+        });
+        return data;
+      })
+      .catch(error => {
+        notification.open({
+          message: error.message || 'Internal server error.',
+        });
+        this.setState({
+          [record + 'loading']: false,
+        });
       });
-      return data;
-    });
   };
 
   fetch = (query, params = {}) => {
@@ -120,6 +137,20 @@ class P2p extends React.Component {
     {
       title: 'Listing Id',
       dataIndex: 'listingId',
+    },
+    {
+      title: 'Time',
+      dataIndex: 'createdAt',
+      render: date => {
+        if (!date) {
+          return '-';
+        }
+        return (
+          new Date(date.toString()).toLocaleDateString() +
+          ' ' +
+          new Date(date.toString()).toLocaleTimeString()
+        );
+      },
     },
     {
       title: 'Amount',
@@ -229,12 +260,14 @@ class P2p extends React.Component {
               <Tag color="green">Yes</Tag>&nbsp;<Button
                 size="small"
                 type="danger"
+                loading={this.state[`${record}_loading`]}
                 onClick={this.sendToBuyer.bind(this, record)}
                 disabled={
+                  this.state[record] ||
                   record.finished ||
                   record.sendToBuyer ||
                   record.backToSeller ||
-                  !record.iPaidVal
+                  (!record.iPaidVal && !record.txnConfirmed)
                     ? true
                     : false
                 }
@@ -252,12 +285,14 @@ class P2p extends React.Component {
               <Tag color="volcano">No</Tag>&nbsp;<Button
                 size="small"
                 type="danger"
+                loading={this.state[`${record}_loading`]}
                 onClick={this.sendToBuyer.bind(this, record)}
                 disabled={
+                  this.state[record] ||
                   record.finished ||
                   record.sendToBuyer ||
                   record.backToSeller ||
-                  !record.iPaidVal
+                  (!record.iPaidVal && !record.txnConfirmed)
                     ? true
                     : false
                 }
