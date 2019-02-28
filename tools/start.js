@@ -9,6 +9,7 @@
 
 import path from 'path';
 import express from 'express';
+import helmet from 'helmet';
 import browserSync from 'browser-sync';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
@@ -67,6 +68,7 @@ let server;
 async function start() {
   if (server) return server;
   server = express();
+  server.use(helmet());
   server.use(errorOverlayMiddleware());
   server.use(express.static(path.resolve(__dirname, '../public')));
 
