@@ -32,37 +32,46 @@ class Register extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const values={
-      username:this.state.username,
-      email:this.state.email,
-      password:this.state.password,
-      host:location.protocol + "//" + location.host
+    const values = {
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password,
+      host: location.protocol + "//" + location.host
     };
+    this.setState({
+      loading: true
+    });
 
-        axios.post('/auth/signup',values).then(response=>{
-          const key = `open${Date.now()}`;
-          const btn = (
-            <Button type="primary" size="small" onClick={() => location.href='/login'}>
-              login
-            </Button>
-          );
-          if(response.status == 200){
-          notification.open({
-            message: 'Success',
-            description: 'Account Has been created, please login',
-            btn,
-            key
-          });
-        }
-        }).catch(error=>{
-          console.log(error);
-          notification.open({
-            message: 'Error',
-            description: 'Unable to create Please try again.'
-          });
+    axios.post('/auth/signup', values).then(response => {
+      const key = `open${Date.now()}`;
+      //   const btn = (
+      //     <Button type="primary" size="small" onClick={() => location.href='/login'}>
+      //       login
+      //     </Button>
+      //   );
+      if (response.status == 200) {
+        notification.open({
+          message: 'Success',
+          description: 'Account Has been created, please check your email and click on the Activation Link.',
+          // btn,
+          key
         });
-
       }
+      this.setState({
+        loading: false
+      });
+    }).catch(error => {
+      console.log(error);
+      notification.open({
+        message: 'Error',
+        description: 'Unable to create Please try again.'
+      });
+      this.setState({
+        loading: false
+      });
+    });
+
+  }
 
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
@@ -195,7 +204,7 @@ class Register extends React.Component {
             </div>
 
             <div className={s.formGroup}>
-              <button className={s.button} type="submit" disabled={this.state.email && this.state.password && this.state.username ? false :true}>
+              <button loading={this.state.loading} className={s.button} type="submit" disabled={this.state.email && this.state.password && this.state.username ? false :true}>
                Register
               </button>
             </div>

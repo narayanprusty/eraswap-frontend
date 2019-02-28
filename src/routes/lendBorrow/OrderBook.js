@@ -205,6 +205,12 @@ class OrderBook extends React.Component {
                         sorter= {(a, b) => a.amount - b.amount}
                     />
                     <Column
+                        title="Date"
+                        key="date"
+                        dataIndex="timeStampStr"
+                        sorter= {(a, b) => a.timeStamp - b.timeStamp}
+                    />
+                    <Column
                         title="Action"
                         key="action"
                         render={(text, record) => (
