@@ -15,6 +15,7 @@ import bodyParser from 'body-parser';
 import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
 import { graphql } from 'graphql';
 import expressGraphQL from 'express-graphql';
+import helmet from 'helmet';
 import jwt from 'jsonwebtoken';
 import nodeFetch from 'node-fetch';
 import React from 'react';
@@ -61,6 +62,7 @@ app.set('trust proxy', config.trustProxy);
 //
 // Register Node.js middleware
 // -----------------------------------------------------------------------------
+app.use(helmet());
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
