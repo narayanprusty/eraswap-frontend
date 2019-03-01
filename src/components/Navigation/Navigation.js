@@ -209,9 +209,8 @@ class Navigation extends React.Component {
                   {this.state.userName ? this.state.userName : '-'}
                 </Menu.Item>
                 <Menu.Item key="2">
-                  <Icon type="mail" /> &nbsp;{this.state.userEmail
-                    ? this.state.userEmail
-                    : '-'}
+                  <Icon type="mail" /> &nbsp;{' '}
+                  {this.state.userEmail ? this.state.userEmail : '-'}
                 </Menu.Item>
                 <Menu.Item key="3" onClick={this.logout}>
                   <Link
