@@ -23,6 +23,7 @@ class Navigation extends React.Component {
       loggedIn: false,
     };
   }
+
   menu = (
     <Menu>
       <Menu.Item key="1">
@@ -87,6 +88,7 @@ class Navigation extends React.Component {
   componentDidMount() {
     this.loginStateSet();
   }
+
   loginStateSet = () => {
     if (localStorage.getItem('user') && localStorage.getItem('user').length) {
       this.setState({
@@ -98,8 +100,14 @@ class Navigation extends React.Component {
       localStorage.getItem('token') &&
       localStorage.getItem('token').length > 0
     ) {
+      const unparsedUser = localStorage.getItem('user');
+      const userName = JSON.parse(unparsedUser).username;
+      const userEmail = JSON.parse(unparsedUser).email;
+
       this.setState({
         loggedIn: true,
+        userName: userName,
+        userEmail: userEmail,
       });
     } else {
       this.setState({
@@ -112,6 +120,7 @@ class Navigation extends React.Component {
     localStorage.clear();
     this.setState({
       loggedIn: false,
+      admin: false,
     });
     return true;
     // location.href = '/login';
@@ -147,28 +156,33 @@ class Navigation extends React.Component {
               Your Agreements
             </Link>
           )}
-
         {this.state.admin && (
-          <Button type="primary" style={{marginRight: '10px',marginLeft:'1em'}} ghost>
+          <Button
+            type="primary"
+            style={{ marginRight: '10px', marginLeft: '1em' }}
+            ghost
+          >
             <i className="fas fa-tachometer-alt" />
-            <Link className={s.link} style={{marginRight: '0px'}} to="/admin">
+            <Link className={s.link} style={{ marginRight: '0px' }} to="/admin">
               Admin Dashboard
             </Link>
           </Button>
         )}
-
-
         {this.state.loggedIn &&
           (localStorage.user
             ? !JSON.parse(localStorage.user).adminLevel
             : true) && (
             <Dropdown overlay={this.menu}>
-              <a className="ant-dropdown-link" style={{marginRight: '4px'}} className={s.link} href="#">
+              <a
+                className="ant-dropdown-link"
+                style={{ marginRight: '4px' }}
+                className={s.link}
+                href="#"
+              >
                 <Icon type="appstore" /> <Icon type="down" />
               </a>
             </Dropdown>
           )}
-
         {!this.state.loggedIn && (
           <Button type="dashed">
             <i className="fas fa-sign-in-alt" />&nbsp;
@@ -187,9 +201,40 @@ class Navigation extends React.Component {
           </Button>
         )}
         {this.state.loggedIn && (
-          <Link className={s.link} style={{marginRight: '0px'}} onClick={this.logout} to="/login?how=loggedOut">
-            Logout <Icon type="logout" />
-          </Link>
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item key="1">
+                  <Icon type="user" /> &nbsp;{' '}
+                  {this.state.userName ? this.state.userName : '-'}
+                </Menu.Item>
+                <Menu.Item key="2">
+                  <Icon type="mail" /> &nbsp;{this.state.userEmail
+                    ? this.state.userEmail
+                    : '-'}
+                </Menu.Item>
+                <Menu.Item key="3" onClick={this.logout}>
+                  <Link
+                    className={s.link}
+                    style={{ marginRight: '0px' }}
+                    onClick={this.logout}
+                    to="/login?how=loggedOut"
+                  >
+                    <Icon type="logout" /> &nbsp;Logout
+                  </Link>
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <a
+              className="ant-dropdown-link"
+              style={{ marginRight: '4px' }}
+              className={s.link}
+              href="#"
+            >
+              <Icon type="profile" theme="filled" /> <Icon type="down" />
+            </a>
+          </Dropdown>
         )}
       </div>
     );

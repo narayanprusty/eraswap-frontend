@@ -37,13 +37,17 @@ class Login extends React.Component {
     axios
       .post('/auth/login/fb', data)
       .then(response => {
-        if (response.data) {
+        if (response && response.data) {
           console.log(response.data);
 
           for (const i in response.data) {
             localStorage.setItem(i, JSON.stringify(response.data[i]));
           }
           window.location.href = '/';
+        } else {
+          notification.open({
+            message: 'Some error occured',
+          });
         }
       })
       .catch(error => {
@@ -61,13 +65,17 @@ class Login extends React.Component {
     axios
       .post('/auth/login/google', data)
       .then(response => {
-        if (response.data) {
+        if (response && response.data) {
           console.log(response.data);
 
           for (const i in response.data) {
             localStorage.setItem(i, JSON.stringify(response.data[i]));
           }
           window.location.href = '/';
+        } else {
+          notification.open({
+            message: 'Some error occured',
+          });
         }
       })
       .catch(error => {
@@ -127,13 +135,17 @@ class Login extends React.Component {
     axios
       .post('/auth/login', data)
       .then(response => {
-        if (response.data) {
+        if (response && response.data) {
           console.log(response.data);
 
           for (const i in response.data) {
             localStorage.setItem(i, JSON.stringify(response.data[i]));
           }
           window.location.href = '/';
+        } else {
+          notification.open({
+            message: 'Some error occured',
+          });
         }
       })
       .catch(error => {
@@ -220,6 +232,7 @@ class Login extends React.Component {
                     className={s.input}
                     id="usernameOrEmail"
                     type="text"
+                    autoComplete="off"
                     name="email"
                     onChange={this.handleChanges}
                     autoFocus // eslint-disable-line jsx-a11y/no-autofocus
@@ -233,7 +246,7 @@ class Login extends React.Component {
                     className={s.input}
                     id="password"
                     type="password"
-                    autoComplete={false}
+                    autoComplete="off"
                     name="password"
                     onChange={this.handleChanges}
                   />

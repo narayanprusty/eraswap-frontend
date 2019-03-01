@@ -63,13 +63,17 @@ class Register extends React.Component {
         //       login
         //     </Button>
         //   );
-        if (response.status == 200) {
+        if (response && response.status == 200) {
           notification.open({
             message: 'Success',
             description:
               'Account Has been created, please check your email and click on the Activation Link.',
             // btn,
             key,
+          });
+        } else {
+          notification.open({
+            message: 'Some error occured',
           });
         }
         this.setState({
@@ -209,6 +213,7 @@ class Register extends React.Component {
                   id="email"
                   type="text"
                   name="email"
+                  autoComplete="off"
                   onChange={this.handleChanges}
                   autoFocus // eslint-disable-line jsx-a11y/no-autofocus
                 />
@@ -222,7 +227,7 @@ class Register extends React.Component {
                   id="password"
                   type="password"
                   name="password"
-                  autoComplete={false}
+                  autoComplete="none"
                   onChange={this.handleChanges}
                 />
               </label>
