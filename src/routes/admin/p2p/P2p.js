@@ -162,6 +162,9 @@ class P2p extends React.Component {
     {
       title: 'Amount',
       dataIndex: 'amount',
+      render: (fieldval, record) => {
+        return fieldval + ' ' + record.cryptoCurrency;
+      },
     },
     {
       title: 'Listing Owner',
