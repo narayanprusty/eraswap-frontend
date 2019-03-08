@@ -42,7 +42,7 @@ class P2p extends React.Component {
       listingId: record.listingId,
       owner: record.ownerUser,
       requester: record.requester,
-      amount: record.amount,
+      amount: record.amountReceived,
       fee: record.fee,
       cryptoCurrency: record.cryptoCurrency,
     };
@@ -72,7 +72,7 @@ class P2p extends React.Component {
       listingId: record.listingId,
       owner: record.ownerUser,
       requester: record.requester,
-      amount: record.amount,
+      amount: record.amountReceived,
       cryptoCurrency: record.cryptoCurrency,
     };
     axios
