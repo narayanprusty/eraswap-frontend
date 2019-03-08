@@ -153,9 +153,9 @@ class P2p extends React.Component {
           return '-';
         }
         return (
-          new Date(date).toLocaleDateString() +
-          ' ' +
-          new Date(date).toLocaleTimeString()
+            new Date(parseInt(date.toString())).toLocaleDateString() +
+            ' ' +
+            new Date(parseInt(date.toString())).toLocaleTimeString()
         );
       },
     },
