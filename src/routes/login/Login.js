@@ -224,7 +224,7 @@ class Login extends React.Component {
             <p className={s.lead} style={{ textAlign: 'center' }}>
               Log in with your username and password.
             </p>
-            <form onSubmit={this.login}>
+            <form onSubmit={this.login} method="POST">
               <div className={s.formGroup}>
                 <label className={s.label} htmlFor="usernameOrEmail">
                   Email :
