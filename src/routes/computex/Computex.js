@@ -122,7 +122,7 @@ class ComputeEx extends React.Component {
                     key: '2',
                     panel1Text: `Convertion from ${this.state.amount} ${
                       this.state.currency
-                    } To ${this.state.toCurrency} estimated: `,
+                    } To ${this.state.toCurrency} `,
                     exchanges: data.data[symbol],
                     maxExchange: getMinMax.ask !== 0 ? getMinMax.name : '',
                     exchangeRate: getMinMax.ask !== 0 ? getMinMax.ask : 0,
