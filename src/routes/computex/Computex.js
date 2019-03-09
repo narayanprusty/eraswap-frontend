@@ -517,6 +517,14 @@ class ComputeEx extends React.Component {
           <br />
         </span>
       );
+    } else {
+      return (
+        <span>
+          Not Available <br />
+          <br />
+          <br />
+        </span>
+      );
     }
   };
   checkValue = async e => {
