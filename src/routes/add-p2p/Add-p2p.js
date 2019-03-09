@@ -1072,7 +1072,7 @@ class MyRequests extends React.Component {
             disabled={this.state[record.uniqueIdentifier] ? false : true}
           >
             {this.state[record.uniqueIdentifier]
-              ? record.wantsToBuy ? 'Release to Escrow' : 'I Have Paid'
+              ? record.wantsToBuy ? 'Received Payment' : 'I Have Paid'
               : `${this.state[record.uniqueIdentifier]}_finished`
                 ? 'Paid'
                 : 'Not Matched'}
