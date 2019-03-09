@@ -292,16 +292,29 @@ class ComputeEx extends React.Component {
               }
             });
           }
+
+          let panelText2Data;
+          if (this.state.symbol.split('/')[0] == this.state.currency) {
+            panelText2Data = `Best value is from ${
+              this.state.maxExchange
+            } : for 1 ${this.state.symbol.split('/')[0]} , ${this.state
+              .exchangeRate +
+              ' ' +
+              this.state.symbol.split('/')[1]}`;
+          } else {
+            panelText2Data = `Best value is from ${
+              this.state.maxExchange
+            } : for 1 ${this.state.symbol.split('/')[1]} , ${this.state
+              .exchangeRate +
+              ' ' +
+              1 / this.state.symbol.split('/')[0]}`;
+          }
           this.setState({
             loader: false,
 
             key: '3',
             tiMeFrom: moment.utc().valueOf(),
-            panel2Text: `Best value is from ${this.state.maxExchange} : for 1 ${
-              this.state.symbol.split('/')[0]
-            } , ${this.state.exchangeRate +
-              ' ' +
-              this.state.symbol.split('/')[1]}`,
+            panel2Text: panelText2Data,
             stepsO: {
               firstStep: {
                 status: 'finish',
