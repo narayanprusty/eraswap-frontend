@@ -304,8 +304,9 @@ class ComputeEx extends React.Component {
           } else {
             panelText2Data = `Best value is from ${
               this.state.maxExchange
-            } : for 1 ${this.state.symbol.split('/')[1]} , ${1 /
-              this.state.exchangeRate +
+            } : for 1 ${this.state.symbol.split('/')[1]} , ${(
+              1 / this.state.exchangeRate
+            ).toFixed(8) +
               ' ' +
               this.state.symbol.split('/')[0]}`;
           }
