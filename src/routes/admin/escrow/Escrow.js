@@ -25,22 +25,6 @@ class Escrow extends React.Component {
       }
     });
   };
-  withdrawProcess = async () => {
-    this.setState({ loader: true });
-    const data = {
-      crypto: this.state.currency,
-      toAddress: this.state.address,
-      amount: this.state.amount,
-    };
-    axios.post('/admins/apis/escrow/send', data).then(data => {
-      this.setState({ loader: false });
-      if (data.data) {
-        notification.open({
-          message: 'Sent successfully.',
-        });
-      }
-    });
-  };
   handleState = e => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -98,34 +82,6 @@ class Escrow extends React.Component {
               ? this.state.balance
               : this.state.balance == 0 ? 0 : 'Loading...'}
           </code>
-          <Divider>Withdrawal</Divider>
-          <Input
-            name="amount"
-            value={this.state.amount}
-            placeholder="Enter the amount to send"
-            onChange={this.handleState.bind(this)}
-            style={{ width: '25%', marginRight: '3%' }}
-          />
-          <Input
-            name="address"
-            placeholder={'Enter an ' + this.state.currency + ' Address'}
-            value={this.state.address}
-            onChange={this.handleState.bind(this)}
-            style={{ width: '25%', marginRight: '3%' }}
-          />
-          {!this.state.loader && (
-            <Button
-              type="primary"
-              onClick={this.withdrawProcess.bind(this)}
-              disabled={
-                this.state.currency && this.state.address && this.state.amount
-                  ? false
-                  : true
-              }
-            >
-              Send
-            </Button>
-          )}
           {this.state.loader && <Spin size="large" />}
         </Card>
       </div>
