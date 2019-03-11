@@ -599,6 +599,20 @@ class MyListComponent extends React.Component {
       width: '20%',
     },
     {
+      title: 'Time',
+      dataIndex: 'createdAt',
+      render: date => {
+        if (!date) {
+          return '-';
+        }
+        return (
+          new Date(parseInt(date.toString())).toLocaleDateString() +
+          ' ' +
+          new Date(parseInt(date.toString())).toLocaleTimeString()
+        );
+      },
+    },
+    {
       title: 'Payment Method',
       dataIndex: 'paymentMethod',
       width: '20%',
